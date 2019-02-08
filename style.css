@@ -1,0 +1,238 @@
+*{
+	box-sizing:border-box;
+}
+html{
+	min-height:100vh;
+	background-color:#fff;
+	color:#1a1a1a;
+	font-family:Helvetica, sans-serif;
+	font-weight:100;
+}
+body{
+	margin:0;
+	padding:0;
+}
+select,button {
+	background:rgba(255,255,255,0.95);
+	color:#1a1a1a;
+	border:1.5px solid #ff00d4;
+	font-size:1.2em;
+	line-height:1.2em;
+	padding:5px;
+}
+select,input[type="number"]{
+	margin:.5% 5%;
+	width:90%;
+	-webkit-appearance:none;
+}
+input[type="number"]{
+	-moz-appearance:textfield;
+	appearance:textfield;
+	background:rgba(255,255,255,0.95);
+	color:#1a1a1a;
+	border:1.5px solid #ff00d4;
+	font-size:1.2em;
+	line-height:1.2em;
+	padding:5px;
+}
+
+/* Can't group these see: https://stackoverflow.com/a/2610741 */
+::-webkit-input-placeholder{color:#fff;}
+:-moz-input-placeholder{opacity:1;color:#fff;}
+:-ms-input-placeholder{color:#fff;}
+::placeholder{opacity:1;color:#fff;}
+::-moz-input-placeholder{opacity:1;color:#fff;}
+::-ms-input-placeholder{color:#fff;}
+
+input[type="number"]:hover,
+input[type="number"]:focus {
+	-moz-appearance:number-input;
+	appearance:number-input;
+}
+/*input[type=number]::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+}*/
+
+input[type="number"],select{
+	-ms-box-sizing:content-box;
+	-moz-box-sizing:content-box;
+	-webkit-box-sizing:content-box; 
+	box-sizing:content-box;
+}
+
+h1,h2,h3 {
+	margin:0;
+	padding:0;
+	font-weight:100;
+}
+h3 {
+	font-size:1.6em;
+}
+#ca_headers {
+	width:100%;
+	height:2em;
+	line-height:2em;
+	font-size:2.1em;
+	text-align:center;
+}
+.ca_header{
+	float:left;
+	width:16.666%;
+	height:100%;
+	border-bottom:.1em solid #ff00d4;
+}
+#title_bar {
+	width:98.5%;
+	padding:0 0 0 1.5%;
+	height:4em;
+	line-height:4em;
+	background-color:rgba(255,255,255,0.95);
+	border-bottom:#ff00d4 2px solid;
+}
+#speeds{
+	text-align:center;
+	font-size:2.2em;
+	font-weight:600;
+	margin:1.5% 0;
+}
+#add_carrier{
+	width:100%;
+	line-height:2em;
+	font-size:2.2em;
+	text-align:center;
+	background-color:rgba(0,0,0,0.05);
+	border:1.5px solid #ff00d4;
+	color:#1a1a1a;
+	cursor:pointer;
+	transition:color .2s ease-in-out, background-color .3s ease-in-out;
+}
+#add_carrier:hover{
+	background-color:rgba(0,0,0,0.75);
+	color:#fff;
+}
+#open_settings{
+	position:absolute;
+	top:0vh;
+	right:1vw;
+	font-size:1.2em;
+	cursor:pointer;
+}
+#settings{
+	display:none;
+	height:100%;
+	width:100%;
+	position:absolute;
+	z-index:100;
+	top:0;
+	background-color:rgba(0,0,0,0.95);
+	text-align:center;
+	font-size:1.4em;
+}
+#settings button{
+	cursor:pointer;
+	font-size:0.8em;
+}
+.carrier_row{
+	width:100%;
+	display:inline-block;
+	padding:.1em 0;
+	border-bottom:.1em solid #fff;
+}
+.rowsect{
+	width:16.666%;
+	float:left;
+	text-align:center;
+	display:block;
+}
+.rowsect label {
+	font-size:1.1em;
+}
+.rowsectheader {
+	display:none;
+	font-size:1.55em;
+	font-weight:600;
+}
+.band_title {
+	text-align:center;
+	padding:3px 0;
+}
+.row_header {
+	cursor:pointer;
+	background-color:rgba(0,0,0,0.05);
+	transition:.2s ease-in-out background-color;
+}
+.row_header:hover,.row_header:focus {
+	background-color:rgba(0,0,0,0.5);
+}
+@media screen and (max-width:1120px){
+	#ca_headers{
+		font-size:1.9em;
+	}
+}
+@media screen and (max-width:960px){
+	h1 {
+		line-height:1.5em;
+		font-size:1.5em;
+	}
+	#ca_headers{
+		font-size:1.7em;
+	}
+	#title_bar {
+		width:97%;
+		height:2.2em;
+		padding:0 0 0 3%;
+	}
+	#speeds{
+		margin:2.5% 0;
+	}
+	select,input[type="number"]{
+		margin:.5% 0;
+		width:92%;
+	}
+	#open_settings{
+		top:3vh;
+	}
+	.band_title{
+		font-size:1.35em;
+	}
+	#ca_headers{
+		display:none;
+	}
+	.rowsectheader{
+		display:block;
+	}
+	.rowsect label {
+		font-size:1.2em;
+	}
+	.rowsect{
+		width:33.333%;
+	}
+	#add_carrier {
+		margin-top:0.2em;
+	}
+}
+@media screen and (max-width:768px){
+	#title_bar{
+		text-align:center;
+	}
+	.band_title{
+		font-size:1.35em;
+	}
+	.rowsect{
+		width:50%;
+	}
+}
+@media screen and (max-width:650px){
+	.rowsect{
+		width:100%;
+	}
+}
+@media screen and (max-width:400px){
+	#title_bar{
+		height:2.5em;
+	}
+	#page_title{
+		line-height:1em;
+		font-size:1.2em;
+	}
+}
