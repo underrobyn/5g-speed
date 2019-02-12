@@ -148,6 +148,39 @@ var s5g = {
 				60:[]
 			},
 			"nrarfcn":[151600,160600]
+		},
+		65:{
+			"type":"FDD",
+			"frequency":"2100",
+			"range":["1920-2010","2110-2200"],
+			"scsbw":{
+				15:[5,10,15,20],
+				30:[10,15,20],
+				60:[10,15,20]
+			},
+			"nrarfcn":[422000,440000]
+		},
+		66:{
+			"type":"FDD",
+			"frequency":"1700",
+			"range":["1710-1780","2110-2200"],
+			"scsbw":{
+				15:[5,10,15,20,40],
+				30:[10,15,20,40],
+				60:[10,15,20,40]
+			},
+			"nrarfcn":[422000,440000]
+		},
+		70:{
+			"type":"FDD",
+			"frequency":"2000",
+			"range":["1695-1710","1995-2020"],
+			"scsbw":{
+				15:[5,10,15,20,25],
+				30:[10,15,20,25],
+				60:[10,15,20,25]
+			},
+			"nrarfcn":[399000,404000]
 		}
 	},
 	selectors:{
@@ -157,13 +190,16 @@ var s5g = {
 			4:"4T4R",
 			8:"8T8R"
 		},
+		scs:{
+			1:"15KHz"
+		},
 		modulation:{
 			2:"QPSK",
 			4:"16QAM",
 			6:"64QAM",
 			8:"256QAM"
 		},
-		bandwidths:{
+		bandwidth:{
 			5:"5MHz",
 			10:"10MHz",
 			15:"15MHz",
@@ -183,6 +219,13 @@ var s5g = {
 			0.8:"0.8",
 			1:"1"
 		}
+	},
+	name:{
+		"band":"NR-Band",
+		"scs":"SCS",
+		"bandwidth":"Bandwidth",
+		"streams":"Streams",
+		"modulation":"Modulation",
 	},
 	
 	init:function(){
@@ -236,8 +279,29 @@ var s5g = {
 	},
 	
 	logic:{
+		changeCbs:{
+			"band":function(caId){
+				s5g.logic.resetCarrierData(caId,["band"]);
+				s5g.ux.populateSelectors(caId,["scs"]);
+			},
+			"scs":function(caId){
+				s5g.logic.resetCarrierData(caId,["band","scs"]);
+				s5g.ux.populateSelectors(caId,["bandwidth"]);
+			},
+			"bandwidth":function(caId){
+				s5g.logic.resetCarrierData(caId,["band","scs","bandwidth"]);
+				s5g.ux.populateSelectors(caId,["streams","modulation"]);
+			},
+			"streams":function(){
+				//s5g.ux.populateSelectors(caId,["bandwidth"]);
+			},
+			"modulation":function(){
+				//s5g.ux.populateSelectors(caId,["bandwidth"]);
+			}
+		},
+		
 		getCaId:function(a){
-			return $(a).parent().parent().data("caid");
+			return $(a).parent().parent().parent().data("caid");
 		},
 		
 		addCarrier:function(){
@@ -265,15 +329,40 @@ var s5g = {
 		
 		aggregateUplink:function(){
 			var caId = s5g.logic.getCaId(this);
+			
 		},
 		removeCarrier:function(){
 			var caId = s5g.logic.getCaId(this);
+			
+			if (caId === 0){
+				alert("Cannot remove primary carrier");
+				return;
+			}
+			
+			s5g.carriers.splice(caId,1);
+			s5g.ux.removeCarrier(caId);
+		},
+		
+		resetCarrierData:function(caId,attributes){
+			var clearAttr = ["band","scs","bandwidth","streams","modulation"];
+			for (var i = 0; i < 5; i++){
+				if (attributes.indexOf(clearAttr[i]) !== -1) continue;
+				
+				console.log("Set",clearAttr[i],"to null");
+				
+				s5g.ux.resetSelector(caId,clearAttr[i]);
+				s5g.carriers[caId][clearAttr[i]] = null;
+			}
 		},
 		selectNewValue:function(){
 			var caId = s5g.logic.getCaId(this);
 			var selector = $(this).data("selector");
 			
-			console.log(s5g.carriers[caId][selector],$(this).val());
+			s5g.carriers[caId][selector] = $(this).val();
+			
+			console.log("Set value for carrier",caId,"->",selector,"to",$(this).val());
+			
+			s5g.logic.changeCbs[selector](caId);
 		},
 		
 		doCalculation:function(){
@@ -298,14 +387,14 @@ var s5g = {
 		generate:{
 			band:function(){
 				var el = $("<div/>",{"class":"rowsect"}).append(
-					$("<span/>",{"class":"rowsectheader"}).text("NR-Band")
+					$("<span/>",{"class":"rowsectheader"}).text(s5g.name.band)
 				);
 	
 				el.append(
 					$("<select/>",{
 						"title":"Select NR-Band",
 						"data-selector":"band"
-					}).append($("<option/>",{"value":0}).text("Select Band...")).on("change",s5g.logic.selectNewValue)
+					}).append($("<option/>",{"value":0}).text("Select "+s5g.name.band+"...")).on("change",s5g.logic.selectNewValue)
 				);
 				
 				return el;
@@ -319,7 +408,7 @@ var s5g = {
 					$("<select/>",{
 						"title":"Select Sub-Carrier Spacing",
 						"data-selector":"scs"
-					}).append($("<option/>",{"value":0}).text("Select SCS...")).on("change",s5g.logic.selectNewValue)
+					}).append($("<option/>",{"value":0}).text("Select "+s5g.name.scs+"...")).on("change",s5g.logic.selectNewValue)
 				);
 				
 				return el;
@@ -333,7 +422,7 @@ var s5g = {
 					$("<select/>",{
 						"title":"Select Bandwidth",
 						"data-selector":"bandwidth"
-					}).append($("<option/>",{"value":0}).text("Select Bandwidth...")).on("change",s5g.logic.selectNewValue)
+					}).append($("<option/>",{"value":0}).text("Select "+s5g.name.bandwidth+"...")).on("change",s5g.logic.selectNewValue)
 				);
 				
 				return el;
@@ -347,7 +436,7 @@ var s5g = {
 					$("<select/>",{
 						"title":"Select Streams",
 						"data-selector":"streams"
-					}).append($("<option/>",{"value":0}).text("Select Stream Count...")).on("change",s5g.logic.selectNewValue)
+					}).append($("<option/>",{"value":0}).text("Select "+s5g.name.streams+" Count...")).on("change",s5g.logic.selectNewValue)
 				);
 				
 				return el;
@@ -361,7 +450,7 @@ var s5g = {
 					$("<select/>",{
 						"title":"Select Modulation",
 						"data-selector":"modulation"
-					}).append($("<option/>",{"value":0}).text("Select Modulation...")).on("change",s5g.logic.selectNewValue)
+					}).append($("<option/>",{"value":0}).text("Select "+s5g.name.modulation+"...")).on("change",s5g.logic.selectNewValue)
 				);
 				
 				return el;
@@ -387,13 +476,31 @@ var s5g = {
 			}
 		},
 		
+		updateRowTitle:function(caId,txt){
+			$("div[data-caid='" + caId + "'] div.rowcont h2.band_title").text(txt);
+		},
+		toggleRow:function(){
+			var caId = $(this).parent().data("caid");
+			var el = $("div[data-caid='" + caId + "'] div.rowcont");
+			
+			if (el.is(":visible")){
+				el.slideUp(500);
+			} else {
+				el.slideDown(500);
+			}
+		},
 		renderCarrier:function(info,caId){
 			var el = $("<div/>",{
 				"class":"carrier_row",
 				"data-caid":caId
 			});
 			
-			el.append(
+			var header = $("<div/>",{"class":"row_header"}).on("click enter",s5g.ux.toggleRow);
+			var body = $("<div/>",{"class":"rowcont"});
+			
+			header.append($("<h2/>",{"class":"band_title"}).text(caId === 0 ? "Primary Carrier" : "Carrier S" + caId));
+			
+			body.append(
 				s5g.ux.generate.band(),
 				s5g.ux.generate.scs(),
 				s5g.ux.generate.bandwidth(),
@@ -402,56 +509,99 @@ var s5g = {
 				s5g.ux.generate.rowOpts(true)
 			);
 			
+			el.append(header,body);
+			
 			$("#ca_body").append(el);
 			
-			s5g.ux.populateSelectors(caId);
+			s5g.ux.populateSelectors(caId,["band"]);
+		},
+		removeCarrier:function(caId){
+			$(".carrier_row[data-caid='" + caId + "']").remove();
 		},
 		
-		populateSelectors:function(caId){
-			$(".carrier_row[data-caid='" + caId + "'] div.rowsect select").each(function(){
+		resetSelector:function(caId,selector){
+			$(".carrier_row[data-caid='" + caId + "'] div.rowcont div.rowsect select[data-selector='" + selector + "']").empty().append(
+				$("<option/>",{"value":0}).text("Select "+s5g.name[selector]+"...")
+			);
+		},
+		populateSelectors:function(caId,noReload){
+			$(".carrier_row[data-caid='" + caId + "'] div.rowcont div.rowsect select").each(function(){
 				console.log($(this).data("selector"));
 				
 				var sel = $(this).data("selector");
+				
+				if (noReload.indexOf(sel) === -1) return;
 				
 				switch (sel){
 					case "band":
 						s5g.ux.populateBand($(this),caId);
 						break;
 					case "scs":
-						s5g.ux.populateBandwidth($(this),caId);
+						s5g.ux.populateScs($(this),caId);
 						break;
 					case "bandwidth":
 						s5g.ux.populateBandwidth($(this),caId);
 						break;
-					case "streams":
-						s5g.ux.populateBandwidth($(this),caId);
-						break;
-					case "modulation":
-						s5g.ux.populateBandwidth($(this),caId);
-						break;
 					default:
-						console.log("Unknown:",sel,caId);
+						console.log($(this),caId,sel);
+						s5g.ux.populateGeneric($(this),caId,sel);
 						break;
 				}
 			});
 		},
-		populateBand:function(selector,caId){
+		populateBand:function(el,caId){
 			var dKeys = Object.keys(s5g.nrBandData);
 			
+			el.empty().append($("<option/>",{"value":0}).text("Select Band..."));
+			
 			for (var i = 0, l = dKeys.length;i<l;i++){
-				if (s5g.nrBandData[dKeys[i]].frequency !== "") continue;
+				if (s5g.nrBandData[dKeys[i]].frequency === "") continue;
 				
 				txt = "Band " + dKeys[i];
 				txt += " | " + s5g.nrBandData[dKeys[i]].type;
 				txt += " (" + s5g.nrBandData[dKeys[i]].frequency + "MHz)";
 				
-				selector.append(
+				el.append(
 					$("<option/>",{"value":dKeys[i]}).text(txt)
 				);
 			}
 		},
-		populateBandwidth:function(selector,caId){
+		populateBandwidth:function(el,caId){
+			var scsData = s5g.nrBandData[s5g.carriers[caId].band].scsbw[s5g.carriers[caId].scs];
 			
+			el.empty().append($("<option/>",{"value":0}).text("Select Bandwidth..."));
+			
+			for (var i = 0, l = scsData.length;i<l;i++){
+				txt = scsData[i] + "MHz";
+				
+				el.append(
+					$("<option/>",{"value":scsData[i]}).text(txt)
+				);
+			}
+		},
+		populateScs:function(el,caId){
+			var scsData = s5g.nrBandData[s5g.carriers[caId].band].scsbw;
+			var keys = Object.keys(scsData);
+			
+			el.empty().append($("<option/>",{"value":0}).text("Select SCS..."));
+			
+			for (var i = 0, l = keys.length;i<l;i++){
+				if (scsData[keys[i]].length === 0) return;
+				
+				txt = keys[i] + "KHz";
+				
+				el.append(
+					$("<option/>",{"value":keys[i]}).text(txt)
+				);
+			}
+		},
+		populateGeneric:function(el,caId,selector){
+			var keys = Object.keys(s5g.selectors[selector]);
+			for (var i = 0, l = keys.length;i<l;i++){
+				el.append(
+					$("<option/>",{"value":keys[i]}).text(s5g.selectors[selector][keys[i]])
+				);
+			}
 		},
 		renderCalculation:function(data){
 			
