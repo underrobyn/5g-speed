@@ -164,12 +164,12 @@ h3 {
 	background-color:rgba(0,0,0,0.75);
 	color:#fff;
 }
-@media screen and (max-width:1120px){
+@media screen and (max-width:1300px){
 	#ca_headers{
 		font-size:1.9em;
 	}
 }
-@media screen and (max-width:960px){
+@media screen and (max-width:1200px){
 	h1 {
 		line-height:1.5em;
 		font-size:1.5em;

@@ -183,6 +183,38 @@ var s5g = {
 			"nrarfcn":[399000,404000]
 		}
 	},
+	nrRbData:{
+		5:{
+			15:25,
+			30:11,
+			60:null
+		},
+		10:{
+			15:52,
+			30:24,
+			60:11
+		},
+		15:{
+			15:79,
+			30:38,
+			60:18
+		},
+		20:{
+			15:106,
+			30:51,
+			60:24
+		},
+		25:{
+			15:133,
+			30:65,
+			60:31
+		},
+		30:{
+			15:160,
+			30:78,
+			60:38
+		}
+	},
 	selectors:{
 		streams:{
 			1:"SiSo",
@@ -238,43 +270,79 @@ var s5g = {
 		base:1e-6,
 		rMax:948/1024,
 		
+		reduce:function(n){
+			return Math.round(n*10000)/10000;
+		},
 		round:function(n){
 			return Math.round(n*100)/100;
 		},
-		scs:function(spacing){
-			return (1e-3/14*(2^spacing));
+		numerology:function(scs){
+			if (scs === 15) return 0;
+			if (scs === 30) return 1;
+			if (scs === 60) return 2;
+		},
+		scs:function(scs){
+			var exp = Math.pow(2,scs);
+			return 1e-3/(14*exp);
 		},
 		carrier:function(info){
-			var ret = 1;
+			var ret = s5g.calc.base;
+			
+			var streams = parseInt(info.streams);
+			var coding = parseInt(info.modulation);
+			var sFactor = parseFloat(info.sfactor);
+			var scs = parseInt(info.scs);
+			var sRbs = parseInt(info.bandwidth);
+			
+			var num = s5g.calc.numerology(scs);
+			
+			//console.log("Streams:",streams,"\n"+"coding:",coding,"\n"+"sFactor:",sFactor,"\n"+"scs:",scs,"\n"+"sRbs:",sRbs,"\n"+"num:",num,"\n")
 			
 			// MiMo value
-			ret = ret * info.streams;
+			ret = ret * streams;
 			
 			// Modulation scheme
-			ret = ret * info.modulation;
+			ret = ret * coding;
 			
 			// Scaling factor
-			ret = ret * info.sfactor;
+			ret = ret * sFactor;
 			
 			// rMax constant
 			ret = ret * s5g.calc.rMax;
 			
 			// Sub-Carrier spacing
-			ret = ret * (2/s5g.calc.scs(info.subCarrierSpacing));
+			var cNum = s5g.calc.scs(num);
+			var rbs = s5g.nrRbData[sRbs][scs];
 			
-			return ret;
+			ret = ret * ((rbs*12)/cNum);
+			
+			// Overhead
+			var retDl = ret * (1-0.14);
+			var retUl = ret * (1-0.08);
+			
+			// Round values
+			retDl = s5g.calc.reduce(retDl,5);
+			retUl = s5g.calc.reduce(retUl,5);
+			
+			console.log("Calculation Complete for carrier",retDl+"Mbps Downlink",retUl+"Mbps Uplink");
+			
+			return [retDl,retUl];
 		},
 		run:function(){
-			var result = s5g.calc.base;
-			var sumCarriers = 0;
+			var sumDl = 0, sumUl = 0;
 			
 			for (var i in s5g.carriers){
-				sumCarriers += s5g.calc.carrier(
-					s5g.carriers[i]
-				);
+				if (s5g.nrRbData[parseInt(s5g.carriers[i].bandwidth)] === undefined) continue;
+				
+				var carrierSpeed = s5g.calc.carrier(s5g.carriers[i]);
+				
+				s5g.ux.setRowSpeed(i,carrierSpeed);
+				
+				sumDl += carrierSpeed[0];
+				sumUl += carrierSpeed[1];
 			}
 			
-			return result * sumCarriers;
+			return [sumDl,sumUl];
 		}
 	},
 	
@@ -283,6 +351,10 @@ var s5g = {
 			"band":function(caId){
 				s5g.logic.resetCarrierData(caId,["band"]);
 				s5g.ux.populateSelectors(caId,["scs"]);
+				s5g.logic.setPopulateDefaults(caId,true);
+			
+				// Re-Calculate speed
+				s5g.logic.doCalculation();
 			},
 			"scs":function(caId){
 				s5g.logic.resetCarrierData(caId,["band","scs"]);
@@ -311,9 +383,8 @@ var s5g = {
 				bandwidth:null,
 				streams:null,
 				modulation:null,
-				sfactor:null,
-				subCarrierSpacing:null,
-				overhead:null,
+				sfactor:1,
+				scs:null,
 				uplinkAggregation:false
 			});
 			
@@ -322,9 +393,6 @@ var s5g = {
 			
 			// Render newly made carrier
 			s5g.ux.renderCarrier(render,carrier);
-			
-			// Re-Calculate speed
-			s5g.logic.doCalculation();
 		},
 		
 		aggregateUplink:function(){
@@ -348,7 +416,7 @@ var s5g = {
 			for (var i = 0; i < 5; i++){
 				if (attributes.indexOf(clearAttr[i]) !== -1) continue;
 				
-				console.log("Set",clearAttr[i],"to null");
+				//console.log("Set",clearAttr[i],"to null");
 				
 				s5g.ux.resetSelector(caId,clearAttr[i]);
 				s5g.carriers[caId][clearAttr[i]] = null;
@@ -360,16 +428,53 @@ var s5g = {
 			
 			s5g.carriers[caId][selector] = $(this).val();
 			
-			console.log("Set value for carrier",caId,"->",selector,"to",$(this).val());
+			//console.log("Set value for carrier",caId,"->",selector,"to",$(this).val());
 			
 			s5g.logic.changeCbs[selector](caId);
+			
+			// Re-Calculate speed
+			//s5g.logic.setPopulateDefaults(caId,false);
+			s5g.logic.doCalculation();
+		},
+		setPopulateDefaults:function(caId,override){
+			var defaults = {
+				"bandwidth":20,
+				"streams":2,
+				"modulation":4,
+				"sfactor":1,
+				"scs":30
+			};
+			
+			$(".carrier_row[data-caid='" + caId + "'] div.rowcont div.rowsect select").each(function(){
+				var sel = $(this).data("selector");
+				if (defaults[sel] === undefined) return;
+				if ($(this).val() === "0" && override !== true) return;
+				
+				s5g.carriers[caId][sel] = defaults[sel];
+				$(this).val(defaults[sel]);
+				
+				s5g.logic.changeCbs[sel](caId);
+			});
 		},
 		
 		doCalculation:function(){
-			var uplink = s5g.calc.run();
-			var downlink = s5g.calc.run();
+			var required = ["bandwidth","streams","modulation","sfactor","scs"];
 			
-			s5g.ux.renderCalculation([uplink,downlink]);
+			var error = false;
+			for (var i in s5g.carriers){
+				ca = s5g.carriers[i];
+				for (var j in required){
+					if (ca[required[j]] === null){
+						error = true;
+						s5g.ux.inputError(1,[i,required[j]]);
+						break;
+					}
+				}
+			}
+			
+			if (error) return;
+			
+			s5g.ux.renderCalculation(s5g.calc.run());
 		}
 	},
 	
@@ -378,10 +483,15 @@ var s5g = {
 			$("#add_carrier").text("Add Carrier").on("click enter",s5g.logic.addCarrier);
 			
 			$("#page_title").text("5G Throughput Calculator");
+			$("#speeds").text("Please choose a band");
 			
 			$("#open_settings").hide();
 			
 			$("#ca_body").empty();
+		},
+		
+		carrierName:function(caId){
+			return (parseInt(caId) === 0 ? "Primary Carrier" : "Carrier S" + caId);
 		},
 		
 		generate:{
@@ -477,7 +587,7 @@ var s5g = {
 		},
 		
 		updateRowTitle:function(caId,txt){
-			$("div[data-caid='" + caId + "'] div.rowcont h2.band_title").text(txt);
+			$("div[data-caid='" + caId + "'] div.row_header h2.band_title").html(txt);
 		},
 		toggleRow:function(){
 			var caId = $(this).parent().data("caid");
@@ -489,6 +599,16 @@ var s5g = {
 				el.slideDown(500);
 			}
 		},
+		setRowSpeed:function(caId,speeds){
+			var dlSpeed = s5g.calc.round(speeds[0]);
+			var ulSpeed = s5g.calc.round(speeds[1]);
+			var speedTxt = dlSpeed + "Mbps &#8595; &amp; " + ulSpeed + "Mbps &#8593;";
+			
+			var caName = s5g.ux.carrierName(caId);
+			console.log("Set carrier title for",caName);
+			
+			s5g.ux.updateRowTitle(caId,caName + "<br />" + speedTxt);
+		},
 		renderCarrier:function(info,caId){
 			var el = $("<div/>",{
 				"class":"carrier_row",
@@ -498,7 +618,7 @@ var s5g = {
 			var header = $("<div/>",{"class":"row_header"}).on("click enter",s5g.ux.toggleRow);
 			var body = $("<div/>",{"class":"rowcont"});
 			
-			header.append($("<h2/>",{"class":"band_title"}).text(caId === 0 ? "Primary Carrier" : "Carrier S" + caId));
+			header.append($("<h2/>",{"class":"band_title"}).text(s5g.ux.carrierName(caId)));
 			
 			body.append(
 				s5g.ux.generate.band(),
@@ -526,8 +646,6 @@ var s5g = {
 		},
 		populateSelectors:function(caId,noReload){
 			$(".carrier_row[data-caid='" + caId + "'] div.rowcont div.rowsect select").each(function(){
-				console.log($(this).data("selector"));
-				
 				var sel = $(this).data("selector");
 				
 				if (noReload.indexOf(sel) === -1) return;
@@ -567,6 +685,8 @@ var s5g = {
 			}
 		},
 		populateBandwidth:function(el,caId){
+			//if (s5g.carriers[caId].scs === "0") return;
+			
 			var scsData = s5g.nrBandData[s5g.carriers[caId].band].scsbw[s5g.carriers[caId].scs];
 			
 			el.empty().append($("<option/>",{"value":0}).text("Select Bandwidth..."));
@@ -583,7 +703,7 @@ var s5g = {
 			var scsData = s5g.nrBandData[s5g.carriers[caId].band].scsbw;
 			var keys = Object.keys(scsData);
 			
-			el.empty().append($("<option/>",{"value":0}).text("Select SCS..."));
+			el.empty();
 			
 			for (var i = 0, l = keys.length;i<l;i++){
 				if (scsData[keys[i]].length === 0) return;
@@ -604,7 +724,24 @@ var s5g = {
 			}
 		},
 		renderCalculation:function(data){
+			if (data === false){
+				$("#speeds").text("Unable to calculate speed");
+				return;
+			}
 			
+			$("#speeds").html(data[0] + "Mbps &#8595; &amp; " + data[1] + "Mbps &#8593;");
+		},
+		inputError:function(type,data){
+			var el = $("#speeds");
+			
+			switch(type){
+				case 1:
+					el.html("Please enter " + data[1] + " for " + s5g.ux.carrierName(data[0]));
+					break;
+				default:
+					el.html("Error");
+					break;
+			}
 		}
 	},
 	
