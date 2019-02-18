@@ -149,6 +149,83 @@ var s5g = {
 			},
 			"nrarfcn":[151600,160600]
 		},
+		34:{
+			"type":"TDD",
+			"frequency":"2000",
+			"range":["2010-2025"],
+			"scsbw":{
+				15:[5],
+				30:[],
+				60:[]
+			},
+			"nrarfcn":[402000,405000]
+		},
+		38:{
+			"type":"TDD",
+			"frequency":"2600",
+			"range":["2570-2620"],
+			"scsbw":{
+				15:[5,10,15,20],
+				30:[10,15,20],
+				60:[10,15,20]
+			},
+			"nrarfcn":[514000,524000]
+		},
+		39:{
+			"type":"TDD",
+			"frequency":"1900",
+			"range":["1880-1920"],
+			"scsbw":{
+				15:[5,10,15,20,25,30,40],
+				30:[10,15,20,25,30,40],
+				60:[10,15,20,25,30,40]
+			},
+			"nrarfcn":[376000,384000]
+		},
+		40:{
+			"type":"TDD",
+			"frequency":"2300",
+			"range":["2300-2400"],
+			"scsbw":{
+				15:[5,10,15,20,25,30,40,50],
+				30:[10,15,20,25,30,40,50,60,80,100],
+				60:[10,15,20,25,30,40,50,60,80,100]
+			},
+			"nrarfcn":[460000,480000]
+		},
+		41:{
+			"type":"TDD",
+			"frequency":"2500",
+			"range":["2496-2690"],
+			"scsbw":{
+				15:[5,10,15,20,40,50],
+				30:[10,15,20,40,50,60,/*70,*/80,90,100],
+				60:[10,15,20,40,50,60,/*70,*/80,90,100]
+			},
+			"nrarfcn":[499200,537999]
+		},
+		50:{
+			"type":"TDD",
+			"frequency":"1500",
+			"range":["1432-1517"],
+			"scsbw":{
+				15:[5,10,15,20,40,50],
+				30:[10,15,20,40,50,60,80],
+				60:[10,15,20,40,50,60,80]
+			},
+			"nrarfcn":[499200,537999]
+		},
+		51:{
+			"type":"TDD",
+			"frequency":"1500",
+			"range":["1427-1432"],
+			"scsbw":{
+				15:[5],
+				30:[],
+				60:[]
+			},
+			"nrarfcn":[499200,537999]
+		},
 		65:{
 			"type":"FDD",
 			"frequency":"2100",
@@ -181,6 +258,17 @@ var s5g = {
 				60:[10,15,20,25]
 			},
 			"nrarfcn":[399000,404000]
+		},
+		71:{
+			"type":"FDD",
+			"frequency":"600",
+			"range":["663-698","617-652"],
+			"scsbw":{
+				15:[5,10,15,20],
+				30:[10,15,20],
+				60:[]
+			},
+			"nrarfcn":[123400,130400]
 		}
 	},
 	nrRbData:{
@@ -213,6 +301,36 @@ var s5g = {
 			15:160,
 			30:78,
 			60:38
+		},
+		40:{
+			15:216,
+			30:106,
+			60:51
+		},
+		50:{
+			15:270,
+			30:133,
+			60:65
+		},
+		60:{
+			15:null,
+			30:162,
+			60:79
+		},
+		80:{
+			15:null,
+			30:217,
+			60:107
+		},
+		90:{
+			15:null,
+			30:245,
+			60:121
+		},
+		100:{
+			15:null,
+			30:273,
+			60:135
 		}
 	},
 	selectors:{
@@ -221,9 +339,6 @@ var s5g = {
 			2:"2T2R",
 			4:"4T4R",
 			8:"8T8R"
-		},
-		scs:{
-			1:"15KHz"
 		},
 		modulation:{
 			2:"QPSK",
@@ -321,8 +436,8 @@ var s5g = {
 			var retUl = ret * (1-0.08);
 			
 			// Round values
-			retDl = s5g.calc.reduce(retDl,5);
-			retUl = s5g.calc.reduce(retUl,5);
+			retDl = s5g.calc.reduce(retDl);
+			retUl = s5g.calc.reduce(retUl);
 			
 			console.log("Calculation Complete for carrier",retDl+"Mbps Downlink",retUl+"Mbps Uplink");
 			
@@ -463,6 +578,14 @@ var s5g = {
 			var error = false;
 			for (var i in s5g.carriers){
 				ca = s5g.carriers[i];
+				
+				console.log(s5g.nrBandData[parseInt(ca.band)].type);
+				if (s5g.nrBandData[parseInt(ca.band)].type === "TDD"){
+					error = true;
+					s5g.ux.inputError(2,[i]);
+					break;
+				}
+				
 				for (var j in required){
 					if (ca[required[j]] === null){
 						error = true;
@@ -600,14 +723,23 @@ var s5g = {
 			}
 		},
 		setRowSpeed:function(caId,speeds){
+			var caName = s5g.ux.carrierName(caId);
+			
 			var dlSpeed = s5g.calc.round(speeds[0]);
 			var ulSpeed = s5g.calc.round(speeds[1]);
-			var speedTxt = dlSpeed + "Mbps &#8595; &amp; " + ulSpeed + "Mbps &#8593;";
+			var speedTxt = "<strong>" + dlSpeed + "Mbps &#8595; &amp; " + ulSpeed + "Mbps &#8593;" + "</strong>";
 			
-			var caName = s5g.ux.carrierName(caId);
-			console.log("Set carrier title for",caName);
+			var band = parseInt(s5g.carriers[caId].band);
+			var data = s5g.nrBandData[band];
+			var bandTxt = "Band n" + band + ": " + data.frequency + "MHz";
 			
-			s5g.ux.updateRowTitle(caId,caName + "<br />" + speedTxt);
+			if (data.type === "FDD"){
+				bandTxt += ", Uplink: " + data.range[0] + "MHz, Downlink: " + data.range[1] + "MHz";
+			} else {
+				bandTxt += ", Range: " + data.range[0] + "MHz";
+			}
+			
+			s5g.ux.updateRowTitle(caId,caName + "<br />" + speedTxt + "<br />" + bandTxt);
 		},
 		renderCarrier:function(info,caId){
 			var el = $("<div/>",{
@@ -729,7 +861,10 @@ var s5g = {
 				return;
 			}
 			
-			$("#speeds").html(data[0] + "Mbps &#8595; &amp; " + data[1] + "Mbps &#8593;");
+			var dl = s5g.calc.round(data[0]);
+			var ul = s5g.calc.round(data[1]);
+			
+			$("#speeds").html(dl + "Mbps &#8595; &amp; " + ul + "Mbps &#8593;");
 		},
 		inputError:function(type,data){
 			var el = $("#speeds");
@@ -737,6 +872,9 @@ var s5g = {
 			switch(type){
 				case 1:
 					el.html("Please enter " + data[1] + " for " + s5g.ux.carrierName(data[0]));
+					break;
+				case 2:
+					el.html("Band not supported for " + s5g.ux.carrierName(data[0]));
 					break;
 				default:
 					el.html("Error");
