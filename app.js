@@ -560,6 +560,7 @@ var s5g = {
 			
 			// Render newly made carrier
 			s5g.ux.renderCarrier(render,carrier);
+			s5g.ux.inputError(1,[carrier,"band"]);
 		},
 		
 		aggregateUplink:function(){
@@ -611,6 +612,15 @@ var s5g = {
 				"sfactor":1,
 				"scs":30
 			};
+			
+			var band = parseInt(s5g.carriers[caId].band);
+			var data = s5g.nrBandData[band];
+			
+			if (data.scsbw[30].length === 0) 
+				defaults["scs"] = 15;
+			
+			if (data.scsbw[parseInt(defaults["scs"])].indexOf(20) === -1) 
+				defaults["bandwidth"] = data.scsbw[parseInt(defaults["scs"])][0];
 			
 			$(".carrier_row[data-caid='" + caId + "'] div.rowcont div.rowsect select").each(function(){
 				var sel = $(this).data("selector");
@@ -810,7 +820,7 @@ var s5g = {
 				s5g.ux.generate.bandwidth(),
 				s5g.ux.generate.streams(),
 				s5g.ux.generate.modulation(),
-				s5g.ux.generate.rowOpts(true)
+				s5g.ux.generate.rowOpts((caId === 0 ? false : true))
 			);
 			
 			el.append(header,body);
@@ -871,6 +881,7 @@ var s5g = {
 		populateBandwidth:function(el,caId){
 			var lastVal = parseInt(el.val());
 			var scsData = s5g.nrBandData[s5g.carriers[caId].band].scsbw[s5g.carriers[caId].scs];
+			var setDefault = true;
 			
 			el.empty();
 			
@@ -881,11 +892,18 @@ var s5g = {
 				};
 				
 				// Preserve current value
-				if (scsData[i] === lastVal) opts["selected"] = true;
+				if (scsData[i] === lastVal) {
+					opts["selected"] = true;
+					setDefault = false;
+				}
 				
 				el.append(
 					$("<option/>",opts).text(txt)
 				);
+			}
+			
+			if (setDefault === true){
+				
 			}
 		},
 		populateScs:function(el,caId){
