@@ -38,9 +38,14 @@ if (!window.jQuery){
 var s5g = {
 	followSpec:false,
 	carriers:[],
+	nrFreqOverhead:{
+		1:[0.14,0.18],
+		2:[0.18,0.10]
+	},
 	nrBandData:{
 		1:{
 			"type":"FDD",
+			"freqrange":1,
 			"frequency":"2100",
 			"range":["1920-1980","2110-2170"],
 			"scsbw":{
@@ -52,6 +57,7 @@ var s5g = {
 		},
 		2:{
 			"type":"FDD",
+			"freqrange":1,
 			"frequency":"1900",
 			"range":["1850-1910","1930-1990"],
 			"scsbw":{
@@ -63,6 +69,7 @@ var s5g = {
 		},
 		3:{
 			"type":"FDD",
+			"freqrange":1,
 			"frequency":"1800",
 			"range":["1710-1785","1805-1880"],
 			"scsbw":{
@@ -74,6 +81,7 @@ var s5g = {
 		},
 		5:{
 			"type":"FDD",
+			"freqrange":1,
 			"frequency":"850",
 			"range":["824-849","869-894"],
 			"scsbw":{
@@ -85,6 +93,7 @@ var s5g = {
 		},
 		7:{
 			"type":"FDD",
+			"freqrange":1,
 			"frequency":"2600",
 			"range":["2500-2570","2620-2690"],
 			"scsbw":{
@@ -96,6 +105,7 @@ var s5g = {
 		},
 		8:{
 			"type":"FDD",
+			"freqrange":1,
 			"frequency":"900",
 			"range":["880-915","925-960"],
 			"scsbw":{
@@ -107,6 +117,7 @@ var s5g = {
 		},
 		12:{
 			"type":"FDD",
+			"freqrange":1,
 			"frequency":"700",
 			"range":["699-716","729-746"],
 			"scsbw":{
@@ -118,6 +129,7 @@ var s5g = {
 		},
 		20:{
 			"type":"FDD",
+			"freqrange":1,
 			"frequency":"800",
 			"range":["832-862","791-821"],
 			"scsbw":{
@@ -129,6 +141,7 @@ var s5g = {
 		},
 		25:{
 			"type":"FDD",
+			"freqrange":1,
 			"frequency":"1900",
 			"range":["1850-1915","1930-1995"],
 			"scsbw":{
@@ -140,6 +153,7 @@ var s5g = {
 		},
 		28:{
 			"type":"FDD",
+			"freqrange":1,
 			"frequency":"700",
 			"range":["703-748","758-803"],
 			"scsbw":{
@@ -151,6 +165,7 @@ var s5g = {
 		},
 		34:{
 			"type":"TDD",
+			"freqrange":1,
 			"frequency":"2000",
 			"range":["2010-2025"],
 			"scsbw":{
@@ -162,6 +177,7 @@ var s5g = {
 		},
 		38:{
 			"type":"TDD",
+			"freqrange":1,
 			"frequency":"2600",
 			"range":["2570-2620"],
 			"scsbw":{
@@ -173,6 +189,7 @@ var s5g = {
 		},
 		39:{
 			"type":"TDD",
+			"freqrange":1,
 			"frequency":"1900",
 			"range":["1880-1920"],
 			"scsbw":{
@@ -184,6 +201,7 @@ var s5g = {
 		},
 		40:{
 			"type":"TDD",
+			"freqrange":1,
 			"frequency":"2300",
 			"range":["2300-2400"],
 			"scsbw":{
@@ -195,6 +213,7 @@ var s5g = {
 		},
 		41:{
 			"type":"TDD",
+			"freqrange":1,
 			"frequency":"2500",
 			"range":["2496-2690"],
 			"scsbw":{
@@ -206,6 +225,7 @@ var s5g = {
 		},
 		50:{
 			"type":"TDD",
+			"freqrange":1,
 			"frequency":"1500",
 			"range":["1432-1517"],
 			"scsbw":{
@@ -217,6 +237,7 @@ var s5g = {
 		},
 		51:{
 			"type":"TDD",
+			"freqrange":1,
 			"frequency":"1500",
 			"range":["1427-1432"],
 			"scsbw":{
@@ -228,6 +249,7 @@ var s5g = {
 		},
 		65:{
 			"type":"FDD",
+			"freqrange":1,
 			"frequency":"2100",
 			"range":["1920-2010","2110-2200"],
 			"scsbw":{
@@ -239,6 +261,7 @@ var s5g = {
 		},
 		66:{
 			"type":"FDD",
+			"freqrange":1,
 			"frequency":"1700",
 			"range":["1710-1780","2110-2200"],
 			"scsbw":{
@@ -250,6 +273,7 @@ var s5g = {
 		},
 		70:{
 			"type":"FDD",
+			"freqrange":1,
 			"frequency":"2000",
 			"range":["1695-1710","1995-2020"],
 			"scsbw":{
@@ -261,6 +285,7 @@ var s5g = {
 		},
 		71:{
 			"type":"FDD",
+			"freqrange":1,
 			"frequency":"600",
 			"range":["663-698","617-652"],
 			"scsbw":{
@@ -269,6 +294,30 @@ var s5g = {
 				60:[]
 			},
 			"nrarfcn":[123400,130400]
+		},
+		74:{
+			"type":"FDD",
+			"freqrange":1,
+			"frequency":"1500",
+			"range":["1427-1470","1475-1518"],
+			"scsbw":{
+				15:[5,10,15,20],
+				30:[10,15,20],
+				60:[10,15,20]
+			},
+			"nrarfcn":[295000,303600]
+		},
+		77:{
+			"type":"TDD",
+			"freqrange":1,
+			"frequency":"3700",
+			"range":["3300-4200"],
+			"scsbw":{
+				15:[10,15,20,30,40,50],
+				30:[10,15,20,30,40,50,60,70,80,90,100],
+				60:[10,15,20,30,40,50,60,70,80,90,100]
+			},
+			"nrarfcn":[620000,680000]
 		}
 	},
 	nrRbData:{
@@ -375,6 +424,8 @@ var s5g = {
 		"modulation":"Modulation",
 	},
 	
+	DEBUG:3,
+	
 	init:function(){
 		s5g.ux.init();
 		//s5g.sw.init();
@@ -408,10 +459,11 @@ var s5g = {
 			var sFactor = parseFloat(info.sfactor);
 			var scs = parseInt(info.scs);
 			var sRbs = parseInt(info.bandwidth);
+			var freqRange = s5g.nrBandData[info.band].freqrange;
 			
 			var num = s5g.calc.numerology(scs);
 			
-			//console.log("Streams:",streams,"\n"+"coding:",coding,"\n"+"sFactor:",sFactor,"\n"+"scs:",scs,"\n"+"sRbs:",sRbs,"\n"+"num:",num,"\n")
+			if (s5g.DEBUG > 2) console.log("FreqRange:",freqRange,"\nStreams:",streams,"\n"+"Coding:",coding,"\n"+"sFactor:",sFactor,"\n"+"scs:",scs,"\n"+"sRbs:",sRbs,"\n"+"Numero:",num,"\n")
 			
 			// MiMo value
 			ret = ret * streams;
@@ -432,14 +484,14 @@ var s5g = {
 			ret = ret * ((rbs*12)/cNum);
 			
 			// Overhead
-			var retDl = ret * (1-0.14);
-			var retUl = ret * (1-0.08);
+			var retDl = ret * (1-s5g.nrFreqOverhead[freqRange][0]);
+			var retUl = ret * (1-s5g.nrFreqOverhead[freqRange][1]);
 			
 			// Round values
 			retDl = s5g.calc.reduce(retDl);
 			retUl = s5g.calc.reduce(retUl);
 			
-			console.log("Calculation Complete for carrier",retDl+"Mbps Downlink",retUl+"Mbps Uplink");
+			if (s5g.DEBUG > 1) console.log("Calculation Complete for carrier",retDl+"Mbps Downlink",retUl+"Mbps Uplink");
 			
 			return [retDl,retUl];
 		},
@@ -467,23 +519,23 @@ var s5g = {
 				s5g.logic.resetCarrierData(caId,["band"]);
 				s5g.ux.populateSelectors(caId,["scs"]);
 				s5g.logic.setPopulateDefaults(caId,true);
-			
+				
 				// Re-Calculate speed
 				s5g.logic.doCalculation();
 			},
 			"scs":function(caId){
-				s5g.logic.resetCarrierData(caId,["band","scs"]);
+				//s5g.logic.resetCarrierData(caId,["band","scs"]);
 				s5g.ux.populateSelectors(caId,["bandwidth"]);
 			},
 			"bandwidth":function(caId){
-				s5g.logic.resetCarrierData(caId,["band","scs","bandwidth"]);
+				//s5g.logic.resetCarrierData(caId,["band","scs","bandwidth"]);
 				s5g.ux.populateSelectors(caId,["streams","modulation"]);
 			},
 			"streams":function(){
-				//s5g.ux.populateSelectors(caId,["bandwidth"]);
+				
 			},
 			"modulation":function(){
-				//s5g.ux.populateSelectors(caId,["bandwidth"]);
+				
 			}
 		},
 		
@@ -512,7 +564,7 @@ var s5g = {
 		
 		aggregateUplink:function(){
 			var caId = s5g.logic.getCaId(this);
-			
+			alert("Not available yet");
 		},
 		removeCarrier:function(){
 			var caId = s5g.logic.getCaId(this);
@@ -579,7 +631,7 @@ var s5g = {
 			for (var i in s5g.carriers){
 				ca = s5g.carriers[i];
 				
-				console.log(s5g.nrBandData[parseInt(ca.band)].type);
+				if (s5g.DEBUG > 2) console.log(s5g.nrBandData[parseInt(ca.band)].type);
 				if (s5g.nrBandData[parseInt(ca.band)].type === "TDD"){
 					error = true;
 					s5g.ux.inputError(2,[i]);
@@ -772,6 +824,7 @@ var s5g = {
 		},
 		
 		resetSelector:function(caId,selector){
+			if (s5g.DEBUG > 2) console.log("Reset",selector,"for",caId);
 			$(".carrier_row[data-caid='" + caId + "'] div.rowcont div.rowsect select[data-selector='" + selector + "']").empty().append(
 				$("<option/>",{"value":0}).text("Select "+s5g.name[selector]+"...")
 			);
@@ -793,7 +846,6 @@ var s5g = {
 						s5g.ux.populateBandwidth($(this),caId);
 						break;
 					default:
-						console.log($(this),caId,sel);
 						s5g.ux.populateGeneric($(this),caId,sel);
 						break;
 				}
@@ -817,17 +869,22 @@ var s5g = {
 			}
 		},
 		populateBandwidth:function(el,caId){
-			//if (s5g.carriers[caId].scs === "0") return;
-			
+			var lastVal = parseInt(el.val());
 			var scsData = s5g.nrBandData[s5g.carriers[caId].band].scsbw[s5g.carriers[caId].scs];
 			
-			el.empty().append($("<option/>",{"value":0}).text("Select Bandwidth..."));
+			el.empty();
 			
 			for (var i = 0, l = scsData.length;i<l;i++){
 				txt = scsData[i] + "MHz";
+				opts = {
+					"value":scsData[i]
+				};
+				
+				// Preserve current value
+				if (scsData[i] === lastVal) opts["selected"] = true;
 				
 				el.append(
-					$("<option/>",{"value":scsData[i]}).text(txt)
+					$("<option/>",opts).text(txt)
 				);
 			}
 		},
@@ -848,10 +905,21 @@ var s5g = {
 			}
 		},
 		populateGeneric:function(el,caId,selector){
+			var lastVal = el.val();
+			
+			el.empty();
+			
 			var keys = Object.keys(s5g.selectors[selector]);
 			for (var i = 0, l = keys.length;i<l;i++){
+				var opts = {
+					"value":keys[i]
+				};
+				
+				// Preserve current value
+				if (keys[i] === lastVal) opts["selected"] = true;
+				
 				el.append(
-					$("<option/>",{"value":keys[i]}).text(s5g.selectors[selector][keys[i]])
+					$("<option/>",opts).text(s5g.selectors[selector][keys[i]])
 				);
 			}
 		},
@@ -887,9 +955,9 @@ var s5g = {
 		init:function(){
 			if ('serviceWorker' in navigator) {
 				navigator.serviceWorker.register("nr-sw.js").then(function(registration){
-					console.log("ServiceWorker registration successful with scope:",registration.scope);
+					if (s5g.DEBUG > 1) console.log("ServiceWorker registration successful with scope:",registration.scope);
 				},function(err){
-					console.log("ServiceWorker registration failed:",err);
+					if (s5g.DEBUG > 1) console.log("ServiceWorker registration failed:",err);
 				});
 			}
 		}
