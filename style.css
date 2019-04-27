@@ -15,7 +15,7 @@ body{
 select,button {
 	background:rgba(255,255,255,0.95);
 	color:#1a1a1a;
-	border:1.5px solid #ff00d4;
+	border:1.5px solid #ed1c24;
 	font-size:1.2em;
 	line-height:1.2em;
 	padding:5px;
@@ -30,7 +30,7 @@ input[type="number"]{
 	appearance:textfield;
 	background:rgba(255,255,255,0.95);
 	color:#1a1a1a;
-	border:1.5px solid #ff00d4;
+	border:1.5px solid #ed1c24;
 	font-size:1.2em;
 	line-height:1.2em;
 	padding:5px;
@@ -79,14 +79,14 @@ h3 {
 	float:left;
 	width:16.666%;
 	height:100%;
-	border-bottom:.1em solid #ff00d4;
+	border-bottom:.1em solid #ed1c24;
 }
 #title_bar {
 	padding:0 0 0 1.5%;
 	height:4em;
 	line-height:4em;
 	background-color:rgba(255,255,255,0.95);
-	border-bottom:#ff00d4 2px solid;
+	border-bottom:#ed1c24 2px solid;
 }
 #speeds{
 	text-align:center;
@@ -100,7 +100,7 @@ h3 {
 	font-size:2.2em;
 	text-align:center;
 	background-color:rgba(0,0,0,0.05);
-	border:1.5px solid #ff00d4;
+	border:1.5px solid #ed1c24;
 	color:#1a1a1a;
 	cursor:pointer;
 	transition:color .2s ease-in-out, background-color .3s ease-in-out;

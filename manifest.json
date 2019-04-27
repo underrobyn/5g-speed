@@ -1,9 +1,25 @@
 {
 	"short_name":"5G Speeds",
 	"name":"5G Speed Calculator",
-	"icons":[],
+	"icons":[
+		{
+			"src": "5g-128.png",
+			"type": "image/png",
+			"sizes": "128x128"
+		},
+		{
+			"src": "5g-192.png",
+			"type": "image/png",
+			"sizes": "192x192"
+		},
+		{
+			"src": "5g-512.png",
+			"type": "image/png",
+			"sizes": "512x512"
+		}
+	],
 	"start_url":"/5g-speed/",
-	"theme_color":"#1a1a1a",
+	"theme_color":"#ed1c24",
 	"background_color":"#1a1a1a",
 	"display":"standalone",
 	"orientation":"portrait"

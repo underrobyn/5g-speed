@@ -4,7 +4,7 @@
 		<title>5G Throughput Calculator</title>
 		<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport" />
 		<meta content="IE=edge" http-equiv="X-UA-Compatible">
-		<meta content="#1a1a1a" name="theme-color">
+		<meta content="#ed1c24" name="theme-color">
 		<meta http-equiv="content-type" content="text/html; charset=UTF-16">
 		<meta property="og:title" content="5G-NR Theoretical Throughput Calculator" />
 		<meta property="og:description" content="" />
@@ -16,9 +16,7 @@
 		<meta name="apple-mobile-web-app-title" content="5G Speeds">
 		
 		<link rel="manifest" href="manifest.json">
-		<link rel="stylesheet" href="style.css?vv5" type="text/css" media="all" />
-		
-		<!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script><![endif]--><!--[if gte IE 9]><!--><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script><!--<![endif]-->
+		<link rel="stylesheet" href="style.css" type="text/css" media="all" />
 		
 	</head>
 	<body>
@@ -26,6 +24,9 @@
 			5G Throughput Calculator
 			GitHub: https://github.com/jake-cryptic/5g-speed/
 			Website: https://absolutedouble.co.uk/
+			
+			Sources:
+			http://niviuk.free.fr/nr_band.php
 		-->
 	
 		<div id="title_bar">
@@ -49,7 +50,8 @@
 		</div>
 		<div id="settings"></div>
 		
+		<!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script><![endif]--><!--[if gte IE 9]><!--><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script><!--<![endif]-->
 		<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.0/js.cookie.min.js"></script>-->
-		<script src="app.js?vv5" type="text/javascript"></script>
+		<script src="app.js" type="text/javascript"></script>
 	</body>
 </html>

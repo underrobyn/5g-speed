@@ -428,7 +428,7 @@ var s5g = {
 	
 	init:function(){
 		s5g.ux.init();
-		//s5g.sw.init();
+		s5g.sw.init();
 		s5g.logic.addCarrier();
 	},
 	
