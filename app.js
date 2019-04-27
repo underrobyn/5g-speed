@@ -506,7 +506,7 @@ var s5g = {
 				s5g.ux.setRowSpeed(i,carrierSpeed);
 				
 				sumDl += carrierSpeed[0];
-				sumUl += carrierSpeed[1];
+				if (s5g.carriers[i].uplinkAggregation === true || parseInt(i) === 0) sumUl += carrierSpeed[1];
 			}
 			
 			return [sumDl,sumUl];
@@ -565,7 +565,11 @@ var s5g = {
 		
 		aggregateUplink:function(){
 			var caId = s5g.logic.getCaId(this);
-			alert("Not available yet");
+			s5g.carriers[caId].uplinkAggregation = !s5g.carriers[caId].uplinkAggregation;
+			
+			$(this).text(s5g.carriers[caId].uplinkAggregation === true ? "Deaggregate Uplink" : "Aggregate Uplink");
+			
+			s5g.logic.doCalculation();
 		},
 		removeCarrier:function(){
 			var caId = s5g.logic.getCaId(this);
@@ -577,6 +581,8 @@ var s5g = {
 			
 			s5g.carriers.splice(caId,1);
 			s5g.ux.removeCarrier(caId);
+			
+			s5g.logic.doCalculation();
 		},
 		
 		resetCarrierData:function(caId,attributes){
@@ -640,6 +646,11 @@ var s5g = {
 			var error = false;
 			for (var i in s5g.carriers){
 				ca = s5g.carriers[i];
+				
+				if (typeof ca.band !== "number" || ca.band === "0"){
+					s5g.ux.inputError(1,[i,"band"]);
+					break;
+				}
 				
 				if (s5g.DEBUG > 2) console.log(s5g.nrBandData[parseInt(ca.band)].type);
 				if (s5g.nrBandData[parseInt(ca.band)].type === "TDD"){
