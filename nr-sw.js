@@ -1,7 +1,7 @@
 "use strict";
 
 var version = 'v1:';
-var appName = "5gspeed"
+var appName = "5gspeed";
 var appAssets = [
 	'https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js',
 	'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js',
