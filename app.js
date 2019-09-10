@@ -452,13 +452,13 @@ var s5g = {
 	
 	init:function(){
 		s5g.ux.init();
-		s5g.sw.init();
+		//s5g.sw.init();
 		s5g.logic.addCarrier();
 	},
 	
 	calc:{
 		base:1e-6,
-		rMax:948/1024,
+		rMax:948/1024, // TODO: Add option to change this in future version
 		
 		reduce:function(n){
 			return Math.round(n*10000)/10000;
@@ -475,49 +475,90 @@ var s5g = {
 			var exp = Math.pow(2,scs);
 			return 1e-3/(14*exp);
 		},
-		carrier:function(info){
-			var ret = s5g.calc.base;
-			
+
+		common:function(info,band){
+			var c = [s5g.calc.base,s5g.calc.base];
+
 			var streams = parseInt(info.streams);
-			var coding = parseInt(info.modulation);
+			var coding = parseInt(info.modulation);	// TODO: Allow UL to have different coding scheme to DL
 			var sFactor = parseFloat(info.sfactor);
 			var scs = parseInt(info.scs);
 			var sRbs = parseInt(info.bandwidth);
-			var freqRange = s5g.nrBandData[info.band].freqrange;
-			
+
 			var num = s5g.calc.numerology(scs);
-			
-			if (s5g.DEBUG > 2) console.log("FreqRange:",freqRange,"\nStreams:",streams,"\n"+"Coding:",coding,"\n"+"sFactor:",sFactor,"\n"+"scs:",scs,"\n"+"sRbs:",sRbs,"\n"+"Numero:",num,"\n")
-			
-			// MiMo value
-			ret = ret * streams;
-			
+
+			if (s5g.DEBUG > 2) console.log("Streams:",streams,"\n"+"Coding:",coding,"\n"+"sFactor:",sFactor,"\n"+"scs:",scs,"\n"+"sRbs:",sRbs,"\n"+"Numero:",num,"\n")
+
+			// MiMo value (don't touch c[1] as upload is SISO)
+			c[0] = c[0] * streams;
+
 			// Modulation scheme
-			ret = ret * coding;
-			
+			c[0] = c[0] * coding;
+			c[1] = c[1] * coding;
+
 			// Scaling factor
-			ret = ret * sFactor;
-			
-			// rMax constant
-			ret = ret * s5g.calc.rMax;
-			
+			c[0] = c[0] * sFactor;
+			c[1] = c[1] * sFactor;
+
+			// rMax
+			c[0] = c[0] * s5g.calc.rMax;
+			c[1] = c[1] * s5g.calc.rMax;
+
 			// Sub-Carrier spacing
 			var cNum = s5g.calc.scs(num);
 			var rbs = s5g.nrRbData[sRbs][scs];
-			
-			ret = ret * ((rbs*12)/cNum);
-			
-			// Overhead
-			var retDl = ret * (1-s5g.nrFreqOverhead[freqRange][0]);
-			var retUl = ret * (1-s5g.nrFreqOverhead[freqRange][1]);
-			
+			var foo = ((rbs*12)/cNum);
+
+			c[0] = c[0] * foo;
+			c[1] = c[1] * foo;
+
+			return c;
+		},
+
+		fdd:{
+			run:function(info,band){
+				var c = s5g.calc.common(info,band);
+				var freqRange = band.freqrange;
+
+				// Overhead
+				var retDl = c[0] * (1-s5g.nrFreqOverhead[freqRange][0]);
+				var retUl = c[1] * (1-s5g.nrFreqOverhead[freqRange][1]);
+
+				return [retDl,retUl];
+			}
+		},
+
+		tdd:{
+			run:function(info,band){
+				var c = s5g.calc.common(info,band);
+
+
+			}
+		},
+
+		carrier:function(info){
+			var ret = [0,0];
+			var band = s5g.nrBandData[info.band];
+
+			switch (band.type){
+				case "FDD":
+					ret = s5g.calc.fdd.run(info,band);
+					break;
+				case "TDD":
+					ret = s5g.calc.tdd.run(info,band);
+					break;
+				default:
+					console.error("Unknown type");
+					break;
+			}
+
 			// Round values
-			retDl = s5g.calc.reduce(retDl);
-			retUl = s5g.calc.reduce(retUl);
+			ret[0] = s5g.calc.reduce(ret[0]);
+			ret[1] = s5g.calc.reduce(ret[1]);
 			
-			if (s5g.DEBUG > 1) console.log("Calculation Complete for carrier",retDl+"Mbps Downlink",retUl+"Mbps Uplink");
+			if (s5g.DEBUG > 1) console.log("Calculation Complete for carrier",ret[0]+"Mbps Downlink",ret[1]+"Mbps Uplink");
 			
-			return [retDl,retUl];
+			return ret;
 		},
 		run:function(){
 			var sumDl = 0, sumUl = 0;
