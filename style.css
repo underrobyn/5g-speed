@@ -111,7 +111,7 @@ h3 {
 }
 #open_settings{
 	position:absolute;
-	top:0vh;
+	top:0;
 	right:1vw;
 	font-size:1.2em;
 	cursor:pointer;
@@ -221,7 +221,7 @@ h3 {
 		width:50%;
 	}
 }
-@media screen and (max-width:650px){
+@media screen and (max-width:480px){
 	.rowsect{
 		width:100%;
 	}
