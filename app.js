@@ -27,14 +27,6 @@ if (!window.location.host.includes("absolutedouble.co.uk")){
 	console.log("Github: https://github.com/jake-cryptic/5g-speed");
 }
 
-// Fallback for jQuery
-if (!window.jQuery){
-	var j = document.createElement("script");
-	j.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js";
-	j.type = "text/javascript";
-	document.head.append(j);
-}
-
 var s5g = {
 	followSpec:false,
 	carriers:[],
@@ -442,7 +434,7 @@ var s5g = {
 	},
 	name:{
 		"band":"NR-Band",
-		"scs":"SCS",
+		"scs":"Sub Carrier Spacing",
 		"bandwidth":"Bandwidth",
 		"streams":"Streams",
 		"modulation":"Modulation",
@@ -744,7 +736,7 @@ var s5g = {
 			$("#add_carrier").text("Add Carrier").on("click enter",s5g.logic.addCarrier);
 			
 			$("#page_title").text("5G Throughput Calculator");
-			$("#speeds").text("Please choose a band");
+			$("#speeds").text(_l["alert.selband"]);
 			
 			$("#open_settings").hide();
 			
@@ -828,18 +820,18 @@ var s5g = {
 			},
 			rowOpts:function(isPrimary){
 				var el = $("<div/>",{"class":"rowsect"}).append(
-					$("<span/>",{"class":"rowsectheader"}).text("Options")
+					$("<span/>",{"class":"rowsectheader"}).text(_l["label.options"])
 				);
 	
 				// Every carrier should have this option
 				el.append(
-					$("<button/>",{"class":"b_rmrow"}).text("Remove Carrier").on("click enter",s5g.logic.removeCarrier)
+					$("<button/>",{"class":"b_rmrow"}).text(_l["label.remca"]).on("click enter",s5g.logic.removeCarrier)
 				);
 	
 				// Options for carriers that aren't the primary
 				if (isPrimary){
 					el.append(
-						$("<button/>",{"class":"b_aggupl"}).text("Aggregate Uplink").on("click enter",s5g.logic.aggregateUplink)
+						$("<button/>",{"class":"b_aggupl"}).text(_l["label.aggupl"]).on("click enter",s5g.logic.aggregateUplink)
 					);
 				}
 				
@@ -896,7 +888,7 @@ var s5g = {
 				s5g.ux.generate.bandwidth(),
 				s5g.ux.generate.streams(),
 				s5g.ux.generate.modulation(),
-				s5g.ux.generate.rowOpts((caId === 0 ? false : true))
+				s5g.ux.generate.rowOpts((caId !== 0))
 			);
 			
 			el.append(header,body);
@@ -1019,7 +1011,7 @@ var s5g = {
 		},
 		renderCalculation:function(data){
 			if (data === false){
-				$("#speeds").text("Unable to calculate speed");
+				$("#speeds").text(_l["error.speedfail"]);
 				return;
 			}
 			
@@ -1033,13 +1025,13 @@ var s5g = {
 			
 			switch(type){
 				case 1:
-					el.html("Please enter " + data[1] + " for " + s5g.ux.carrierName(data[0]));
+					el.text("Please enter " + data[1] + " for " + s5g.ux.carrierName(data[0]));
 					break;
 				case 2:
-					el.html("Band not supported for " + s5g.ux.carrierName(data[0]));
+					el.text("Band not supported for " + s5g.ux.carrierName(data[0]));
 					break;
 				default:
-					el.html("Error");
+					el.text("Error");
 					break;
 			}
 		}
@@ -1047,15 +1039,26 @@ var s5g = {
 	
 	sw:{
 		init:function(){
-			if ('serviceWorker' in navigator) {
-				navigator.serviceWorker.register("nr-sw.js").then(function(registration){
-					if (s5g.DEBUG > 1) console.log("ServiceWorker registration successful with scope:",registration.scope);
-				},function(err){
-					if (s5g.DEBUG > 1) console.log("ServiceWorker registration failed:",err);
-				});
-			}
+			if (('serviceWorker' in navigator)) return;
+			return;
+			navigator.serviceWorker.register("nr-sw.js").then(function(registration){
+				if (s5g.DEBUG > 1) console.log("ServiceWorker registration successful with scope:",registration.scope);
+			},function(err){
+				if (s5g.DEBUG > 1) console.log("ServiceWorker registration failed:",err);
+			});
 		}
 	}
 };
 
-$(document).ready(s5g.init);
+
+// Check that library loaded correctly
+if (!window.jQuery){
+	var j = document.createElement("script");
+	j.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js";
+	j.type = "text/javascript";
+	j.onload = "s5g.init();";
+
+	document.head.append(j);
+} else {
+	s5g.init();
+}

@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+﻿<!DOCTYPE HTML>
 <html lang="en">
 	<head>
 	
@@ -56,7 +56,8 @@
 		<div id="settings"></div>
 		<!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script><![endif]--><!--[if gte IE 9]><!--><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script><!--<![endif]-->
 		<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.0/js.cookie.min.js"></script>-->
-		<script src="app.js" type="text/javascript"></script>
-		
+		<script src="strings.js" type="text/javascript"></script>
+		<script src="app.js" type="text/javascript" defer></script>
+
 	</body>
 </html>
