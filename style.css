@@ -21,8 +21,8 @@ select,button {
 	padding:5px;
 }
 select,input[type="number"]{
-	margin:.5% 5%;
-	width:90%;
+	margin:.5% 4%;
+	width:92%;
 	-webkit-appearance:none;
 }
 input[type="number"]{
@@ -75,7 +75,7 @@ h3 {
 }
 .ca_header{
 	float:left;
-	width:16.666%;
+	width:12.5%;
 	height:100%;
 	border-bottom:.1em solid #ed1c24;
 }
@@ -135,7 +135,7 @@ h3 {
 	border-bottom:.1em solid #fff;
 }
 .rowsect{
-	width:16.666%;
+	width:12.5%;
 	float:left;
 	text-align:center;
 	display:block;

@@ -5,8 +5,8 @@
 		<title>5G Throughput Calculator</title>
 		<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport" />
 		<meta content="IE=edge" http-equiv="X-UA-Compatible">
-		<meta content="#ed1c24" name="theme-color">
-		<meta http-equiv="content-type" content="text/html; charset=UTF-16">
+		<meta content="#1a1a1a" name="theme-color">
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta property="og:title" content="5G-NR Theoretical Throughput Calculator" />
 		<meta property="og:description" content="" />
 		<meta name="keywords" content="5g, throughput, calculator, theoretical, tdd, fdd, sdl, resource block, mbps, nr" />
@@ -43,6 +43,8 @@
 				<div id="ca_headers">
 					<div class="ca_header">Band</div>
 					<div class="ca_header">SCS</div>
+					<div class="ca_header">Options</div>
+					<div class="ca_header">Scaling Factor</div>
 					<div class="ca_header">Bandwidth</div>
 					<div class="ca_header">MIMO</div>
 					<div class="ca_header">Modulation</div>
