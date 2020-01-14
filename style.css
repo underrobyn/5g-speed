@@ -3,8 +3,8 @@
 }
 html{
 	min-height:100vh;
-	background-color:#fff;
-	color:#1a1a1a;
+	background-color:#1a1a1a;
+	color:#fff;
 	font-family:Helvetica, sans-serif;
 	font-weight:100;
 }
@@ -13,8 +13,8 @@ body{
 	padding:0;
 }
 select,button {
-	background:rgba(255,255,255,0.95);
-	color:#1a1a1a;
+	background:#1a1a1a;
+	color:#fff;
 	border:1.5px solid #ed1c24;
 	font-size:1.2em;
 	line-height:1.2em;
@@ -28,8 +28,8 @@ select,input[type="number"]{
 input[type="number"]{
 	-moz-appearance:textfield;
 	appearance:textfield;
-	background:rgba(255,255,255,0.95);
-	color:#1a1a1a;
+	background:#1a1a1a;
+	color:#fff;
 	border:1.5px solid #ed1c24;
 	font-size:1.2em;
 	line-height:1.2em;
@@ -38,7 +38,6 @@ input[type="number"]{
 
 /* Can't group these see: https://stackoverflow.com/a/2610741 */
 ::-webkit-input-placeholder{color:#fff;}
-:-moz-input-placeholder{opacity:1;color:#fff;}
 :-ms-input-placeholder{color:#fff;}
 ::placeholder{opacity:1;color:#fff;}
 ::-moz-input-placeholder{opacity:1;color:#fff;}
@@ -54,7 +53,6 @@ input[type="number"]:focus {
 }*/
 
 input[type="number"],select{
-	-ms-box-sizing:content-box;
 	-moz-box-sizing:content-box;
 	-webkit-box-sizing:content-box; 
 	box-sizing:content-box;
@@ -85,7 +83,7 @@ h3 {
 	padding:0 0 0 1.5%;
 	height:4em;
 	line-height:4em;
-	background-color:rgba(255,255,255,0.95);
+	background-color:#000;
 	border-bottom:#ed1c24 2px solid;
 }
 #speeds{
@@ -99,9 +97,8 @@ h3 {
 	line-height:2em;
 	font-size:2.2em;
 	text-align:center;
-	background-color:rgba(0,0,0,0.05);
-	border:1.5px solid #ed1c24;
-	color:#1a1a1a;
+	background-color:#101010;
+	color:#fff;
 	cursor:pointer;
 	transition:color .2s ease-in-out, background-color .3s ease-in-out;
 }
@@ -221,7 +218,7 @@ h3 {
 		width:50%;
 	}
 }
-@media screen and (max-width:480px){
+@media screen and (max-width:420px){
 	.rowsect{
 		width:100%;
 	}
@@ -231,7 +228,7 @@ h3 {
 		height:2.5em;
 	}
 	#page_title{
-		line-height:1em;
-		font-size:1.2em;
+		line-height:1.25em;
+		font-size:1.3em;
 	}
 }

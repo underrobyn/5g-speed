@@ -694,6 +694,7 @@ var s5g = {
 			
 			$(".carrier_row[data-caid='" + caId + "'] div.rowcont div.rowsect select").each(function(){
 				var sel = $(this).data("selector");
+
 				if (defaults[sel] === undefined) return;
 				if ($(this).val() === "0" && override !== true) return;
 				
@@ -871,9 +872,9 @@ var s5g = {
 			var el = $("div[data-caid='" + caId + "'] div.rowcont");
 			
 			if (el.is(":visible")){
-				el.slideUp(500);
+				el.slideUp(300);
 			} else {
-				el.slideDown(500);
+				el.slideDown(300);
 			}
 		},
 		setRowSpeed:function(caId,speeds){
@@ -1002,7 +1003,7 @@ var s5g = {
 			}
 		},
 		populateScs:function(el,caId){
-			if (s5g.carriers[caId].band === "0") return;
+			if (!s5g.nrBandData[s5g.carriers[caId].band]) return;
 
 			var scsData = s5g.nrBandData[s5g.carriers[caId].band].scsbw;
 			var keys = Object.keys(scsData);
@@ -1050,8 +1051,6 @@ var s5g = {
 			$("#speeds").html(dl + "Mbps &#8595; &amp; " + ul + "Mbps &#8593;");
 		},
 		inputError:function(type,data){
-			console.log(type,data);
-
 			var el = $("#speeds");
 			
 			switch(type){
