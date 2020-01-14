@@ -4,8 +4,11 @@ const __en = {
 	"label.deaggupl":"Deaggregate Uplink",
 	"label.remca":"Remove Carrier",
 	"label.options":"Options",
+	"label.primaryca":"Primary Carrier",
+	"label.select":"Select",
 	"error.speedfail":"Unable to calculate speed",
-	"ux.addca":"Add Carrier"
+	"ux.addca":"Add Carrier",
+	"ux.title":"5G Throughput Calculator"
 };
 
 const __fr = {
