@@ -8,7 +8,7 @@ const __en = {
 
 	"header.band":"NR-Band",
 	"header.scs":"Sub Carrier Spacing",
-	"header.options":"Options",
+	"header.bandconf":"Band Config",
 	"header.sfactor":"Scaling Factor",
 	"header.bandwidth":"Bandwidth",
 	"header.layers":"Layers",

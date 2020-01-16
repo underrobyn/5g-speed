@@ -1,4 +1,4 @@
-﻿<!DOCTYPE HTML>
+<!DOCTYPE HTML>
 <html lang="en">
 	<head>
 	
@@ -43,7 +43,7 @@
 				<div id="ca_headers">
 					<div class="ca_header">Band</div>
 					<div class="ca_header">SCS</div>
-					<div class="ca_header">Options</div>
+					<div class="ca_header">Band Config</div>
 					<div class="ca_header">Scaling Factor</div>
 					<div class="ca_header">Bandwidth</div>
 					<div class="ca_header">Layers</div>

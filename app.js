@@ -564,7 +564,7 @@ var s5g = {
 	name:{
 		"band":_l["header.band"],
 		"scs":_l["header.scs"],
-		"options":_l["header.options"],
+		"bandconf":_l["header.bandconf"],
 		"sfactor":_l["header.sfactor"],
 		"bandwidth":_l["header.bandwidth"],
 		"layers":_l["header.layers"],
@@ -660,9 +660,24 @@ var s5g = {
 
 		tdd:{
 			run:function(info,band){
+				return s5g.calc.fdd.run(info,band);
+			}
+		},
+
+		sxl:{
+			run:function(info,band){
 				var c = s5g.calc.common(info,band);
+				var freqRange = band.freqrange;
 
+				// Overhead
+				var retDl = c["dl"] * (1-s5g.nrFreqOverhead[freqRange][0]);
+				var retUl = c["ul"] * (1-s5g.nrFreqOverhead[freqRange][1]);
 
+				if (band.type === "SDL"){
+					return [retDl, 0];
+				} else {
+					return [0, retUl];
+				}
 			}
 		},
 
@@ -676,6 +691,10 @@ var s5g = {
 					break;
 				case "TDD":
 					ret = s5g.calc.tdd.run(info,band);
+					break;
+				case "SDL":
+				case "SUL":
+					ret = s5g.calc.sxl.run(info,band);
 					break;
 				default:
 					console.error("Unknown type");
@@ -916,9 +935,9 @@ var s5g = {
 				
 				return el;
 			},
-			options:function(){
+			bandconf:function(){
 				var el = $("<div/>",{"class":"rowsect"}).append(
-					$("<span/>",{"class":"rowsectheader"}).text(s5g.name.options)
+					$("<span/>",{"class":"rowsectheader"}).text(s5g.name.bandconf)
 				);
 
 				el.append(
@@ -1080,7 +1099,7 @@ var s5g = {
 			body.append(
 				s5g.ux.generate.band(),
 				s5g.ux.generate.scs(),
-				s5g.ux.generate.options(),
+				s5g.ux.generate.bandconf(),
 				s5g.ux.generate.sfactor(),
 				s5g.ux.generate.bandwidth(),
 				s5g.ux.generate.layers(),
