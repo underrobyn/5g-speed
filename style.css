@@ -161,12 +161,22 @@ h3 {
 	background-color:rgba(0,0,0,0.75);
 	color:#fff;
 }
-@media screen and (max-width:1300px){
+@media screen and (max-width:1720px){
 	#ca_headers{
 		font-size:1.9em;
 	}
 }
-@media screen and (max-width:1200px){
+@media screen and (max-width:1600px){
+	#ca_headers{
+		font-size:1.75em;
+	}
+}
+@media screen and (max-width:1600px){
+	#ca_headers{
+		font-size:1.7em;
+	}
+}
+@media screen and (max-width:1400px){
 	h1 {
 		line-height:1.5em;
 		font-size:1.5em;
@@ -210,6 +220,9 @@ h3 {
 @media screen and (max-width:768px){
 	#title_bar{
 		text-align:center;
+	}
+	#speeds {
+		font-size:2em;
 	}
 	.band_title{
 		font-size:1.35em;
