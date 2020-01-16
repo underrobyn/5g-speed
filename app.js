@@ -527,11 +527,11 @@ var s5g = {
 		}
 	},
 	selectors:{
-		streams:{
-			1:"SiSo",
-			2:"2T2R",
-			4:"4T4R",
-			8:"8T8R"
+		layers:{
+			1:"1",
+			2:"2",
+			4:"4",
+			8:"8"
 		},
 		modulation:{
 			2:"QPSK",
@@ -566,7 +566,7 @@ var s5g = {
 		"options":"Options",
 		"sfactor":"Scaling Factor",
 		"bandwidth":"Bandwidth",
-		"streams":"Streams",
+		"layers":"Layers",
 		"modulation":"Modulation",
 	},
 	
@@ -580,6 +580,8 @@ var s5g = {
 	
 	calc:{
 		base:1e-6,
+		scprb:12,	// Number of subcarriers in PRB
+		symslot:14,	// Number of symbols in a slot (Normal CP)
 		rMax:948/1024, // TODO: Add option to change this in future version
 		
 		reduce:function(n){
@@ -595,7 +597,7 @@ var s5g = {
 		},
 		scs:function(scs){
 			var exp = Math.pow(2,scs);
-			return 1e-3/(14*exp);
+			return 1e-3/(s5g.calc.symslot * exp); //slot length = 1ms/2^scs
 		},
 
 		common:function(info,band){
@@ -604,7 +606,7 @@ var s5g = {
 				"ul": s5g.calc.base
 			};
 
-			var streams = parseInt(info.streams);
+			var layers = parseInt(info.layers);
 			var coding = parseInt(info.modulation);	// TODO: Allow UL to have different coding scheme to DL
 			var sFactor = parseFloat(info.sfactor);
 			var scs = parseInt(info.scs);
@@ -612,10 +614,10 @@ var s5g = {
 
 			var num = s5g.calc.numerology(scs);
 
-			if (s5g.DEBUG > 2) console.log("Streams:",streams,"\n"+"Coding:",coding,"\n"+"sFactor:",sFactor,"\n"+"scs:",scs,"\n"+"sRbs:",sRbs,"\n"+"Numero:",num,"\n")
+			console.log(info);
 
 			// MiMo value, we don't change the UL value as it is SISO
-			c["dl"] = c["dl"] * streams;
+			c["dl"] = c["dl"] * layers;
 
 			// Modulation scheme
 			c["dl"] = c["dl"] * coding;
@@ -631,8 +633,8 @@ var s5g = {
 
 			// Sub-Carrier spacing
 			var cNum = s5g.calc.scs(num);
-			var rbs = s5g.nrRbData[sRbs][scs];
-			var foo = ((rbs*12)/cNum);
+			var tSc = s5g.nrRbData[sRbs][scs] * s5g.calc.scprb;
+			var foo = tSc/cNum;
 
 			c["dl"] = c["dl"] * foo;
 			c["ul"] = c["ul"] * foo;
@@ -644,6 +646,8 @@ var s5g = {
 			run:function(info,band){
 				var c = s5g.calc.common(info,band);
 				var freqRange = band.freqrange;
+
+				console.log(c);
 
 				// Overhead
 				var retDl = c["dl"] * (1-s5g.nrFreqOverhead[freqRange][0]);
@@ -725,9 +729,9 @@ var s5g = {
 			},
 			"bandwidth":function(caId){
 				//s5g.logic.resetCarrierData(caId,["band","scs","bandwidth"]);
-				s5g.ux.populateSelectors(caId,["streams","modulation", "sfactor"]);
+				s5g.ux.populateSelectors(caId,["layers","modulation", "sfactor"]);
 			},
-			"streams":function(){
+			"layers":function(){
 				
 			},
 			"modulation":function(){
@@ -744,7 +748,7 @@ var s5g = {
 			s5g.carriers.push({
 				band:null,
 				bandwidth:null,
-				streams:null,
+				layers:null,
 				modulation:null,
 				sfactor:null,
 				scs:null,
@@ -782,7 +786,7 @@ var s5g = {
 		},
 		
 		resetCarrierData:function(caId,attributes){
-			var clearAttr = ["band","scs","sfactor","bandwidth","streams","modulation"];
+			var clearAttr = ["band","scs","sfactor","bandwidth","layers","modulation"];
 			for (var i = 0; i < 5; i++){
 				if (attributes.indexOf(clearAttr[i]) !== -1) continue;
 				
@@ -809,7 +813,7 @@ var s5g = {
 		setPopulateDefaults:function(caId,override){
 			var defaults = {
 				"bandwidth":20,
-				"streams":2,
+				"layers":2,
 				"modulation":4,
 				"sfactor":1,
 				"scs":30
@@ -838,7 +842,7 @@ var s5g = {
 		},
 		
 		doCalculation:function(){
-			var required = ["bandwidth","streams","modulation","sfactor","scs"];
+			var required = ["bandwidth","layers","modulation","sfactor","scs"];
 			
 			var error = false;
 			for (var i in s5g.carriers){
@@ -969,17 +973,17 @@ var s5g = {
 				
 				return el;
 			},
-			streams:function(){
+			layers:function(){
 				var el = $("<div/>",{"class":"rowsect"}).append(
-					$("<span/>",{"class":"rowsectheader"}).text(s5g.name.streams)
+					$("<span/>",{"class":"rowsectheader"}).text(s5g.name.layers)
 				);
 	
 				el.append(
 					$("<select/>",{
-						"title":s5g.ux.selectText("streams"),
-						"data-selector":"streams"
+						"title":s5g.ux.selectText("layers"),
+						"data-selector":"layers"
 					}).append(
-						$("<option/>",{"value":0}).text(s5g.ux.selectText("streams"))
+						$("<option/>",{"value":0}).text(s5g.ux.selectText("layers"))
 					).on("change",s5g.logic.selectNewValue)
 				);
 				
@@ -1072,7 +1076,7 @@ var s5g = {
 				s5g.ux.generate.options(),
 				s5g.ux.generate.sfactor(),
 				s5g.ux.generate.bandwidth(),
-				s5g.ux.generate.streams(),
+				s5g.ux.generate.layers(),
 				s5g.ux.generate.modulation(),
 				s5g.ux.generate.rowOpts((caId !== 0))
 			);
