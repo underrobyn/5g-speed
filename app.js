@@ -876,11 +876,6 @@ var s5g = {
 				}
 				
 				if (s5g.DEBUG > 2) console.log(s5g.nrBandData[parseInt(ca.band)].type);
-				if (s5g.nrBandData[parseInt(ca.band)].type === "TDD"){
-					error = true;
-					s5g.ux.inputError(2,[i]);
-					break;
-				}
 				
 				for (var j in required){
 					if (ca[required[j]] === null){

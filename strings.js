@@ -21,7 +21,7 @@ const __en = {
 	"ux.aggupl":"Aggregate Uplink",
 	"ux.deaggupl":"Deaggregate Uplink",
 	"ux.remca":"Remove Carrier",
-	"ux.addca":"Add Carrier",
+	"ux.addca":"Add Component Carrier",
 	"ux.title":"5G Theoretical Throughput Calculator"
 };
 
