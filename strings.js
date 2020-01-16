@@ -1,18 +1,38 @@
 const __en = {
 	"alert.selband":"Please choose a band",
-	"label.aggupl":"Aggregate Uplink",
-	"label.deaggupl":"Deaggregate Uplink",
-	"label.remca":"Remove Carrier",
+
 	"label.options":"Options",
 	"label.primaryca":"Primary Carrier",
 	"label.select":"Select",
+	"label.band":"Band",
+
+	"header.band":"NR-Band",
+	"header.scs":"Sub Carrier Spacing",
+	"header.options":"Options",
+	"header.sfactor":"Scaling Factor",
+	"header.bandwidth":"Bandwidth",
+	"header.layers":"Layers",
+	"header.modulation":"Modulation",
+
+	"error.generic":"Error",
 	"error.speedfail":"Unable to calculate speed",
+	"error.remprim":"Can't remove the primary carrier",
+
+	"ux.aggupl":"Aggregate Uplink",
+	"ux.deaggupl":"Deaggregate Uplink",
+	"ux.remca":"Remove Carrier",
 	"ux.addca":"Add Carrier",
-	"ux.title":"5G Throughput Calculator"
+	"ux.title":"5G Theoretical Throughput Calculator"
 };
 
 const __fr = {
-	"alert.selband":"Merci de choisir une bande"
+	"alert.selband":"Merci de choisir une bande",
+
+	"ux.aggupl":"Agrégat téléverser",
+	"ux.deaggupl":"Désagréger téléverser",
+	"ux.remca":"Retirer la porteuse",
+	"ux.addca":"Ajouter une porteuse",
+	"ux.title":"Calculateur de débit théorique 5G"
 };
 
 const __es = {
@@ -20,7 +40,13 @@ const __es = {
 };
 
 const __de = {
-	"alert.selband":"Bitte wählen Sie ein Frequenzband"
+	"alert.selband":"Bitte wählen Sie ein Frequenzband",
+
+	"ux.aggupl":"Aggregat Uplink",
+	"ux.deaggupl":"Disaggregieren Uplink",
+	"ux.remca":"Träger entfernen",
+	"ux.addca":"Träger hinzufügen",
+	"ux.title":"5G Theoretische Throughput-Rechner"
 };
 
 var strings = {

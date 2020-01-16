@@ -534,6 +534,7 @@ var s5g = {
 			8:"8"
 		},
 		modulation:{
+			1:"BPSK",
 			2:"QPSK",
 			4:"16QAM",
 			6:"64QAM",
@@ -561,13 +562,13 @@ var s5g = {
 		}
 	},
 	name:{
-		"band":"NR-Band",
-		"scs":"Sub Carrier Spacing",
-		"options":"Options",
-		"sfactor":"Scaling Factor",
-		"bandwidth":"Bandwidth",
-		"layers":"Layers",
-		"modulation":"Modulation",
+		"band":_l["header.band"],
+		"scs":_l["header.scs"],
+		"options":_l["header.options"],
+		"sfactor":_l["header.sfactor"],
+		"bandwidth":_l["header.bandwidth"],
+		"layers":_l["header.layers"],
+		"modulation":_l["header.modulation"],
 	},
 	
 	DEBUG:3,
@@ -767,7 +768,7 @@ var s5g = {
 			var caId = s5g.logic.getCaId(this);
 			s5g.carriers[caId].uplinkAggregation = !s5g.carriers[caId].uplinkAggregation;
 			
-			$(this).text(s5g.carriers[caId].uplinkAggregation === true ? "Deaggregate Uplink" : "Aggregate Uplink");
+			$(this).text(s5g.carriers[caId].uplinkAggregation === true ? _l["ux.deaggupl"] : _l["ux.aggupl"]);
 			
 			s5g.logic.doCalculation();
 		},
@@ -775,7 +776,7 @@ var s5g = {
 			var caId = s5g.logic.getCaId(this);
 			
 			if (caId === 0){
-				alert("Cannot remove primary carrier");
+				alert(_l["error.remprim"]);
 				return;
 			}
 			
@@ -879,8 +880,9 @@ var s5g = {
 	
 	ux:{
 		init:function(){
-			$("#add_carrier").text("Add Carrier").on("click enter",s5g.logic.addCarrier);
-			
+			$("#add_carrier").text(_l["ux.addca"]).on("click enter",s5g.logic.addCarrier);
+
+			document.title = _l["ux.title"];
 			$("#page_title").text(_l["ux.title"]);
 			$("#speeds").text(_l["alert.selband"]);
 			
@@ -1013,13 +1015,13 @@ var s5g = {
 	
 				// Every carrier should have this option
 				el.append(
-					$("<button/>",{"class":"b_rmrow"}).text(_l["label.remca"]).on("click enter",s5g.logic.removeCarrier)
+					$("<button/>",{"class":"b_rmrow"}).text(_l["ux.remca"]).on("click enter",s5g.logic.removeCarrier)
 				);
 	
 				// Options for carriers that aren't the primary
 				if (isPrimary){
 					el.append(
-						$("<button/>",{"class":"b_aggupl"}).text(_l["label.aggupl"]).on("click enter",s5g.logic.aggregateUplink)
+						$("<button/>",{"class":"b_aggupl"}).text(_l["ux.aggupl"]).on("click enter",s5g.logic.aggregateUplink)
 					);
 				}
 				
@@ -1042,7 +1044,12 @@ var s5g = {
 		},
 		setRowSpeed:function(caId,speeds){
 			var caName = s5g.ux.carrierName(caId);
-			
+
+			var caBandwidth = parseInt(s5g.carriers[caId].bandwidth);
+			var caScs = parseInt(s5g.carriers[caId].scs);
+			var rbsAvail = s5g.nrRbData[caBandwidth][caScs];
+			var bandwidthTxt = caBandwidth + "MHz (" + rbsAvail + " RBs)";
+
 			var dlSpeed = s5g.calc.round(speeds[0]);
 			var ulSpeed = s5g.calc.round(speeds[1]);
 			var speedTxt = "<strong>" + dlSpeed + "Mbps &#8595; &amp; " + ulSpeed + "Mbps &#8593;" + "</strong>";
@@ -1057,7 +1064,7 @@ var s5g = {
 				bandTxt += ", Range: " + data.range[0] + "MHz";
 			}
 			
-			s5g.ux.updateRowTitle(caId,caName + "<br />" + speedTxt + "<br />" + bandTxt);
+			s5g.ux.updateRowTitle(caId,caName + ": " + bandwidthTxt + "<br />" + speedTxt + "<br />" + bandTxt);
 		},
 		renderCarrier:function(info,caId){
 			var el = $("<div/>",{
@@ -1130,7 +1137,7 @@ var s5g = {
 			for (var i = 0, l = dKeys.length;i<l;i++){
 				if (s5g.nrBandData[dKeys[i]].frequency === "") continue;
 				
-				txt = "Band " + dKeys[i];
+				txt = _l["label.band"] + " " + dKeys[i];
 				txt += " | " + s5g.nrBandData[dKeys[i]].type;
 				txt += " (" + s5g.nrBandData[dKeys[i]].frequency + "MHz)";
 				
@@ -1226,7 +1233,7 @@ var s5g = {
 					el.text("Band not supported for " + s5g.ux.carrierName(data[0]));
 					break;
 				default:
-					el.text("Error");
+					el.text(_l["error.generic"]);
 					break;
 			}
 		}
