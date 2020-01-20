@@ -14,6 +14,8 @@ const __en = {
 	"header.layers":"Layers",
 	"header.modulation":"Modulation",
 
+	"error.badslotchar":"Slot frame can only be D, U or F",
+	"error.badslotlength":"Slot frame must be 14 symbols long",
 	"error.generic":"Error",
 	"error.speedfail":"Unable to calculate speed",
 	"error.remprim":"Can't remove the primary carrier",

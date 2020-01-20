@@ -816,6 +816,24 @@ var s5g = {
 				
 			}
 		},
+
+		decodeSlotString:function(str){
+			let chars = s.split("");
+			let result = {
+				D:0,
+				U:0,
+				F:0
+			};
+
+			// Check frame string is valid
+			if (!/[DFU]/g.test(str)) return [false, _l["error.badslotchar"]];
+			if (str.length !== 14) return [false, _l["error.badslotlength"]];
+
+			// Total up number of each frame
+			chars.forEach(val => result[val] += 1);
+
+			return result;
+		},
 		
 		getCaId:function(a){
 			return $(a).parent().parent().parent().data("caid");

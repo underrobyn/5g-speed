@@ -1,6 +1,6 @@
 "use strict";
 
-var version = 'v1:';
+var version = 'v2:';
 var appName = "5gspeed";
 var appAssets = [
 	'https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js',
@@ -8,9 +8,9 @@ var appAssets = [
 	'https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.0/js.cookie.min.js',
 	
 	'/5g-speed/',
-	'/5g-speed/5g-512.png',
-	'/5g-speed/5g-192.png',
-	'/5g-speed/5g-128.png',
+	'/5g-speed/images/5g-512.png',
+	'/5g-speed/images/5g-192.png',
+	'/5g-speed/images/5g-128.png',
 	'/5g-speed/manifest.json',
 	'/5g-speed/app.js',
 	'/5g-speed/style.css'
