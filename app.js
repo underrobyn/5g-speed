@@ -675,8 +675,9 @@ var s5g = {
 
 			console.log(info);
 
-			// MiMo value, we don't change the UL value as it is SISO
+			// TODO:  UL Value can be a maximum of 4
 			c["dl"] = c["dl"] * layers;
+			c["ul"] = c["ul"] * layers;
 
 			// Modulation scheme
 			c["dl"] = c["dl"] * coding;
@@ -718,7 +719,20 @@ var s5g = {
 
 		tdd:{
 			run:function(info,band){
-				return s5g.calc.fdd.run(info,band);
+				let c = s5g.calc.common(info,band);
+				let freqRange = band.freqrange;
+
+				let tddConf = s5g.nrTddConf[info.tdd.slotformat];
+				let tdd = s5g.logic.calcSlotPercent(tddConf);
+
+				console.log(c);
+				console.log(tdd);
+
+				// Overhead
+				let retDl = c["dl"] * tdd["D"] * (1-s5g.nrFreqOverhead[freqRange][0]);
+				let retUl = c["ul"] * tdd["U"] * (1-s5g.nrFreqOverhead[freqRange][1]);
+
+				return [retDl,retUl];
 			}
 		},
 
@@ -818,7 +832,7 @@ var s5g = {
 		},
 
 		decodeSlotString:function(str){
-			let chars = s.split("");
+			let chars = str.split("");
 			let result = {
 				D:0,
 				U:0,
@@ -834,6 +848,15 @@ var s5g = {
 
 			return result;
 		},
+
+		calcSlotPercent:function(str){
+			let res = s5g.logic.decodeSlotString(str);
+			return {
+				"D":res["D"]/14,
+				"U":res["U"]/14,
+				"F":res["F"]/14,
+			};
+		},
 		
 		getCaId:function(a){
 			return $(a).parent().parent().parent().data("caid");
@@ -848,6 +871,13 @@ var s5g = {
 				modulation:null,
 				sfactor:null,
 				scs:null,
+				tdd:{
+					slotformat:0,
+					flexdata:false,
+					dlframes:null,
+					ulframes:null,
+					flexframes:null
+				},
 				uplinkAggregation:false
 			});
 			
