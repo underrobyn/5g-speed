@@ -419,6 +419,102 @@ var s5g = {
 			},
 			"nrarfcn":[693334,733333]
 		},
+		80:{
+			"type":"SUL",
+			"freqrange":1,
+			"frequency":"1800",
+			"range":["1710-1785"],
+			"scsbw":{
+				15:[5,10,15,20,25,30],
+				30:[10,15,20,25,30],
+				60:[10,15,20,25,30]
+			},
+			"nrarfcn":[342000,357000]
+		},
+		81:{
+			"type":"SUL",
+			"freqrange":1,
+			"frequency":"900",
+			"range":["880-915"],
+			"scsbw":{
+				15:[5,10,15,20],
+				30:[10,15,20],
+				60:[]
+			},
+			"nrarfcn":[176000,183000]
+		},
+		82:{
+			"type":"SUL",
+			"freqrange":1,
+			"frequency":"800",
+			"range":["832-862"],
+			"scsbw":{
+				15:[5,10,15,20],
+				30:[10,15,20],
+				60:[]
+			},
+			"nrarfcn":[166400,172400]
+		},
+		83:{
+			"type":"SUL",
+			"freqrange":1,
+			"frequency":"700",
+			"range":["703-748"],
+			"scsbw":{
+				15:[5,10,15,20],
+				30:[10,15,20],
+				60:[]
+			},
+			"nrarfcn":[140600,149600]
+		},
+		84:{
+			"type":"SUL",
+			"freqrange":1,
+			"frequency":"2100",
+			"range":["1920-1980"],
+			"scsbw":{
+				15:[5,10,15,20],
+				30:[10,15,20],
+				60:[10,15,20]
+			},
+			"nrarfcn":[384000,396000]
+		},
+		86:{
+			"type":"SUL",
+			"freqrange":1,
+			"frequency":"1700",
+			"range":["1710-1780"],
+			"scsbw":{
+				15:[5,10,15,20,40],
+				30:[10,15,20,40],
+				60:[10,15,20,40]
+			},
+			"nrarfcn":[342000,356000]
+		},
+		89:{
+			"type":"SUL",
+			"freqrange":1,
+			"frequency":"850",
+			"range":["824-849"],
+			"scsbw":{
+				15:[5,10,15,20],
+				30:[10,15,20],
+				60:[]
+			},
+			"nrarfcn":[164800,169800]
+		},
+		90:{
+			"type":"TDD",
+			"freqrange":1,
+			"frequency":"2600",
+			"range":["2496-2690"],
+			"scsbw":{
+				15:[10,15,20,40,50],
+				30:[10,15,20,40,50,60,70,80,90,100],
+				60:[10,15,20,40,50,60,70,80,90,100]
+			},
+			"nrarfcn":[499200,538000]
+		},
 		257:{
 			"type":"TDD",
 			"freqrange":2,
@@ -816,19 +912,14 @@ var s5g = {
 				//s5g.logic.resetCarrierData(caId,["band","scs"]);
 				s5g.ux.populateSelectors(caId,["bandwidth", "sfactor"]);
 			},
-			"sfactor":function(caId){
-
-			},
+			"sfactor":function(caId){},
 			"bandwidth":function(caId){
 				//s5g.logic.resetCarrierData(caId,["band","scs","bandwidth"]);
 				s5g.ux.populateSelectors(caId,["layers","modulation", "sfactor"]);
 			},
-			"layers":function(){
-				
-			},
-			"modulation":function(){
-				
-			}
+			"slotformat":function(){},
+			"layers":function(){},
+			"modulation":function(){}
 		},
 
 		decodeSlotString:function(str){
@@ -852,9 +943,9 @@ var s5g = {
 		calcSlotPercent:function(str){
 			let res = s5g.logic.decodeSlotString(str);
 			return {
-				"D":res["D"]/14,
-				"U":res["U"]/14,
-				"F":res["F"]/14,
+				"D":res["D"]/s5g.calc.symslot,
+				"U":res["U"]/s5g.calc.symslot,
+				"F":res["F"]/s5g.calc.symslot,
 			};
 		},
 		
