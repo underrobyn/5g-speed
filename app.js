@@ -681,18 +681,29 @@ var s5g = {
 		"DDFFFUUUDDDDDD"
 	],
 	selectors:{
-		layers:{
+		dlLayers:{
 			1:"1",
 			2:"2",
 			4:"4",
 			8:"8"
 		},
-		modulation:{
+		ulLayers:{
+			1:"1",
+			2:"2",
+			4:"4"
+		},
+		dlModulation:{
 			1:"BPSK",
 			2:"QPSK",
 			4:"16QAM",
 			6:"64QAM",
 			8:"256QAM"
+		},
+		ulModulation:{
+			1:"BPSK",
+			2:"QPSK",
+			4:"16QAM",
+			6:"64QAM"
 		},
 		bandwidth:{
 			5:"5MHz",
@@ -722,7 +733,12 @@ var s5g = {
 		"sfactor":_l["header.sfactor"],
 		"bandwidth":_l["header.bandwidth"],
 		"layers":_l["header.layers"],
+		"dlLayers":_l["header.dllayers"],
+		"ulLayers":_l["header.ullayers"],
 		"modulation":_l["header.modulation"],
+		"dlModulation":_l["header.dlmodulation"],
+		"ulModulation":_l["header.ulmodulation"],
+		"tddSlotFormat":_l["header.tddslotformat"]
 	},
 	
 	DEBUG:3,
@@ -761,8 +777,10 @@ var s5g = {
 				"ul": s5g.calc.base
 			};
 
-			var layers = parseInt(info.layers);
-			var coding = parseInt(info.modulation);	// TODO: Allow UL to have different coding scheme to DL
+			var dlLayers = parseInt(info.dlLayers);
+			var ulLayers = parseInt(info.ulLayers);
+			var dlCoding = parseInt(info.dlModulation);
+			var ulCoding = parseInt(info.ulModulation);
 			var sFactor = parseFloat(info.sfactor);
 			var scs = parseInt(info.scs);
 			var sRbs = parseInt(info.bandwidth);
@@ -771,13 +789,13 @@ var s5g = {
 
 			console.log(info);
 
-			// TODO:  UL Value can be a maximum of 4
-			c["dl"] = c["dl"] * layers;
-			c["ul"] = c["ul"] * layers;
+			// Number of layers in use
+			c["dl"] = c["dl"] * dlLayers;
+			c["ul"] = c["ul"] * ulLayers;
 
 			// Modulation scheme
-			c["dl"] = c["dl"] * coding;
-			c["ul"] = c["ul"] * coding;
+			c["dl"] = c["dl"] * dlCoding;
+			c["ul"] = c["ul"] * ulCoding;
 
 			// Scaling factor
 			c["dl"] = c["dl"] * sFactor;
@@ -910,16 +928,34 @@ var s5g = {
 			},
 			"scs":function(caId){
 				//s5g.logic.resetCarrierData(caId,["band","scs"]);
-				s5g.ux.populateSelectors(caId,["bandwidth", "sfactor"]);
+				s5g.ux.populateSelectors(caId,["bandwidth","sfactor"]);
 			},
 			"sfactor":function(caId){},
 			"bandwidth":function(caId){
 				//s5g.logic.resetCarrierData(caId,["band","scs","bandwidth"]);
-				s5g.ux.populateSelectors(caId,["layers","modulation", "sfactor"]);
+				s5g.ux.populateSelectors(caId,["dlLayers","ulLayers","dlModulation","ulModulation","sfactor"]);
 			},
 			"slotformat":function(){},
-			"layers":function(){},
-			"modulation":function(){}
+
+			"layers":function(caId){
+				console.log("Layers changed for " + caId);
+			},
+			"dlLayers":function(caId){
+				s5g.logic.changeCbs["layers"](caId);
+			},
+			"ulLayers":function(caId){
+				s5g.logic.changeCbs["layers"](caId);
+			},
+
+			"modulation":function(caId){
+				console.log("Modulation changed for " + caId);
+			},
+			"dlModulation":function(caId){
+				s5g.logic.changeCbs["modulation"](caId);
+			},
+			"ulModulation":function(caId){
+				s5g.logic.changeCbs["modulation"](caId);
+			}
 		},
 
 		decodeSlotString:function(str){
@@ -958,8 +994,13 @@ var s5g = {
 			s5g.carriers.push({
 				band:null,
 				bandwidth:null,
-				layers:null,
-				modulation:null,
+
+				dlLayers:null,
+				ulLayers:null,
+
+				dlModulation:null,
+				ulModulation:null,
+
 				sfactor:null,
 				scs:null,
 				tdd:{
@@ -1003,7 +1044,7 @@ var s5g = {
 		},
 		
 		resetCarrierData:function(caId,attributes){
-			var clearAttr = ["band","scs","sfactor","bandwidth","layers","modulation"];
+			var clearAttr = ["band","scs","sfactor","bandwidth","dlLayers","ulLayers","dlModulation","ulModulation"];
 			for (var i = 0; i < 5; i++){
 				if (attributes.indexOf(clearAttr[i]) !== -1) continue;
 				
@@ -1030,8 +1071,10 @@ var s5g = {
 		setPopulateDefaults:function(caId,override){
 			var defaults = {
 				"bandwidth":20,
-				"layers":2,
-				"modulation":4,
+				"dlLayers":2,
+				"ulLayers":1,
+				"dlModulation":8,
+				"ulModulation":6,
 				"sfactor":1,
 				"scs":30
 			};
@@ -1059,7 +1102,7 @@ var s5g = {
 		},
 		
 		doCalculation:function(){
-			var required = ["bandwidth","layers","modulation","sfactor","scs"];
+			var required = ["bandwidth","dlLayers","ulLayers","modulation","sfactor","scs"];
 			
 			var error = false;
 			for (var i in s5g.carriers){
@@ -1192,11 +1235,20 @@ var s5g = {
 				);
 	
 				el.append(
+					$("<label/>").text(_l["header.dllayers"]),
 					$("<select/>",{
-						"title":s5g.ux.selectText("layers"),
-						"data-selector":"layers"
+						"title":s5g.ux.selectText("dlLayers"),
+						"data-selector":"dlLayers"
 					}).append(
-						$("<option/>",{"value":0}).text(s5g.ux.selectText("layers"))
+						$("<option/>",{"value":0}).text(s5g.ux.selectText("dlLayers"))
+					).on("change",s5g.logic.selectNewValue),
+
+					$("<label/>").text(_l["header.ullayers"]),
+					$("<select/>",{
+						"title":s5g.ux.selectText("ulLayers"),
+						"data-selector":"ulLayers"
+					}).append(
+						$("<option/>",{"value":0}).text(s5g.ux.selectText("ulLayers"))
 					).on("change",s5g.logic.selectNewValue)
 				);
 				
@@ -1208,11 +1260,20 @@ var s5g = {
 				);
 	
 				el.append(
+					$("<label/>").text(_l["header.dlmodulation"]),
 					$("<select/>",{
-						"title":s5g.ux.selectText("modulation"),
-						"data-selector":"modulation"
+						"title":s5g.ux.selectText("dlModulation"),
+						"data-selector":"dlModulation"
 					}).append(
-						$("<option/>",{"value":0}).text(s5g.ux.selectText("modulation"))
+						$("<option/>",{"value":0}).text(s5g.ux.selectText("dlModulation"))
+					).on("change",s5g.logic.selectNewValue),
+
+					$("<label/>").text(_l["header.ulmodulation"]),
+					$("<select/>",{
+						"title":s5g.ux.selectText("ulModulation"),
+						"data-selector":"ulModulation"
+					}).append(
+						$("<option/>",{"value":0}).text(s5g.ux.selectText("ulModulation"))
 					).on("change",s5g.logic.selectNewValue)
 				);
 				

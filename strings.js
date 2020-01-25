@@ -12,7 +12,12 @@ const __en = {
 	"header.sfactor":"Scaling Factor",
 	"header.bandwidth":"Bandwidth",
 	"header.layers":"Layers",
+	"header.dllayers":"Downlink Layers",
+	"header.ullayers":"Uplink Layers",
 	"header.modulation":"Modulation",
+	"header.dlmodulation":"Downlink Modulation",
+	"header.ulmodulation":"Uplink Modulation",
+	"header.tddslotformat":"TDD Slot Format",
 
 	"error.badslotchar":"Slot frame can only be D, U or F",
 	"error.badslotlength":"Slot frame must be 14 symbols long",
