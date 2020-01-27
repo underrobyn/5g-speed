@@ -18,6 +18,8 @@ const __en = {
 	"header.dlmodulation":"Downlink Modulation",
 	"header.ulmodulation":"Uplink Modulation",
 	"header.tddslotformat":"TDD Slot Format",
+	"header.tddslotformat":"TDD DL Symbols",
+	"header.tddslotformat":"TDD Slot Format",
 
 	"error.badslotchar":"Slot frame can only be D, U or F",
 	"error.badslotlength":"Slot frame must be 14 symbols long",

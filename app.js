@@ -515,6 +515,18 @@ var s5g = {
 			},
 			"nrarfcn":[499200,538000]
 		},
+		95:{
+			"type":"SUL",
+			"freqrange":1,
+			"frequency":"2000",
+			"range":["2010-2050"],
+			"scsbw":{
+				15:[5,10,15],
+				30:[10,15],
+				60:[10,15]
+			},
+			"nrarfcn":[402000,405000]
+		},
 		257:{
 			"type":"TDD",
 			"freqrange":2,
@@ -816,53 +828,59 @@ var s5g = {
 			return c;
 		},
 
+		calcOverhead:function(band, calc){
+			var freqRange = band.freqrange;
+
+			let retDl = calc["dl"] * (1-s5g.nrFreqOverhead[freqRange][0]);
+			let retUl = calc["ul"] * (1-s5g.nrFreqOverhead[freqRange][1]);
+
+			return {
+				"dl":retDl,
+				"ul":retUl
+			};
+		},
+
 		fdd:{
-			run:function(info,band){
-				var c = s5g.calc.common(info,band);
-				var freqRange = band.freqrange;
+			run:function(info, band){
+				var calc = s5g.calc.common(info);
+				let final = s5g.calc.calcOverhead(band, calc);
 
-				console.log(c);
-
-				// Overhead
-				var retDl = c["dl"] * (1-s5g.nrFreqOverhead[freqRange][0]);
-				var retUl = c["ul"] * (1-s5g.nrFreqOverhead[freqRange][1]);
-
-				return [retDl,retUl];
+				return [final["dl"],final["ul"]];
 			}
 		},
 
 		tdd:{
-			run:function(info,band){
-				let c = s5g.calc.common(info,band);
-				let freqRange = band.freqrange;
+			run:function(info, band){
+				var calc = s5g.calc.common(info);
 
 				let tddConf = s5g.nrTddConf[info.tdd.slotformat];
 				let tdd = s5g.logic.calcSlotPercent(tddConf);
 
-				console.log(c);
+				console.log(calc);
 				console.log(tdd);
 
 				// Overhead
-				let retDl = c["dl"] * tdd["D"] * (1-s5g.nrFreqOverhead[freqRange][0]);
-				let retUl = c["ul"] * tdd["U"] * (1-s5g.nrFreqOverhead[freqRange][1]);
+				let final = s5g.calc.calcOverhead(band, calc);
 
-				return [retDl,retUl];
+				return [
+					final["dl"] * tdd["D"],
+					final["ul"] * tdd["U"]
+				];
 			}
 		},
 
 		sxl:{
-			run:function(info,band){
-				var c = s5g.calc.common(info,band);
-				var freqRange = band.freqrange;
+			run:function(info, band){
+				var calc = s5g.calc.common(info);
+				var type = band.type;
 
 				// Overhead
-				var retDl = c["dl"] * (1-s5g.nrFreqOverhead[freqRange][0]);
-				var retUl = c["ul"] * (1-s5g.nrFreqOverhead[freqRange][1]);
+				let final = s5g.calc.calcOverhead(band, calc);
 
-				if (band.type === "SDL"){
-					return [retDl, 0];
+				if (type === "SDL"){
+					return [final["dl"], 0];
 				} else {
-					return [0, retUl];
+					return [0, final["ul"]];
 				}
 			}
 		},
@@ -895,6 +913,7 @@ var s5g = {
 			
 			return ret;
 		},
+
 		run:function(){
 			var sumDl = 0, sumUl = 0;
 			
@@ -1003,13 +1022,14 @@ var s5g = {
 
 				sfactor:null,
 				scs:null,
-				tdd:{
-					slotformat:0,
-					flexdata:false,
-					dlframes:null,
-					ulframes:null,
-					flexframes:null
-				},
+
+				tddSlotFormat:0,
+				tddFlexData:false,
+
+				tddDlFrames:null,
+				tddUlFrames:null,
+				tddFlexFrames:null,
+
 				uplinkAggregation:false
 			});
 			
@@ -1176,7 +1196,16 @@ var s5g = {
 				);
 
 				el.append(
-					$("<span/>").text("not implemented")
+					$("<label/>").text(_l["header.tddslotformat"]),
+					$("<select/>",{
+						"title":s5g.ux.selectText("tddSlotFormat"),
+						"data-selector":"tddSlotFormat"
+					}).append(
+						$("<option/>",{"value":0}).text(s5g.ux.selectText("tddSlotFormat"))
+					).on("change",s5g.logic.selectNewValue),
+
+					$("<label/>").text(_l["header.tdddlframes"]),
+
 				);
 
 				return el;
