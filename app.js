@@ -28,6 +28,7 @@ if (!window.location.host.includes("absolutedouble.co.uk")){
 }
 
 var s5g = {
+	haltCalculation:false,
 	followSpec:false,
 	carriers:[],
 	nrFreqOverhead:{
@@ -515,6 +516,31 @@ var s5g = {
 			},
 			"nrarfcn":[499200,538000]
 		},
+		// TODO: Allow different UL and DL Bandwidths for bands n91-n94
+		/* 91:{
+			"type":"FDD",
+			"freqrange":1,
+			"frequency":"1500",
+			"range":["832-862","1427-1432"],
+			"scsbw":{
+				15:[5],
+				30:[],
+				60:[]
+			},
+			"nrarfcn":[285400,286400]
+		},
+		92:{
+			"type":"FDD",
+			"freqrange":1,
+			"frequency":"1500",
+			"range":["832-862","1432-1517"],
+			"scsbw":{
+				15:[5],
+				30:[],
+				60:[]
+			},
+			"nrarfcn":[285400,286400]
+		},*/
 		95:{
 			"type":"SUL",
 			"freqrange":1,
@@ -841,7 +867,7 @@ var s5g = {
 		},
 
 		fdd:{
-			run:function(info, band){
+			run:function(caId, info, band){
 				var calc = s5g.calc.common(info);
 				let final = s5g.calc.calcOverhead(band, calc);
 
@@ -850,13 +876,15 @@ var s5g = {
 		},
 
 		tdd:{
-			run:function(info, band){
+			run:function(caId, info, band){
 				var calc = s5g.calc.common(info);
 
-				let tddConf = s5g.nrTddConf[info.tdd.slotformat];
+				let tddConf = s5g.calc.tdd.getSlotFormat(caId, info);
+				if (!tddConf) return [];
+
 				let tdd = s5g.logic.calcSlotPercent(tddConf);
 
-				console.log(calc);
+				console.log(tddConf);
 				console.log(tdd);
 
 				// Overhead
@@ -866,11 +894,28 @@ var s5g = {
 					final["dl"] * tdd["D"],
 					final["ul"] * tdd["U"]
 				];
+			},
+
+			getSlotFormat:function(caId, info){
+				if (info.tddCustomSlot === ""){
+					if (s5g.nrTddConf[info.tddslotformat]){
+						return s5g.nrTddConf[info.tddslotformat];
+					}
+					s5g.ux.inputError(1,[caId, "tddslotformat"]);
+				} else {
+					let result = s5g.logic.validateSlotString(info.tddCustomSlot);
+					if (result[0] !== false){
+						return info.tddCustomSlot;
+					}
+					s5g.ux.inputError(1,[caId, result[1]]);
+				}
+
+				return false;
 			}
 		},
 
 		sxl:{
-			run:function(info, band){
+			run:function(caId, info, band){
 				var calc = s5g.calc.common(info);
 				var type = band.type;
 
@@ -885,20 +930,21 @@ var s5g = {
 			}
 		},
 
-		carrier:function(info){
+		carrier:function(caId){
+			var info = s5g.carriers[caId];
 			var ret = [0,0];
 			var band = s5g.nrBandData[info.band];
 
 			switch (band.type){
 				case "FDD":
-					ret = s5g.calc.fdd.run(info,band);
+					ret = s5g.calc.fdd.run(caId,info,band);
 					break;
 				case "TDD":
-					ret = s5g.calc.tdd.run(info,band);
+					ret = s5g.calc.tdd.run(caId,info,band);
 					break;
 				case "SDL":
 				case "SUL":
-					ret = s5g.calc.sxl.run(info,band);
+					ret = s5g.calc.sxl.run(caId,info,band);
 					break;
 				default:
 					console.error("Unknown type");
@@ -920,7 +966,7 @@ var s5g = {
 			for (var i in s5g.carriers){
 				if (s5g.nrRbData[parseInt(s5g.carriers[i].bandwidth)] === undefined) continue;
 				
-				var carrierSpeed = s5g.calc.carrier(s5g.carriers[i]);
+				var carrierSpeed = s5g.calc.carrier(i);
 				
 				s5g.ux.setRowSpeed(i,carrierSpeed);
 				
@@ -939,6 +985,7 @@ var s5g = {
 
 				if (s5g.carriers[caId]["band"] !== "0") {
 					s5g.ux.populateSelectors(caId, ["scs"]);
+					s5g.ux.updateBandconf(caId);
 					s5g.logic.setPopulateDefaults(caId, true);
 				}
 				
@@ -954,7 +1001,13 @@ var s5g = {
 				//s5g.logic.resetCarrierData(caId,["band","scs","bandwidth"]);
 				s5g.ux.populateSelectors(caId,["dlLayers","ulLayers","dlModulation","ulModulation","sfactor"]);
 			},
-			"slotformat":function(){},
+
+			"tddSlotFormat":function(caId){
+				s5g.carriers[caId]["tddCustomSlot"] = "";
+			},
+			"tddCustomSlot":function(caId){
+				s5g.carriers[caId]["tddSlotFormat"] = null;
+			},
 
 			"layers":function(caId){
 				console.log("Layers changed for " + caId);
@@ -977,6 +1030,14 @@ var s5g = {
 			}
 		},
 
+		validateSlotString:function(str){
+			// Check frame string is valid
+			if (!/[DFU]/g.test(str)) return [false, _l["error.badslotchar"]];
+			if (str.length !== 14) return [false, _l["error.badslotlength"]];
+
+			return [true];
+		},
+
 		decodeSlotString:function(str){
 			let chars = str.split("");
 			let result = {
@@ -984,10 +1045,6 @@ var s5g = {
 				U:0,
 				F:0
 			};
-
-			// Check frame string is valid
-			if (!/[DFU]/g.test(str)) return [false, _l["error.badslotchar"]];
-			if (str.length !== 14) return [false, _l["error.badslotlength"]];
 
 			// Total up number of each frame
 			chars.forEach(val => result[val] += 1);
@@ -1025,10 +1082,7 @@ var s5g = {
 
 				tddSlotFormat:0,
 				tddFlexData:false,
-
-				tddDlFrames:null,
-				tddUlFrames:null,
-				tddFlexFrames:null,
+				tddCustomSlot:"",
 
 				uplinkAggregation:false
 			});
@@ -1079,6 +1133,7 @@ var s5g = {
 			var selector = $(this).data("selector");
 			
 			s5g.carriers[caId][selector] = $(this).val();
+			s5g.haltCalculation = false;
 			
 			//console.log("Set value for carrier",caId,"->",selector,"to",$(this).val());
 
@@ -1196,16 +1251,32 @@ var s5g = {
 				);
 
 				el.append(
-					$("<label/>").text(_l["header.tddslotformat"]),
+					$("<span/>").text("No options for this band type")
+				);
+
+				return el;
+			},
+			tddbandconf:function(){
+				var el = $("<div/>",{"class":"rowsect"}).append(
+					$("<span/>",{"class":"rowsectheader"}).text(s5g.name.bandconf)
+				);
+
+				el.append(
+					$("<label/>",{"class":"tddopts"}).text(_l["header.tddslotformat"]),
 					$("<select/>",{
+						"class":"tddopts",
 						"title":s5g.ux.selectText("tddSlotFormat"),
 						"data-selector":"tddSlotFormat"
 					}).append(
 						$("<option/>",{"value":0}).text(s5g.ux.selectText("tddSlotFormat"))
 					).on("change",s5g.logic.selectNewValue),
 
-					$("<label/>").text(_l["header.tdddlframes"]),
-
+					$("<label/>").text(_l["header.tddcustomslot"]),
+					$("<input/>",{
+						"type":"text",
+						"placeholder":"DL / UL / Flexible",
+						"data-selector":"tddCustomSlot",
+					}).on("keyup", s5g.logic.selectNewValue)
 				);
 
 				return el;
@@ -1382,8 +1453,8 @@ var s5g = {
 				s5g.ux.generate.band(),
 				s5g.ux.generate.scs(),
 				s5g.ux.generate.bandconf(),
-				s5g.ux.generate.sfactor(),
 				s5g.ux.generate.bandwidth(),
+				s5g.ux.generate.sfactor(),
 				s5g.ux.generate.layers(),
 				s5g.ux.generate.modulation(),
 				s5g.ux.generate.rowOpts((caId !== 0))
@@ -1406,6 +1477,7 @@ var s5g = {
 				$("<option/>",{"value":0}).text(s5g.ux.selectText(selector))
 			);
 		},
+
 		populateSelectors:function(caId,noReload){
 			$(".carrier_row[data-caid='" + caId + "'] div.rowcont div.rowsect select").each(function(){
 				var sel = $(this).data("selector");
@@ -1428,6 +1500,7 @@ var s5g = {
 				}
 			});
 		},
+
 		populateBand:function(el,caId){
 			var dKeys = Object.keys(s5g.nrBandData);
 			
@@ -1438,9 +1511,9 @@ var s5g = {
 			for (var i = 0, l = dKeys.length;i<l;i++){
 				if (s5g.nrBandData[dKeys[i]].frequency === "") continue;
 				
-				txt = _l["label.band"] + " " + dKeys[i];
-				txt += " | " + s5g.nrBandData[dKeys[i]].type;
-				txt += " (" + s5g.nrBandData[dKeys[i]].frequency + "MHz)";
+				txt =  "n" + dKeys[i];
+				txt += "\t | " + s5g.nrBandData[dKeys[i]].type;
+				txt += " " + s5g.nrBandData[dKeys[i]].frequency + "MHz" ;
 				
 				el.append(
 					$("<option/>",{"value":dKeys[i]}).text(txt)
@@ -1512,7 +1585,30 @@ var s5g = {
 				);
 			}
 		},
+
+		updateBandconf:function(caId){
+			let bandInfo = s5g.nrBandData[s5g.carriers[caId].band];
+			var setDefault = true;
+			var el = $(".carrier_row[data-caid='" + 0 + "'] div.rowcont div.rowsect:nth-child(3)");
+
+			el.empty();
+			if (bandInfo.type === "TDD"){
+				el.replaceWith(
+					s5g.ux.generate.tddbandconf()
+				);
+			} else {
+				el.replaceWith(
+					s5g.ux.generate.bandconf()
+				);
+			}
+
+			if (setDefault === true){
+
+			}
+		},
+
 		renderCalculation:function(data){
+			if (s5g.haltCalculation) return;
 			if (data === false){
 				$("#speeds").text(_l["error.speedfail"]);
 				return;
@@ -1524,6 +1620,8 @@ var s5g = {
 			$("#speeds").html(dl + "Mbps &#8595; &amp; " + ul + "Mbps &#8593;");
 		},
 		inputError:function(type,data){
+			s5g.haltCalculation = true;
+
 			var el = $("#speeds");
 			
 			switch(type){

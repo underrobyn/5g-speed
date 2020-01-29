@@ -20,12 +20,12 @@ select,button {
 	line-height:1.2em;
 	padding:5px;
 }
-select,input[type="number"]{
+select,input{
 	margin:.5% 4%;
 	width:92%;
 	-webkit-appearance:none;
 }
-input[type="number"]{
+input{
 	-moz-appearance:textfield;
 	appearance:textfield;
 	background:#1a1a1a;
@@ -52,7 +52,7 @@ input[type="number"]:focus {
 	-webkit-appearance: none;
 }*/
 
-input[type="number"],select{
+input,select{
 	-moz-box-sizing:content-box;
 	-webkit-box-sizing:content-box; 
 	box-sizing:content-box;
