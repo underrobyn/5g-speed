@@ -42,9 +42,11 @@ var s5g = {
 			"frequency":"2100",
 			"range":["1920-1980","2110-2170"],
 			"scsbw":{
-				15:[5,10,15,20],
-				30:[10,15,20],
-				60:[10,15,20]
+				"dl":{
+					15:[5,10,15,20],
+					30:[10,15,20],
+					60:[10,15,20]
+				}
 			},
 			"nrarfcn":[422000,434000]
 		},
@@ -54,9 +56,11 @@ var s5g = {
 			"frequency":"1900",
 			"range":["1850-1910","1930-1990"],
 			"scsbw":{
-				15:[5,10,15,20],
-				30:[10,15,20],
-				60:[10,15,20]
+				"dl":{
+					15:[5,10,15,20],
+					30:[10,15,20],
+					60:[10,15,20]
+				}
 			},
 			"nrarfcn":[386000,398000]
 		},
@@ -66,9 +70,11 @@ var s5g = {
 			"frequency":"1800",
 			"range":["1710-1785","1805-1880"],
 			"scsbw":{
-				15:[5,10,15,20,25,30],
-				30:[10,15,20,25,30],
-				60:[10,15,20,25,30]
+				"dl":{
+					15:[5,10,15,20,25,30],
+					30:[10,15,20,25,30],
+					60:[10,15,20,25,30]
+				}
 			},
 			"nrarfcn":[361000,376000]
 		},
@@ -78,9 +84,11 @@ var s5g = {
 			"frequency":"850",
 			"range":["824-849","869-894"],
 			"scsbw":{
-				15:[5,10,15,20],
-				30:[10,15,20],
-				60:[]
+				"dl":{
+					15:[5,10,15,20],
+					30:[10,15,20],
+					60:[]
+				}
 			},
 			"nrarfcn":[173800,178800]
 		},
@@ -90,9 +98,11 @@ var s5g = {
 			"frequency":"2600",
 			"range":["2500-2570","2620-2690"],
 			"scsbw":{
-				15:[5,10,15,20],
-				30:[10,15,20],
-				60:[10,15,20]
+				"dl":{
+					15:[5,10,15,20],
+					30:[10,15,20],
+					60:[10,15,20]
+				}
 			},
 			"nrarfcn":[524000,538000]
 		},
@@ -102,9 +112,11 @@ var s5g = {
 			"frequency":"900",
 			"range":["880-915","925-960"],
 			"scsbw":{
-				15:[5,10,15,20],
-				30:[10,15,20],
-				60:[]
+				"dl":{
+					15:[5,10,15,20],
+					30:[10,15,20],
+					60:[]
+				}
 			},
 			"nrarfcn":[185000,192000]
 		},
@@ -114,9 +126,11 @@ var s5g = {
 			"frequency":"700",
 			"range":["699-716","729-746"],
 			"scsbw":{
-				15:[5,10,15],
-				30:[10,15],
-				60:[]
+				"dl":{
+					15:[5,10,15],
+					30:[10,15],
+					60:[]
+				}
 			},
 			"nrarfcn":[145800,149200]
 		},
@@ -126,9 +140,11 @@ var s5g = {
 			"frequency":"700",
 			"range":["788-798","758-768"],
 			"scsbw":{
-				15:[5,10],
-				30:[10],
-				60:[]
+				"dl":{
+					15:[5,10],
+					30:[10],
+					60:[]
+				}
 			},
 			"nrarfcn":[151600,153600]
 		},
@@ -138,9 +154,11 @@ var s5g = {
 			"frequency":"800",
 			"range":["815-830","860-875"],
 			"scsbw":{
-				15:[5,10,15],
-				30:[10,15],
-				60:[]
+				"dl":{
+					15:[5,10,15],
+					30:[10,15],
+					60:[]
+				}
 			},
 			"nrarfcn":[151600,153600]
 		},
@@ -150,9 +168,11 @@ var s5g = {
 			"frequency":"800",
 			"range":["832-862","791-821"],
 			"scsbw":{
-				15:[5,10,15,20],
-				30:[10,15,20],
-				60:[]
+				"dl":{
+					15:[5,10,15,20],
+					30:[10,15,20],
+					60:[]
+				}
 			},
 			"nrarfcn":[158200,164200]
 		},
@@ -162,9 +182,11 @@ var s5g = {
 			"frequency":"1900",
 			"range":["1850-1915","1930-1995"],
 			"scsbw":{
-				15:[5,10,15,20],
-				30:[10,15,20],
-				60:[10,15,20]
+				"dl":{
+					15:[5,10,15,20],
+					30:[10,15,20],
+					60:[10,15,20]
+				}
 			},
 			"nrarfcn":[386000,399000]
 		},
@@ -174,9 +196,11 @@ var s5g = {
 			"frequency":"700",
 			"range":["703-748","758-803"],
 			"scsbw":{
-				15:[5,10,15,20],
-				30:[10,15,20],
-				60:[]
+				"dl":{
+					15:[5,10,15,20],
+					30:[10,15,20],
+					60:[]
+				}
 			},
 			"nrarfcn":[151600,160600]
 		},
@@ -186,9 +210,11 @@ var s5g = {
 			"frequency":"700",
 			"range":["717-728"],
 			"scsbw":{
-				15:[5,10],
-				30:[10],
-				60:[]
+				"dl":{
+					15:[5,10],
+					30:[10],
+					60:[]
+				}
 			},
 			"nrarfcn":[143400,145600]
 		},
@@ -198,9 +224,11 @@ var s5g = {
 			"frequency":"2300",
 			"range":["2305-2315","2350-2360"],
 			"scsbw":{
-				15:[5,10],
-				30:[10],
-				60:[]
+				"dl":{
+					15:[5,10],
+					30:[10],
+					60:[]
+				}
 			},
 			"nrarfcn":[470000,472000]
 		},
@@ -210,9 +238,11 @@ var s5g = {
 			"frequency":"2000",
 			"range":["2010-2025"],
 			"scsbw":{
-				15:[5],
-				30:[],
-				60:[]
+				"dl":{
+					15:[5],
+					30:[],
+					60:[]
+				}
 			},
 			"nrarfcn":[402000,405000]
 		},
@@ -222,9 +252,11 @@ var s5g = {
 			"frequency":"2600",
 			"range":["2570-2620"],
 			"scsbw":{
-				15:[5,10,15,20],
-				30:[10,15,20],
-				60:[10,15,20]
+				"dl":{
+					15:[5,10,15,20],
+					30:[10,15,20],
+					60:[10,15,20]
+				}
 			},
 			"nrarfcn":[514000,524000]
 		},
@@ -234,9 +266,11 @@ var s5g = {
 			"frequency":"1900",
 			"range":["1880-1920"],
 			"scsbw":{
-				15:[5,10,15,20,25,30,40],
-				30:[10,15,20,25,30,40],
-				60:[10,15,20,25,30,40]
+				"dl":{
+					15:[5,10,15,20,25,30,40],
+					30:[10,15,20,25,30,40],
+					60:[10,15,20,25,30,40]
+				}
 			},
 			"nrarfcn":[376000,384000]
 		},
@@ -246,9 +280,11 @@ var s5g = {
 			"frequency":"2300",
 			"range":["2300-2400"],
 			"scsbw":{
-				15:[5,10,15,20,25,30,40,50],
-				30:[10,15,20,25,30,40,50,60,80,100],
-				60:[10,15,20,25,30,40,50,60,80,100]
+				"dl":{
+					15:[5,10,15,20,25,30,40,50],
+					30:[10,15,20,25,30,40,50,60,80,100],
+					60:[10,15,20,25,30,40,50,60,80,100]
+				}
 			},
 			"nrarfcn":[460000,480000]
 		},
@@ -258,9 +294,11 @@ var s5g = {
 			"frequency":"2500",
 			"range":["2496-2690"],
 			"scsbw":{
-				15:[5,10,15,20,40,50],
-				30:[10,15,20,40,50,60,80,90,100],
-				60:[10,15,20,40,50,60,80,90,100]
+				"dl":{
+					15:[5,10,15,20,40,50],
+					30:[10,15,20,40,50,60,80,90,100],
+					60:[10,15,20,40,50,60,80,90,100]
+				}
 			},
 			"nrarfcn":[499200,537999]
 		},
@@ -270,9 +308,11 @@ var s5g = {
 			"frequency":"3600",
 			"range":["3550-3700"],
 			"scsbw":{
-				15:[5,10,15,20,40,50],
-				30:[10,15,20,40,50,60,80,90,100],
-				60:[10,15,20,40,50,60,80,90,100]
+				"dl":{
+					15:[5,10,15,20,40,50],
+					30:[10,15,20,40,50,60,80,90,100],
+					60:[10,15,20,40,50,60,80,90,100]
+				}
 			},
 			"nrarfcn":[636667,646666]
 		},
@@ -282,9 +322,11 @@ var s5g = {
 			"frequency":"1500",
 			"range":["1432-1517"],
 			"scsbw":{
-				15:[5,10,15,20,40,50],
-				30:[10,15,20,40,50,60,80],
-				60:[10,15,20,40,50,60,80]
+				"dl":{
+					15:[5,10,15,20,40,50],
+					30:[10,15,20,40,50,60,80],
+					60:[10,15,20,40,50,60,80]
+				}
 			},
 			"nrarfcn":[499200,537999]
 		},
@@ -294,9 +336,11 @@ var s5g = {
 			"frequency":"1500",
 			"range":["1427-1432"],
 			"scsbw":{
-				15:[5],
-				30:[],
-				60:[]
+				"dl":{
+					15:[5],
+					30:[],
+					60:[]
+				}
 			},
 			"nrarfcn":[499200,537999]
 		},
@@ -306,9 +350,11 @@ var s5g = {
 			"frequency":"2100",
 			"range":["1920-2010","2110-2200"],
 			"scsbw":{
-				15:[5,10,15,20],
-				30:[10,15,20],
-				60:[10,15,20]
+				"dl":{
+					15:[5,10,15,20],
+					30:[10,15,20],
+					60:[10,15,20]
+				}
 			},
 			"nrarfcn":[422000,440000]
 		},
@@ -318,9 +364,11 @@ var s5g = {
 			"frequency":"1700",
 			"range":["1710-1780","2110-2200"],
 			"scsbw":{
-				15:[5,10,15,20,40],
-				30:[10,15,20,40],
-				60:[10,15,20,40]
+				"dl":{
+					15:[5,10,15,20,40],
+					30:[10,15,20,40],
+					60:[10,15,20,40]
+				}
 			},
 			"nrarfcn":[422000,440000]
 		},
@@ -330,9 +378,11 @@ var s5g = {
 			"frequency":"2000",
 			"range":["1695-1710","1995-2020"],
 			"scsbw":{
-				15:[5,10,15,20,25],
-				30:[10,15,20,25],
-				60:[10,15,20,25]
+				"dl":{
+					15:[5,10,15,20,25],
+					30:[10,15,20,25],
+					60:[10,15,20,25]
+				}
 			},
 			"nrarfcn":[399000,404000]
 		},
@@ -342,9 +392,11 @@ var s5g = {
 			"frequency":"600",
 			"range":["663-698","617-652"],
 			"scsbw":{
-				15:[5,10,15,20],
-				30:[10,15,20],
-				60:[]
+				"dl":{
+					15:[5,10,15,20],
+					30:[10,15,20],
+					60:[]
+				}
 			},
 			"nrarfcn":[123400,130400]
 		},
@@ -354,9 +406,11 @@ var s5g = {
 			"frequency":"1500",
 			"range":["1427-1470","1475-1518"],
 			"scsbw":{
-				15:[5,10,15,20],
-				30:[10,15,20],
-				60:[10,15,20]
+				"dl":{
+					15:[5,10,15,20],
+					30:[10,15,20],
+					60:[10,15,20]
+				}
 			},
 			"nrarfcn":[295000,303600]
 		},
@@ -366,9 +420,11 @@ var s5g = {
 			"frequency":"1500",
 			"range":["1432-1517"],
 			"scsbw":{
-				15:[5,10,15,20],
-				30:[10,15,20],
-				60:[10,15,20]
+				"dl":{
+					15:[5,10,15,20],
+					30:[10,15,20],
+					60:[10,15,20]
+				}
 			},
 			"nrarfcn":[286400,303400]
 		},
@@ -378,9 +434,11 @@ var s5g = {
 			"frequency":"1500",
 			"range":["1427-1432"],
 			"scsbw":{
-				15:[5],
-				30:[],
-				60:[]
+				"dl":{
+					15:[5],
+					30:[],
+					60:[]
+				}
 			},
 			"nrarfcn":[285400,286400]
 		},
@@ -390,9 +448,11 @@ var s5g = {
 			"frequency":"3700",
 			"range":["3300-4200"],
 			"scsbw":{
-				15:[10,15,20,30,40,50],
-				30:[10,15,20,30,40,50,60,70,80,90,100],
-				60:[10,15,20,30,40,50,60,70,80,90,100]
+				"dl":{
+					15:[10,15,20,30,40,50],
+					30:[10,15,20,30,40,50,60,70,80,90,100],
+					60:[10,15,20,30,40,50,60,70,80,90,100]
+				}
 			},
 			"nrarfcn":[620000,680000]
 		},
@@ -402,9 +462,11 @@ var s5g = {
 			"frequency":"3500",
 			"range":["3300-3800"],
 			"scsbw":{
-				15:[10,15,20,30,40,50],
-				30:[10,15,20,30,40,50,60,70,80,90,100],
-				60:[10,15,20,30,40,50,60,70,80,90,100]
+				"dl":{
+					15:[10,15,20,30,40,50],
+					30:[10,15,20,30,40,50,60,70,80,90,100],
+					60:[10,15,20,30,40,50,60,70,80,90,100]
+				}
 			},
 			"nrarfcn":[620000,653333]
 		},
@@ -414,9 +476,11 @@ var s5g = {
 			"frequency":"4500",
 			"range":["4400-5000"],
 			"scsbw":{
-				15:[40,50],
-				30:[40,50,60,80,100],
-				60:[40,50,60,80,100]
+				"dl":{
+					15:[40,50],
+					30:[40,50,60,80,100],
+					60:[40,50,60,80,100]
+				}
 			},
 			"nrarfcn":[693334,733333]
 		},
@@ -426,9 +490,11 @@ var s5g = {
 			"frequency":"1800",
 			"range":["1710-1785"],
 			"scsbw":{
-				15:[5,10,15,20,25,30],
-				30:[10,15,20,25,30],
-				60:[10,15,20,25,30]
+				"dl":{
+					15:[5,10,15,20,25,30],
+					30:[10,15,20,25,30],
+					60:[10,15,20,25,30]
+				}
 			},
 			"nrarfcn":[342000,357000]
 		},
@@ -438,9 +504,11 @@ var s5g = {
 			"frequency":"900",
 			"range":["880-915"],
 			"scsbw":{
-				15:[5,10,15,20],
-				30:[10,15,20],
-				60:[]
+				"dl":{
+					15:[5,10,15,20],
+					30:[10,15,20],
+					60:[]
+				}
 			},
 			"nrarfcn":[176000,183000]
 		},
@@ -450,9 +518,11 @@ var s5g = {
 			"frequency":"800",
 			"range":["832-862"],
 			"scsbw":{
-				15:[5,10,15,20],
-				30:[10,15,20],
-				60:[]
+				"dl":{
+					15:[5,10,15,20],
+					30:[10,15,20],
+					60:[]
+				}
 			},
 			"nrarfcn":[166400,172400]
 		},
@@ -462,9 +532,11 @@ var s5g = {
 			"frequency":"700",
 			"range":["703-748"],
 			"scsbw":{
-				15:[5,10,15,20],
-				30:[10,15,20],
-				60:[]
+				"dl":{
+					15:[5,10,15,20],
+					30:[10,15,20],
+					60:[]
+				}
 			},
 			"nrarfcn":[140600,149600]
 		},
@@ -474,9 +546,11 @@ var s5g = {
 			"frequency":"2100",
 			"range":["1920-1980"],
 			"scsbw":{
-				15:[5,10,15,20],
-				30:[10,15,20],
-				60:[10,15,20]
+				"dl":{
+					15:[5,10,15,20],
+					30:[10,15,20],
+					60:[10,15,20]
+				}
 			},
 			"nrarfcn":[384000,396000]
 		},
@@ -486,9 +560,11 @@ var s5g = {
 			"frequency":"1700",
 			"range":["1710-1780"],
 			"scsbw":{
-				15:[5,10,15,20,40],
-				30:[10,15,20,40],
-				60:[10,15,20,40]
+				"dl":{
+					15:[5,10,15,20,40],
+					30:[10,15,20,40],
+					60:[10,15,20,40]
+				}
 			},
 			"nrarfcn":[342000,356000]
 		},
@@ -498,9 +574,11 @@ var s5g = {
 			"frequency":"850",
 			"range":["824-849"],
 			"scsbw":{
-				15:[5,10,15,20],
-				30:[10,15,20],
-				60:[]
+				"dl":{
+					15:[5,10,15,20],
+					30:[10,15,20],
+					60:[]
+				}
 			},
 			"nrarfcn":[164800,169800]
 		},
@@ -510,22 +588,30 @@ var s5g = {
 			"frequency":"2600",
 			"range":["2496-2690"],
 			"scsbw":{
-				15:[10,15,20,40,50],
-				30:[10,15,20,40,50,60,70,80,90,100],
-				60:[10,15,20,40,50,60,70,80,90,100]
+				"dl":{
+					15:[10,15,20,40,50],
+					30:[10,15,20,40,50,60,70,80,90,100],
+					60:[10,15,20,40,50,60,70,80,90,100]
+				}
 			},
 			"nrarfcn":[499200,538000]
 		},
-		// TODO: Allow different UL and DL Bandwidths for bands n91-n94
-		/* 91:{
+		91:{
 			"type":"FDD",
 			"freqrange":1,
 			"frequency":"1500",
 			"range":["832-862","1427-1432"],
 			"scsbw":{
-				15:[5],
-				30:[],
-				60:[]
+				"dl":{
+					15:[5],
+					30:[],
+					60:[]
+				},
+				"ul":{
+					15:[5,10],
+					30:[],
+					60:[]
+				}
 			},
 			"nrarfcn":[285400,286400]
 		},
@@ -535,21 +621,58 @@ var s5g = {
 			"frequency":"1500",
 			"range":["832-862","1432-1517"],
 			"scsbw":{
-				15:[5],
-				30:[],
-				60:[]
+				"dl":{
+					15:[5,10,15,20],
+					30:[10,15,20],
+					60:[]
+				}
 			},
 			"nrarfcn":[285400,286400]
-		},*/
+		},
+		93:{
+			"type":"FDD",
+			"freqrange":1,
+			"frequency":"1500",
+			"range":["880-915","1427-1432"],
+			"scsbw":{
+				"dl":{
+					15:[5],
+					30:[],
+					60:[]
+				},
+				"ul":{
+					15:[5,10],
+					30:[],
+					60:[]
+				}
+			},
+			"nrarfcn":[285400,286400]
+		},
+		94:{
+			"type":"FDD",
+			"freqrange":1,
+			"frequency":"1500",
+			"range":["880-915","1427-1432"],
+			"scsbw":{
+				"dl":{
+					15:[5,10,15,20],
+					30:[10,15,20],
+					60:[]
+				}
+			},
+			"nrarfcn":[286400,303400]
+		},
 		95:{
 			"type":"SUL",
 			"freqrange":1,
 			"frequency":"2000",
 			"range":["2010-2050"],
 			"scsbw":{
-				15:[5,10,15],
-				30:[10,15],
-				60:[10,15]
+				"dl":{
+					15:[5,10,15],
+					30:[10,15],
+					60:[10,15]
+				}
 			},
 			"nrarfcn":[402000,405000]
 		},
@@ -559,8 +682,10 @@ var s5g = {
 			"frequency":"28000",
 			"range":["26500-29500"],
 			"scsbw":{
-				60:[50,100,200],
-				120:[50,100,200,400]
+				"dl": {
+					60: [50, 100, 200],
+					120: [50, 100, 200, 400]
+				}
 			},
 			"nrarfcn":[2054166,2104165]
 		},
@@ -570,8 +695,10 @@ var s5g = {
 			"frequency":"26000",
 			"range":["24250-27500"],
 			"scsbw":{
-				60:[50,100,200],
-				120:[50,100,200,400]
+				"dl": {
+					60: [50, 100, 200],
+					120: [50, 100, 200, 400]
+				}
 			},
 			"nrarfcn":[2016667,2070832]
 		},
@@ -581,8 +708,10 @@ var s5g = {
 			"frequency":"39000",
 			"range":["37000-40000"],
 			"scsbw":{
-				60:[50,100,200],
-				120:[50,100,200,400]
+				"dl": {
+					60: [50, 100, 200],
+					120: [50, 100, 200, 400]
+				}
 			},
 			"nrarfcn":[2229166,2279165]
 		},
@@ -592,8 +721,10 @@ var s5g = {
 			"frequency":"28000",
 			"range":["27500-28350"],
 			"scsbw":{
-				60:[50,100,200],
-				120:[50,100,200,400]
+				"dl": {
+					60: [50, 100, 200],
+					120: [50, 100, 200, 400]
+				}
 			},
 			"nrarfcn":[2070833,2084999]
 		}
@@ -770,6 +901,8 @@ var s5g = {
 		"bandconf":_l["header.bandconf"],
 		"sfactor":_l["header.sfactor"],
 		"bandwidth":_l["header.bandwidth"],
+		"dlBandwidth":_l["header.dlbandwidth"],
+		"ulBandwidth":_l["header.ulbandwidth"],
 		"layers":_l["header.layers"],
 		"dlLayers":_l["header.dllayers"],
 		"ulLayers":_l["header.ullayers"],
@@ -821,7 +954,8 @@ var s5g = {
 			var ulCoding = parseInt(info.ulModulation);
 			var sFactor = parseFloat(info.sfactor);
 			var scs = parseInt(info.scs);
-			var sRbs = parseInt(info.bandwidth);
+			var sDlRbs = parseInt(info.dlBandwidth);
+			var sUlRbs = parseInt(info.ulBandwidth);
 
 			var num = s5g.calc.numerology(scs);
 
@@ -845,11 +979,11 @@ var s5g = {
 
 			// Sub-Carrier spacing
 			var cNum = s5g.calc.scs(num);
-			var tSc = s5g.nrRbData[sRbs][scs] * s5g.calc.scprb;
-			var foo = tSc/cNum;
+			var tDlSc = s5g.nrRbData[sDlRbs][scs] * s5g.calc.scprb;
+			var tUlSc = s5g.nrRbData[sUlRbs][scs] * s5g.calc.scprb;
 
-			c["dl"] = c["dl"] * foo;
-			c["ul"] = c["ul"] * foo;
+			c["dl"] = c["dl"] * (tDlSc/cNum);
+			c["ul"] = c["ul"] * (tUlSc/cNum);
 
 			return c;
 		},
@@ -964,8 +1098,9 @@ var s5g = {
 			var sumDl = 0, sumUl = 0;
 			
 			for (var i in s5g.carriers){
-				if (s5g.nrRbData[parseInt(s5g.carriers[i].bandwidth)] === undefined) continue;
-				
+				if (s5g.nrRbData[parseInt(s5g.carriers[i].dlBandwidth)] === undefined) continue;
+				if (s5g.nrRbData[parseInt(s5g.carriers[i].ulBandwidth)] === undefined) continue;
+
 				var carrierSpeed = s5g.calc.carrier(i);
 				
 				s5g.ux.setRowSpeed(i,carrierSpeed);
@@ -992,14 +1127,21 @@ var s5g = {
 				// Re-Calculate speed
 				s5g.logic.doCalculation();
 			},
+
 			"scs":function(caId){
-				//s5g.logic.resetCarrierData(caId,["band","scs"]);
-				s5g.ux.populateSelectors(caId,["bandwidth","sfactor"]);
+				s5g.ux.populateSelectors(caId,["dlBandwidth","ulBandwidth","sfactor"]);
 			},
+
 			"sfactor":function(caId){},
+
 			"bandwidth":function(caId){
-				//s5g.logic.resetCarrierData(caId,["band","scs","bandwidth"]);
 				s5g.ux.populateSelectors(caId,["dlLayers","ulLayers","dlModulation","ulModulation","sfactor"]);
+			},
+			"dlBandwidth":function(caId){
+				s5g.logic.changeCbs["bandwidth"](caId);
+			},
+			"ulBandwidth":function(caId){
+				s5g.logic.changeCbs["bandwidth"](caId);
 			},
 
 			"tddSlotFormat":function(caId){
@@ -1071,7 +1213,8 @@ var s5g = {
 			// Push default carrier template
 			s5g.carriers.push({
 				band:null,
-				bandwidth:null,
+				dlBandwidth:null,
+				ulBandwidth:null,
 
 				dlLayers:null,
 				ulLayers:null,
@@ -1122,7 +1265,7 @@ var s5g = {
 		},
 		
 		resetCarrierData:function(caId,attributes){
-			var clearAttr = ["band","scs","sfactor","bandwidth","dlLayers","ulLayers","dlModulation","ulModulation"];
+			var clearAttr = ["band","scs","sfactor","dlBandwidth","ulBandwidth","dlLayers","ulLayers","dlModulation","ulModulation"];
 			for (var i = 0; i < 5; i++){
 				if (attributes.indexOf(clearAttr[i]) !== -1) continue;
 				
@@ -1149,7 +1292,8 @@ var s5g = {
 		},
 		setPopulateDefaults:function(caId,override){
 			var defaults = {
-				"bandwidth":20,
+				"dlBandwidth":20,
+				"ulBandwidth":20,
 				"dlLayers":2,
 				"ulLayers":1,
 				"dlModulation":8,
@@ -1161,12 +1305,14 @@ var s5g = {
 			var band = parseInt(s5g.carriers[caId].band);
 			var data = s5g.nrBandData[band];
 			
-			if (data.scsbw[30].length === 0) 
+			if (data.scsbw["dl"][30].length === 0)
 				defaults["scs"] = 15;
 			
-			if (data.scsbw[parseInt(defaults["scs"])].indexOf(20) === -1) 
-				defaults["bandwidth"] = data.scsbw[parseInt(defaults["scs"])][0];
-			
+			if (data.scsbw["dl"][parseInt(defaults["scs"])].indexOf(20) === -1) {
+				defaults["dlBandwidth"] = data.scsbw["dl"][parseInt(defaults["scs"])][0];
+				defaults["ulBandwidth"] = data.scsbw["dl"][parseInt(defaults["scs"])][0];
+			}
+
 			$(".carrier_row[data-caid='" + caId + "'] div.rowcont div.rowsect select").each(function(){
 				var sel = $(this).data("selector");
 
@@ -1181,7 +1327,7 @@ var s5g = {
 		},
 		
 		doCalculation:function(){
-			var required = ["bandwidth","dlLayers","ulLayers","modulation","sfactor","scs"];
+			var required = ["dlBandwidth","ulBandwidth","dlLayers","ulLayers","modulation","sfactor","scs"];
 			
 			var error = false;
 			for (var i in s5g.carriers){
@@ -1323,11 +1469,20 @@ var s5g = {
 				);
 	
 				el.append(
+					$("<label/>").text(_l["header.dlbandwidth"]),
 					$("<select/>",{
-						"title":s5g.ux.selectText("bandwidth"),
-						"data-selector":"bandwidth"
+						"title":s5g.ux.selectText("dlBandwidth"),
+						"data-selector":"dlBandwidth"
 					}).append(
-						$("<option/>",{"value":0}).text(s5g.ux.selectText("bandwidth"))
+						$("<option/>",{"value":0}).text(s5g.ux.selectText("dlBandwidth"))
+					).on("change",s5g.logic.selectNewValue),
+
+					$("<label/>").text(_l["header.ulbandwidth"]),
+					$("<select/>",{
+						"title":s5g.ux.selectText("ulBandwidth"),
+						"data-selector":"ulBandwidth"
+					}).append(
+						$("<option/>",{"value":0}).text(s5g.ux.selectText("ulBandwidth"))
 					).on("change",s5g.logic.selectNewValue)
 				);
 				
@@ -1421,10 +1576,17 @@ var s5g = {
 		setRowSpeed:function(caId,speeds){
 			var caName = s5g.ux.carrierName(caId);
 
-			var caBandwidth = parseInt(s5g.carriers[caId].bandwidth);
+			var caDlBandwidth = parseInt(s5g.carriers[caId].dlBandwidth);
+			var caUlBandwidth = parseInt(s5g.carriers[caId].ulBandwidth);
 			var caScs = parseInt(s5g.carriers[caId].scs);
-			var rbsAvail = s5g.nrRbData[caBandwidth][caScs];
-			var bandwidthTxt = caBandwidth + "MHz (" + rbsAvail + " RBs)";
+			var rbsAvailDl = s5g.nrRbData[caDlBandwidth][caScs];
+			var rbsAvailUl = s5g.nrRbData[caDlBandwidth][caScs];
+			var bandwidthTxt = caDlBandwidth + "MHz (" + rbsAvailDl + " RBs)";
+
+			// If DL and UL bandwidths are different, update text
+			if (caDlBandwidth !== caUlBandwidth){
+				bandwidthTxt += "&#8595; &amp; " + caUlBandwidth + "MHz (" + rbsAvailUl + " RBs) &#8593;"
+			}
 
 			var dlSpeed = s5g.calc.round(speeds[0]);
 			var ulSpeed = s5g.calc.round(speeds[1]);
@@ -1495,8 +1657,11 @@ var s5g = {
 					case "scs":
 						s5g.ux.populateScs($(this),caId);
 						break;
-					case "bandwidth":
-						s5g.ux.populateBandwidth($(this),caId);
+					case "dlBandwidth":
+						s5g.ux.populateBandwidth($(this),caId,"dl");
+						break;
+					case "ulBandwidth":
+						s5g.ux.populateBandwidth($(this),caId,"ul");
 						break;
 					default:
 						s5g.ux.populateGeneric($(this),caId,sel);
@@ -1524,9 +1689,10 @@ var s5g = {
 				);
 			}
 		},
-		populateBandwidth:function(el,caId){
+		populateBandwidth:function(el,caId,direction){
 			var lastVal = parseInt(el.val());
-			var scsData = s5g.nrBandData[s5g.carriers[caId].band].scsbw[s5g.carriers[caId].scs];
+			var scsDataBw = s5g.nrBandData[s5g.carriers[caId].band].scsbw;
+			var scsData = (scsDataBw[direction] ? scsDataBw[direction] : scsDataBw["dl"])[s5g.carriers[caId].scs];
 			var setDefault = true;
 			
 			el.empty();
@@ -1555,7 +1721,7 @@ var s5g = {
 		populateScs:function(el,caId){
 			if (!s5g.nrBandData[s5g.carriers[caId].band]) return;
 
-			var scsData = s5g.nrBandData[s5g.carriers[caId].band].scsbw;
+			var scsData = s5g.nrBandData[s5g.carriers[caId].band].scsbw["dl"];
 			var keys = Object.keys(scsData);
 			
 			el.empty();

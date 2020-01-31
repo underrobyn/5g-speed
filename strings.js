@@ -10,6 +10,8 @@ const __en = {
 	"header.scs":"Sub Carrier Spacing",
 	"header.bandconf":"Band Config",
 	"header.sfactor":"Scaling Factor",
+	"header.dlbandwidth":"Downlink Bandwidth",
+	"header.ulbandwidth":"Uplink Bandwidth",
 	"header.bandwidth":"Bandwidth",
 	"header.layers":"Layers",
 	"header.dllayers":"Downlink Layers",
