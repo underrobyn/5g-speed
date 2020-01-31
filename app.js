@@ -1121,6 +1121,7 @@ var s5g = {
 				if (s5g.carriers[caId]["band"] !== "0") {
 					s5g.ux.populateSelectors(caId, ["scs"]);
 					s5g.ux.updateBandconf(caId);
+					s5g.ux.updateBandwidth(caId);
 					s5g.logic.setPopulateDefaults(caId, true);
 				}
 				
@@ -1469,6 +1470,23 @@ var s5g = {
 				);
 	
 				el.append(
+					$("<label/>").text(_l["header.bandwidth"]),
+					$("<select/>",{
+						"title":s5g.ux.selectText("bandwidth"),
+						"data-selector":"dlBandwidth"
+					}).append(
+						$("<option/>",{"value":0}).text(s5g.ux.selectText("bandwidth"))
+					).on("change",s5g.logic.selectNewValue)
+				);
+				
+				return el;
+			},
+			fddbandwidth:function(){
+				var el = $("<div/>",{"class":"rowsect"}).append(
+					$("<span/>",{"class":"rowsectheader"}).text(s5g.name.bandwidth)
+				);
+
+				el.append(
 					$("<label/>").text(_l["header.dlbandwidth"]),
 					$("<select/>",{
 						"title":s5g.ux.selectText("dlBandwidth"),
@@ -1485,7 +1503,7 @@ var s5g = {
 						$("<option/>",{"value":0}).text(s5g.ux.selectText("ulBandwidth"))
 					).on("change",s5g.logic.selectNewValue)
 				);
-				
+
 				return el;
 			},
 			layers:function(){
@@ -1690,6 +1708,8 @@ var s5g = {
 			}
 		},
 		populateBandwidth:function(el,caId,direction){
+			if (direction === "ul" && s5g.nrBandData[s5g.carriers[caId].band] !== "FDD") return;
+
 			var lastVal = parseInt(el.val());
 			var scsDataBw = s5g.nrBandData[s5g.carriers[caId].band].scsbw;
 			var scsData = (scsDataBw[direction] ? scsDataBw[direction] : scsDataBw["dl"])[s5g.carriers[caId].scs];
@@ -1776,8 +1796,7 @@ var s5g = {
 
 		updateBandconf:function(caId){
 			let bandInfo = s5g.nrBandData[s5g.carriers[caId].band];
-			var setDefault = true;
-			var el = $(".carrier_row[data-caid='" + 0 + "'] div.rowcont div.rowsect:nth-child(3)");
+			var el = $(".carrier_row[data-caid='" + caId + "'] div.rowcont div.rowsect:nth-child(3)");
 
 			el.empty();
 			if (bandInfo.type === "TDD"){
@@ -1786,7 +1805,7 @@ var s5g = {
 				);
 
 				s5g.ux.populateTddSlotFormat(
-					$(".carrier_row[data-caid='" + 0 + "'] div.rowcont div.rowsect select[data-selector='tddSlotFormat']"),
+					$(".carrier_row[data-caid='" + caId + "'] div.rowcont div.rowsect select[data-selector='tddSlotFormat']"),
 					caId
 				);
 			} else {
@@ -1794,9 +1813,27 @@ var s5g = {
 					s5g.ux.generate.bandconf()
 				);
 			}
+		},
 
-			if (setDefault === true){
+		updateBandwidth:function(caId){
+			let bandInfo = s5g.nrBandData[s5g.carriers[caId].band];
+			var el = $(".carrier_row[data-caid='" + caId + "'] div.rowcont div.rowsect:nth-child(4)");
 
+			el.empty();
+			if (bandInfo.type === "FDD"){
+				el.replaceWith(
+					s5g.ux.generate.fddbandwidth()
+				);
+
+				s5g.ux.populateBandwidth(
+					$(".carrier_row[data-caid='" + caId + "'] div.rowcont div.rowsect select[data-selector='ulBandwidth']"),
+					caId,
+					"ul"
+				);
+			} else {
+				el.replaceWith(
+					s5g.ux.generate.bandwidth()
+				);
 			}
 		},
 
