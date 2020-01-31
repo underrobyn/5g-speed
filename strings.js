@@ -14,6 +14,7 @@ const __en = {
 	"header.ulbandwidth":"Uplink Bandwidth",
 	"header.bandwidth":"Bandwidth",
 	"header.layers":"Layers",
+	"header.rowcaopts":"Carrier Options",
 	"header.dllayers":"Downlink Layers",
 	"header.ullayers":"Uplink Layers",
 	"header.modulation":"Modulation",
@@ -21,6 +22,7 @@ const __en = {
 	"header.ulmodulation":"Uplink Modulation",
 	"header.tddslotformat":"TDD Slot Format",
 	"header.tddcustomslot":"Custom Slot Format",
+	"header.flexsympurpose":"Flexible Symbol Purpose:",
 
 	"error.badslotchar":"Slot frame can only be D, U or F",
 	"error.badslotlength":"Slot frame must be 14 symbols long",
@@ -31,6 +33,8 @@ const __en = {
 	"ux.aggupl":"Aggregate Uplink",
 	"ux.deaggupl":"Deaggregate Uplink",
 	"ux.remca":"Remove Carrier",
+	"ux.flexdata":"Guard Period",
+	"ux.flexguard":"Data",
 	"ux.addca":"Add Component Carrier",
 	"ux.title":"5G Theoretical Throughput Calculator"
 };

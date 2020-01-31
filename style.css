@@ -20,7 +20,7 @@ select,button {
 	line-height:1.2em;
 	padding:5px;
 }
-select,input{
+select,input,button{
 	margin:.5% 4%;
 	width:92%;
 	-webkit-appearance:none;
