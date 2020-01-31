@@ -898,16 +898,16 @@ var s5g = {
 
 			getSlotFormat:function(caId, info){
 				if (info.tddCustomSlot === ""){
-					if (s5g.nrTddConf[info.tddslotformat]){
-						return s5g.nrTddConf[info.tddslotformat];
+					if (s5g.nrTddConf[info.tddSlotFormat]){
+						return s5g.nrTddConf[info.tddSlotFormat];
 					}
-					s5g.ux.inputError(1,[caId, "tddslotformat"]);
+					s5g.ux.inputError(1,[caId, _l["header.tddslotformat"]]);
 				} else {
 					let result = s5g.logic.validateSlotString(info.tddCustomSlot);
 					if (result[0] !== false){
 						return info.tddCustomSlot;
 					}
-					s5g.ux.inputError(1,[caId, result[1]]);
+					s5g.ux.inputError(2,[caId, result[1]]);
 				}
 
 				return false;
@@ -1006,7 +1006,9 @@ var s5g = {
 				s5g.carriers[caId]["tddCustomSlot"] = "";
 			},
 			"tddCustomSlot":function(caId){
-				s5g.carriers[caId]["tddSlotFormat"] = null;
+				if (s5g.carriers[caId]["tddCustomSlot"].length !== 0){
+					s5g.carriers[caId]["tddSlotFormat"] = null;
+				}
 			},
 
 			"layers":function(caId){
@@ -1113,6 +1115,8 @@ var s5g = {
 			
 			s5g.carriers.splice(caId,1);
 			s5g.ux.removeCarrier(caId);
+
+			s5g.haltCalculation = false;
 			
 			s5g.logic.doCalculation();
 		},
@@ -1274,7 +1278,7 @@ var s5g = {
 					$("<label/>").text(_l["header.tddcustomslot"]),
 					$("<input/>",{
 						"type":"text",
-						"placeholder":"DL / UL / Flexible",
+						"placeholder":"Enter 14 symbols (D/U/F)",
 						"data-selector":"tddCustomSlot",
 					}).on("keyup", s5g.logic.selectNewValue)
 				);
@@ -1566,6 +1570,24 @@ var s5g = {
 				);
 			}
 		},
+		populateTddSlotFormat:function(el,caId){
+			var lastVal = el.val();
+
+			el.empty();
+
+			for (var i = 0, l = s5g.nrTddConf.length;i<l;i++){
+				var opts = {
+					"value":i
+				};
+
+				// Preserve current value
+				if (s5g.nrTddConf[i] === lastVal) opts["selected"] = true;
+
+				el.append(
+					$("<option/>",opts).text(s5g.nrTddConf[i])
+				);
+			}
+		},
 		populateGeneric:function(el,caId,selector){
 			var lastVal = el.val();
 			
@@ -1595,6 +1617,11 @@ var s5g = {
 			if (bandInfo.type === "TDD"){
 				el.replaceWith(
 					s5g.ux.generate.tddbandconf()
+				);
+
+				s5g.ux.populateTddSlotFormat(
+					$(".carrier_row[data-caid='" + 0 + "'] div.rowcont div.rowsect select[data-selector='tddSlotFormat']"),
+					caId
 				);
 			} else {
 				el.replaceWith(
@@ -1629,7 +1656,7 @@ var s5g = {
 					el.text("Please enter " + data[1] + " for " + s5g.ux.carrierName(data[0]));
 					break;
 				case 2:
-					el.text("Band not supported for " + s5g.ux.carrierName(data[0]));
+					el.text(data[1] + " for " + s5g.ux.carrierName(data[0]));
 					break;
 				default:
 					el.text(_l["error.generic"]);
