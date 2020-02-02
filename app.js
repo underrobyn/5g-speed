@@ -1019,7 +1019,7 @@ var s5g = {
 				var calc = s5g.calc.common(info);
 
 				let tddConf = s5g.calc.tdd.getSlotFormat(caId, info);
-				if (!tddConf) return [];
+				if (!tddConf) return [0,0];
 
 				let tdd = s5g.logic.calcSlotPercent(tddConf);
 
@@ -1096,6 +1096,7 @@ var s5g = {
 					break;
 			}
 
+
 			// Round values
 			ret[0] = s5g.calc.reduce(ret[0]);
 			ret[1] = s5g.calc.reduce(ret[1]);
@@ -1112,6 +1113,7 @@ var s5g = {
 				if (s5g.nrRbData[parseInt(s5g.carriers[i].dlBandwidth)] === undefined) continue;
 
 				var carrierSpeed = s5g.calc.carrier(i);
+				console.log(carrierSpeed);
 				
 				s5g.ux.setRowSpeed(i,carrierSpeed);
 				
@@ -1646,6 +1648,7 @@ var s5g = {
 			if (dlSpeed !== 0 && ulSpeed !== 0) speedTxt += "; &amp; ";
 			if (ulSpeed !== 0) 					speedTxt += ulSpeed + "Mbps &#8593";
 			speedTxt += "</strong>";
+			if (dlSpeed === 0 && ulSpeed === 0) speedTxt = _l["alert.nodata"];
 
 			var bandTxt = "Band n" + band + ": " + data.frequency + "MHz";
 			
@@ -1880,6 +1883,7 @@ var s5g = {
 			if (dlSpeed !== 0) 					speedTxt += dlSpeed + "Mbps &#8595";
 			if (dlSpeed !== 0 && ulSpeed !== 0) speedTxt += "; &amp; ";
 			if (ulSpeed !== 0) 					speedTxt += ulSpeed + "Mbps &#8593";
+			if (dlSpeed === 0 && ulSpeed === 0) speedTxt = _l["alert.nodata"];
 			
 			$("#speeds").html(speedTxt);
 		},

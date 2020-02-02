@@ -1,5 +1,6 @@
 const __en = {
 	"alert.selband":"Please choose a band",
+	"alert.nodata":"No Data Throughput",
 
 	"label.options":"Options",
 	"label.primaryca":"Primary Carrier",
