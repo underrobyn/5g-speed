@@ -4,11 +4,11 @@
 	
 		<title>5G Throughput Calculator</title>
 		<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport" />
-		<meta content="IE=edge" http-equiv="X-UA-Compatible">
-		<meta content="#1a1a1a" name="theme-color">
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta content="IE=edge" http-equiv="X-UA-Compatible" />
+		<meta content="#1a1a1a" name="theme-color" />
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 		<meta property="og:title" content="5G-NR Theoretical Throughput Calculator" />
-		<meta property="og:description" content="" />
+		<meta property="og:description" content="A tool to calculate the theoretical maximum for 5G-NR, with FDD, TDD, SDL and SUL band support." />
 		<meta name="keywords" content="5g, throughput, calculator, theoretical, tdd, fdd, sdl, resource block, mbps, nr" />
 		
 		<!-- Enable PWA ability on iOS -->
@@ -31,6 +31,7 @@
 			Sources:
 			http://niviuk.free.fr/nr_band.php
 			http://niviuk.free.fr/nr_sf.php
+			https://howltestuffworks.blogspot.com/2019/11/5g-nr-resource-blocks.html
 		-->
 		
 		<div id="title_bar">
