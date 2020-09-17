@@ -967,31 +967,32 @@ var s5g = {
 			if (scs === 60) return 2;
 		},
 		scs:function(scs){
-			var exp = Math.pow(2,scs);
+			let exp = Math.pow(2,scs);
 			return 1e-3/(s5g.calc.symslot * exp); //slot length = 1ms/2^scs
 		},
 
 		common:function(info,band){
-			var c = {
+			let c = {
 				"dl": s5g.calc.base,
 				"ul": s5g.calc.base
 			};
 
-			var dlLayers = parseInt(info.dlLayers);
-			var ulLayers = parseInt(info.ulLayers);
+			let dlLayers = parseInt(info.dlLayers),
+				ulLayers = parseInt(info.ulLayers);
 
-			var dlCoding = parseInt(info.dlModulation);
-			var ulCoding = parseInt(info.ulModulation);
+			let dlCoding = parseInt(info.dlModulation),
+				ulCoding = parseInt(info.ulModulation);
 
-			var sFactor = parseFloat(info.sfactor);
+			let sFactor = parseFloat(info.sfactor);
 
-			var scs = parseInt(info.scs);
+			let scs = parseInt(info.scs);
 
-			var sDlRbs = parseInt(info.dlBandwidth);
-			var sUlRbs = parseInt(info.ulBandwidth);
+			let sDlRbs = parseInt(info.dlBandwidth),
+				sUlRbs = parseInt(info.ulBandwidth);
+
 			if (info.ulBandwidth === null) sUlRbs = sDlRbs;
 
-			var num = s5g.calc.numerology(scs);
+			let num = s5g.calc.numerology(scs);
 
 			console.log(info);
 
@@ -1012,9 +1013,10 @@ var s5g = {
 			c["ul"] = c["ul"] * s5g.calc.rMax;
 
 			// Sub-Carrier spacing
-			var cNum = s5g.calc.scs(num);
-			var tDlSc = s5g.nrRbData[sDlRbs][scs] * s5g.calc.scprb;
-			var tUlSc = s5g.nrRbData[sUlRbs][scs] * s5g.calc.scprb;
+			let cNum = s5g.calc.scs(num);
+
+			let tDlSc = s5g.nrRbData[sDlRbs][scs] * s5g.calc.scprb,
+				tUlSc = s5g.nrRbData[sUlRbs][scs] * s5g.calc.scprb;
 
 			c["dl"] = c["dl"] * (tDlSc/cNum);
 			c["ul"] = c["ul"] * (tUlSc/cNum);
@@ -1023,10 +1025,10 @@ var s5g = {
 		},
 
 		calcOverhead:function(band, calc){
-			var freqRange = band.freqrange;
+			let freqRange = band.freqrange;
 
-			let retDl = calc["dl"] * (1-s5g.nrFreqOverhead[freqRange][0]);
-			let retUl = calc["ul"] * (1-s5g.nrFreqOverhead[freqRange][1]);
+			let retDl = calc["dl"] * (1-s5g.nrFreqOverhead[freqRange][0]),
+				retUl = calc["ul"] * (1-s5g.nrFreqOverhead[freqRange][1]);
 
 			return {
 				"dl":retDl,
@@ -1036,7 +1038,7 @@ var s5g = {
 
 		fdd:{
 			run:function(caId, info, band){
-				var calc = s5g.calc.common(info);
+				let calc = s5g.calc.common(info);
 				let final = s5g.calc.calcOverhead(band, calc);
 
 				return [final["dl"],final["ul"]];
@@ -1045,7 +1047,7 @@ var s5g = {
 
 		tdd:{
 			run:function(caId, info, band){
-				var calc = s5g.calc.common(info);
+				let calc = s5g.calc.common(info);
 
 				let tddConf = s5g.calc.tdd.getSlotFormat(caId, info);
 				if (!tddConf) return [0,0];
@@ -1090,8 +1092,8 @@ var s5g = {
 
 		sxl:{
 			run:function(caId, info, band){
-				var calc = s5g.calc.common(info);
-				var type = band.type;
+				let calc = s5g.calc.common(info);
+				let type = band.type;
 
 				// Overhead
 				let final = s5g.calc.calcOverhead(band, calc);
@@ -1105,9 +1107,9 @@ var s5g = {
 		},
 
 		carrier:function(caId){
-			var info = s5g.carriers[caId];
-			var ret = [0,0];
-			var band = s5g.nrBandData[info.band];
+			let info = s5g.carriers[caId];
+			let ret = [0,0];
+			let band = s5g.nrBandData[info.band];
 
 			switch (band.type){
 				case "FDD":
@@ -1136,15 +1138,15 @@ var s5g = {
 		},
 
 		run:function(){
-			var sumDl = 0, sumUl = 0;
+			let sumDl = 0, sumUl = 0;
 			
-			for (var i in s5g.carriers){
+			for (let i in s5g.carriers){
 				if (s5g.nrRbData[parseInt(s5g.carriers[i].dlBandwidth)] === undefined) continue;
 
-				var carrierSpeed = s5g.calc.carrier(i);
+				let carrierSpeed = s5g.calc.carrier(i);
 				console.log(carrierSpeed);
 				
-				s5g.ux.setRowSpeed(i,carrierSpeed);
+				s5g.ux.setRowSpeed(i, carrierSpeed);
 				
 				sumDl += carrierSpeed[0];
 				if (s5g.carriers[i].uplinkAggregation === true || parseInt(i) === 0) sumUl += carrierSpeed[1];
@@ -1240,6 +1242,7 @@ var s5g = {
 
 		calcSlotPercent:function(str){
 			let res = s5g.logic.decodeSlotString(str);
+
 			return {
 				"D":res["D"]/s5g.calc.symslot,
 				"U":res["U"]/s5g.calc.symslot,
@@ -1274,8 +1277,8 @@ var s5g = {
 				uplinkAggregation:false
 			});
 			
-			var carrier = s5g.carriers.length-1;
-			var render = s5g.carriers[carrier];
+			let carrier = s5g.carriers.length-1;
+			let render = s5g.carriers[carrier];
 			
 			// Render newly made carrier
 			s5g.ux.renderCarrier(render,carrier);
@@ -1283,7 +1286,7 @@ var s5g = {
 		},
 		
 		aggregateUplink:function(){
-			var caId = s5g.logic.getCaId(this);
+			let caId = s5g.logic.getCaId(this);
 			s5g.carriers[caId].uplinkAggregation = !s5g.carriers[caId].uplinkAggregation;
 			
 			$(this).text(s5g.carriers[caId].uplinkAggregation === true ? _l["ux.deaggupl"] : _l["ux.aggupl"]);
@@ -1291,7 +1294,7 @@ var s5g = {
 			s5g.logic.doCalculation();
 		},
 		flexToggle:function(){
-			var caId = s5g.logic.getCaId(this);
+			let caId = s5g.logic.getCaId(this);
 			s5g.carriers[caId].tddFlexData = !s5g.carriers[caId].tddFlexData;
 
 			$(this).text(s5g.carriers[caId].tddFlexData === true ? _l["ux.flexguard"] : _l["ux.flexdata"]);
@@ -1299,7 +1302,7 @@ var s5g = {
 			s5g.logic.doCalculation();
 		},
 		removeCarrier:function(){
-			var caId = s5g.logic.getCaId(this);
+			let caId = s5g.logic.getCaId(this);
 			
 			if (caId === 0){
 				alert(_l["error.remprim"]);
@@ -1315,8 +1318,8 @@ var s5g = {
 		},
 		
 		resetCarrierData:function(caId,attributes){
-			var clearAttr = ["band","scs","sfactor","dlBandwidth","ulBandwidth","dlLayers","ulLayers","dlModulation","ulModulation"];
-			for (var i = 0; i < 5; i++){
+			let clearAttr = ["band","scs","sfactor","dlBandwidth","ulBandwidth","dlLayers","ulLayers","dlModulation","ulModulation"];
+			for (let i = 0; i < 5; i++){
 				if (attributes.indexOf(clearAttr[i]) !== -1) continue;
 				
 				//console.log("Set",clearAttr[i],"to null");
@@ -1326,8 +1329,8 @@ var s5g = {
 			}
 		},
 		selectNewValue:function(){
-			var caId = s5g.logic.getCaId(this);
-			var selector = $(this).data("selector");
+			let caId = s5g.logic.getCaId(this);
+			let selector = $(this).data("selector");
 			
 			s5g.carriers[caId][selector] = $(this).val();
 			s5g.haltCalculation = false;
@@ -1366,7 +1369,7 @@ var s5g = {
 			}
 
 			$(".carrier_row[data-caid='" + caId + "'] div.rowcont div.rowsect select").each(function(){
-				var sel = $(this).data("selector");
+				let sel = $(this).data("selector");
 
 				if (defaults[sel] === undefined) return;
 				if ($(this).val() === "0" && override !== true) return;
@@ -1379,15 +1382,15 @@ var s5g = {
 		},
 		
 		doCalculation:function(){
-			var required = {
+			let required = {
 				"FDD":["dlBandwidth","ulBandwidth","dlLayers","ulLayers","dlModulation","ulModulation","sfactor","scs"],
 				"TDD":["dlBandwidth","dlLayers","ulLayers","dlModulation","ulModulation","sfactor","scs"],
 				"SDL":["dlBandwidth","dlLayers","dlModulation","sfactor","scs"]
 			};
 			
-			var error = false;
-			for (var i in s5g.carriers){
-				var ca = s5g.carriers[i];
+			let error = false;
+			for (let i in s5g.carriers){
+				let ca = s5g.carriers[i];
 				let bandType = s5g.nrBandData[ca.band].type;
 				
 				if (isNaN(parseInt(ca.band)) || ca.band === "0") {
@@ -1399,11 +1402,11 @@ var s5g = {
 				
 				if (s5g.DEBUG > 2) console.log(s5g.nrBandData[parseInt(ca.band)].type);
 				
-				for (var j in required[bandType]){
+				for (let j in required[bandType]){
 					if (ca[required[bandType][j]] !== null) continue;
 
 					error = true;
-					s5g.ux.inputError(1,[i,required[bandType][j]]);
+					s5g.ux.inputError(1,[i, required[bandType][j]]);
 				}
 			}
 			
@@ -1436,7 +1439,7 @@ var s5g = {
 		
 		generate:{
 			band:function(){
-				var el = $("<div/>",{"class":"rowsect"}).append(
+				let el = $("<div/>",{"class":"rowsect"}).append(
 					$("<span/>",{"class":"rowsectheader"}).text(s5g.name.band)
 				);
 	
@@ -1453,7 +1456,7 @@ var s5g = {
 				return el;
 			},
 			bandconf:function(){
-				var el = $("<div/>",{"class":"rowsect"}).append(
+				let el = $("<div/>",{"class":"rowsect"}).append(
 					$("<span/>",{"class":"rowsectheader"}).text(s5g.name.bandconf)
 				);
 
@@ -1464,7 +1467,7 @@ var s5g = {
 				return el;
 			},
 			tddbandconf:function(){
-				var el = $("<div/>",{"class":"rowsect"}).append(
+				let el = $("<div/>",{"class":"rowsect"}).append(
 					$("<span/>",{"class":"rowsectheader"}).text(s5g.name.bandconf)
 				);
 
@@ -1489,7 +1492,7 @@ var s5g = {
 				return el;
 			},
 			scs:function(){
-				var el = $("<div/>",{"class":"rowsect"}).append(
+				let el = $("<div/>",{"class":"rowsect"}).append(
 					$("<span/>",{"class":"rowsectheader"}).text(s5g.name.scs)
 				);
 	
@@ -1506,7 +1509,7 @@ var s5g = {
 				return el;
 			},
 			sfactor:function(){
-				var el = $("<div/>",{"class":"rowsect"}).append(
+				let el = $("<div/>",{"class":"rowsect"}).append(
 					$("<span/>",{"class":"rowsectheader"}).text(s5g.name.sfactor)
 				);
 
@@ -1523,7 +1526,7 @@ var s5g = {
 				return el;
 			},
 			bandwidth:function(){
-				var el = $("<div/>",{"class":"rowsect"}).append(
+				let el = $("<div/>",{"class":"rowsect"}).append(
 					$("<span/>",{"class":"rowsectheader"}).text(s5g.name.bandwidth)
 				);
 	
@@ -1540,7 +1543,7 @@ var s5g = {
 				return el;
 			},
 			fddbandwidth:function(){
-				var el = $("<div/>",{"class":"rowsect"}).append(
+				let el = $("<div/>",{"class":"rowsect"}).append(
 					$("<span/>",{"class":"rowsectheader"}).text(s5g.name.bandwidth)
 				);
 
@@ -1565,7 +1568,7 @@ var s5g = {
 				return el;
 			},
 			layers:function(){
-				var el = $("<div/>",{"class":"rowsect"}).append(
+				let el = $("<div/>",{"class":"rowsect"}).append(
 					$("<span/>",{"class":"rowsectheader"}).text(s5g.name.layers)
 				);
 	
@@ -1590,7 +1593,7 @@ var s5g = {
 				return el;
 			},
 			modulation:function(){
-				var el = $("<div/>",{"class":"rowsect"}).append(
+				let el = $("<div/>",{"class":"rowsect"}).append(
 					$("<span/>",{"class":"rowsectheader"}).text(s5g.name.modulation)
 				);
 	
@@ -1616,7 +1619,7 @@ var s5g = {
 			},
 
 			rowOpts:function(isPrimary){
-				var el = $("<div/>",{"class":"rowsect"}).append(
+				let el = $("<div/>",{"class":"rowsect"}).append(
 					$("<span/>",{"class":"rowsectheader"}).text(_l["label.options"])
 				);
 	
@@ -1643,8 +1646,8 @@ var s5g = {
 			$("div[data-caid='" + caId + "'] div.row_header h2.band_title").html(txt);
 		},
 		toggleRow:function(){
-			var caId = $(this).parent().data("caid");
-			var el = $("div[data-caid='" + caId + "'] div.rowcont");
+			let caId = $(this).parent().data("caid");
+			let el = $("div[data-caid='" + caId + "'] div.rowcont");
 			
 			if (el.is(":visible")){
 				el.slideUp(300);
@@ -1653,33 +1656,35 @@ var s5g = {
 			}
 		},
 		setRowSpeed:function(caId,speeds){
-			var caName = s5g.ux.carrierName(caId);
-			var band = parseInt(s5g.carriers[caId].band);
-			var data = s5g.nrBandData[band];
+			let caName = s5g.ux.carrierName(caId);
+			let band = parseInt(s5g.carriers[caId].band);
+			let data = s5g.nrBandData[band];
 
-			var caDlBandwidth = parseInt(s5g.carriers[caId].dlBandwidth);
-			var caUlBandwidth = parseInt(s5g.carriers[caId].ulBandwidth);
-			var caScs = parseInt(s5g.carriers[caId].scs);
-			var rbsAvailDl = s5g.nrRbData[caDlBandwidth][caScs];
-			var rbsAvailUl = s5g.nrRbData[caDlBandwidth][caScs];
-			var bandwidthTxt = caDlBandwidth + "MHz (" + rbsAvailDl + " RBs)";
+			let caDlBandwidth = parseInt(s5g.carriers[caId].dlBandwidth),
+				caUlBandwidth = parseInt(s5g.carriers[caId].ulBandwidth);
+
+			let caScs = parseInt(s5g.carriers[caId].scs);
+			let rbsAvailDl = s5g.nrRbData[caDlBandwidth][caScs],
+				rbsAvailUl = s5g.nrRbData[caDlBandwidth][caScs];
+
+			let bandwidthTxt = caDlBandwidth + "MHz (" + rbsAvailDl + " RBs)";
 
 			// If DL and UL bandwidths are different, update text
 			if (caDlBandwidth !== caUlBandwidth && data.type === "FDD"){
 				bandwidthTxt += "&#8595; &amp; " + caUlBandwidth + "MHz (" + rbsAvailUl + " RBs) &#8593;"
 			}
 
-			var dlSpeed = s5g.calc.round(speeds[0]);
-			var ulSpeed = s5g.calc.round(speeds[1]);
+			let dlSpeed = s5g.calc.round(speeds[0]),
+				ulSpeed = s5g.calc.round(speeds[1]);
 
-			var speedTxt = "<strong>";
+			let speedTxt = "<strong>";
 			if (dlSpeed !== 0) 					speedTxt += dlSpeed + "Mbps &#8595";
 			if (dlSpeed !== 0 && ulSpeed !== 0) speedTxt += "; &amp; ";
 			if (ulSpeed !== 0) 					speedTxt += ulSpeed + "Mbps &#8593";
 			speedTxt += "</strong>";
 			if (dlSpeed === 0 && ulSpeed === 0) speedTxt = _l["alert.nodata"];
 
-			var bandTxt = "Band n" + band + ": " + data.frequency + "MHz";
+			let bandTxt = "Band n" + band + ": " + data.frequency + "MHz";
 			
 			if (data.type === "FDD"){
 				bandTxt += ", Uplink: " + data.range[0] + "MHz, Downlink: " + data.range[1] + "MHz";
@@ -1690,13 +1695,13 @@ var s5g = {
 			s5g.ux.updateRowTitle(caId,caName + ": " + bandwidthTxt + "<br />" + speedTxt + "<br />" + bandTxt);
 		},
 		renderCarrier:function(info,caId){
-			var el = $("<div/>",{
+			let el = $("<div/>",{
 				"class":"carrier_row",
 				"data-caid":caId
 			});
 			
-			var header = $("<div/>",{"class":"row_header"}).on("click enter",s5g.ux.toggleRow);
-			var body = $("<div/>",{"class":"rowcont"});
+			let header = $("<div/>",{"class":"row_header"}).on("click enter",s5g.ux.toggleRow);
+			let body = $("<div/>",{"class":"rowcont"});
 			
 			header.append($("<h2/>",{"class":"band_title"}).text(s5g.ux.carrierName(caId)));
 			
@@ -1731,7 +1736,7 @@ var s5g = {
 
 		populateSelectors:function(caId,noReload){
 			$(".carrier_row[data-caid='" + caId + "'] div.rowcont div.rowsect select").each(function(){
-				var sel = $(this).data("selector");
+				let sel = $(this).data("selector");
 				
 				if (noReload.indexOf(sel) === -1) return;
 				
@@ -1755,13 +1760,13 @@ var s5g = {
 		},
 
 		populateBand:function(el,caId){
-			var dKeys = Object.keys(s5g.nrBandData);
+			let dKeys = Object.keys(s5g.nrBandData);
 			
 			el.empty().append(
 				$("<option/>",{"value":0}).text(s5g.ux.selectText("band"))
 			);
 			
-			for (var i = 0, l = dKeys.length;i<l;i++){
+			for (let i = 0, l = dKeys.length;i<l;i++){
 				if (s5g.nrBandData[dKeys[i]].frequency === "") continue;
 				
 				txt =  "n" + dKeys[i];
@@ -1776,14 +1781,14 @@ var s5g = {
 		populateBandwidth:function(el,caId,direction){
 			if (direction === "ul" && s5g.nrBandData[s5g.carriers[caId].band].type !== "FDD") return;
 
-			var lastVal = parseInt(el.val());
-			var scsDataBw = s5g.nrBandData[s5g.carriers[caId].band].scsbw;
-			var scsData = (scsDataBw[direction] ? scsDataBw[direction] : scsDataBw["dl"])[s5g.carriers[caId].scs];
-			var setDefault = true;
+			let lastVal = parseInt(el.val());
+			let scsDataBw = s5g.nrBandData[s5g.carriers[caId].band].scsbw;
+			let scsData = (scsDataBw[direction] ? scsDataBw[direction] : scsDataBw["dl"])[s5g.carriers[caId].scs];
+			let setDefault = true;
 			
 			el.empty();
 			
-			for (var i = 0, l = scsData.length;i<l;i++){
+			for (let i = 0, l = scsData.length;i<l;i++){
 				txt = scsData[i] + "MHz";
 				opts = {
 					"value":scsData[i]
@@ -1807,12 +1812,12 @@ var s5g = {
 		populateScs:function(el,caId){
 			if (!s5g.nrBandData[s5g.carriers[caId].band]) return;
 
-			var scsData = s5g.nrBandData[s5g.carriers[caId].band].scsbw["dl"];
-			var keys = Object.keys(scsData);
+			let scsData = s5g.nrBandData[s5g.carriers[caId].band].scsbw["dl"];
+			let keys = Object.keys(scsData);
 			
 			el.empty();
 			
-			for (var i = 0, l = keys.length;i<l;i++){
+			for (let i = 0, l = keys.length;i<l;i++){
 				if (scsData[keys[i]].length === 0) return;
 				
 				txt = keys[i] + "KHz";
@@ -1823,12 +1828,12 @@ var s5g = {
 			}
 		},
 		populateTddSlotFormat:function(el,caId){
-			var lastVal = el.val();
+			let lastVal = el.val();
 
 			el.empty();
 
-			for (var i = 0, l = s5g.nrTddConf.length;i<l;i++){
-				var opts = {
+			for (let i = 0, l = s5g.nrTddConf.length;i<l;i++){
+				let opts = {
 					"value":i
 				};
 
@@ -1841,13 +1846,13 @@ var s5g = {
 			}
 		},
 		populateGeneric:function(el,caId,selector){
-			var lastVal = el.val();
+			let lastVal = el.val();
 			
 			el.empty();
 			
-			var keys = Object.keys(s5g.selectors[selector]);
-			for (var i = 0, l = keys.length;i<l;i++){
-				var opts = {
+			let keys = Object.keys(s5g.selectors[selector]);
+			for (let i = 0, l = keys.length;i<l;i++){
+				let opts = {
 					"value":keys[i]
 				};
 				
@@ -1862,7 +1867,7 @@ var s5g = {
 
 		updateBandconf:function(caId){
 			let bandInfo = s5g.nrBandData[s5g.carriers[caId].band];
-			var el = $(".carrier_row[data-caid='" + caId + "'] div.rowcont div.rowsect:nth-child(3)");
+			let el = $(".carrier_row[data-caid='" + caId + "'] div.rowcont div.rowsect:nth-child(3)");
 
 			el.empty();
 			if (bandInfo.type === "TDD"){
@@ -1884,7 +1889,7 @@ var s5g = {
 
 		updateBandwidth:function(caId){
 			let bandInfo = s5g.nrBandData[s5g.carriers[caId].band];
-			var el = $(".carrier_row[data-caid='" + caId + "'] div.rowcont div.rowsect:nth-child(4)");
+			let el = $(".carrier_row[data-caid='" + caId + "'] div.rowcont div.rowsect:nth-child(4)");
 
 			el.empty();
 			if (bandInfo.type === "FDD"){
@@ -1905,10 +1910,10 @@ var s5g = {
 				return;
 			}
 			
-			var dlSpeed = s5g.calc.round(data[0]);
-			var ulSpeed = s5g.calc.round(data[1]);
+			let dlSpeed = s5g.calc.round(data[0]),
+				ulSpeed = s5g.calc.round(data[1]);
 
-			var speedTxt = "";
+			let speedTxt = "";
 			if (dlSpeed !== 0) 					speedTxt += dlSpeed + "Mbps &#8595";
 			if (dlSpeed !== 0 && ulSpeed !== 0) speedTxt += "; &amp; ";
 			if (ulSpeed !== 0) 					speedTxt += ulSpeed + "Mbps &#8593";
@@ -1919,7 +1924,7 @@ var s5g = {
 		inputError:function(type,data){
 			s5g.haltCalculation = true;
 
-			var el = $("#speeds");
+			let el = $("#speeds");
 			
 			switch(type){
 				case 1:
@@ -1951,7 +1956,7 @@ var s5g = {
 
 // Check that library loaded correctly
 if (!window.jQuery){
-	var j = document.createElement("script");
+	let j = document.createElement("script");
 	j.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js";
 	j.type = "text/javascript";
 	j.onload = "s5g.init();";
