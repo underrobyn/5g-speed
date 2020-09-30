@@ -90,11 +90,12 @@ h3 {
 	border-bottom:.05em solid #ed1c24;
 }
 .tdd_predefined {
+	display:none;
 	width:calc(100% / 3);
 	float:left;
 }
 .tdd_patterns {
-	width:calc(100% / 3 * 2);
+	width:100%;
 	float:left;
 }
 
@@ -160,7 +161,7 @@ h3 {
 	display:block;
 }
 .rowsectlarge {
-	width:calc(100% / 3);
+	width:calc(100% / 2);
 }
 .rowsect label {
 	font-size:1.1em;

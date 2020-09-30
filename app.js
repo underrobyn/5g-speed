@@ -1114,22 +1114,48 @@ var s5g = {
 			},
 
 			getSlotFormat:function(caId, info){
-				return [
-					{
-						'periodicity':3,
-						'nrofDownlinkSlots':3,
-						'nrofDownlinkSymbols':4,
-						'nrofUplinkSlots':2,
-						'nrofUplinkSymbols':4,
-					},
-					{
-						'periodicity':2,
-						'nrofDownlinkSlots':4,
-						'nrofDownlinkSymbols':0,
-						'nrofUplinkSlots':0,
-						'nrofUplinkSymbols':0,
+				let patterns = [];
+
+				function checkPeriodicity(p){
+					return p !== null && p !== "" && !isNaN(p) && isFinite(p) && p >= 0 && p <= 10;
+				}
+
+				function checkFrameStruct(s){
+					if (s === null || s === "") return false;
+					if (!s.includes('/') || s.length < 3) return false;
+
+					let a = s.split('/');
+					if (a.length !== 2) return false;
+
+					return a.reduce(function(l, n){
+						return l && isFinite(n) && !isNaN(n);
+					});
+				}
+
+				function getFrameStruct(s) {
+					return s.split('/').map(function(a){
+						return parseInt(a);
+					});
+				}
+
+				['1', '2'].forEach(function(patternInt){
+					if (checkPeriodicity(info['tddPattern'+patternInt+'Period'])) {
+						if (checkFrameStruct(info['tddPattern'+patternInt+'CustomSlot']) && checkFrameStruct(info['tddPattern'+patternInt+'CustomSymb'])) {
+							let slots = getFrameStruct(info['tddPattern'+patternInt+'CustomSlot']);
+							let symbs = getFrameStruct(info['tddPattern'+patternInt+'CustomSymb']);
+
+							patterns.push({
+								'periodicity':parseInt(info['tddPattern'+patternInt+'Period']),
+								'nrofDownlinkSlots':slots[0],
+								'nrofDownlinkSymbols':symbs[0],
+								'nrofUplinkSlots':slots[1],
+								'nrofUplinkSymbols':symbs[1]
+							});
+						}
 					}
-				];
+				});
+
+				return patterns;
 			}
 		},
 
@@ -1242,6 +1268,29 @@ var s5g = {
 				}
 			},
 
+			"tddPattern":function(caId){
+
+			},
+			"tddPattern1Period":function(caId){
+				s5g.logic.changeCbs["tddPattern"](caId);
+			},
+			"tddPattern1CustomSlot":function(caId){
+				s5g.logic.changeCbs["tddPattern"](caId);
+			},
+			"tddPattern1CustomSymb":function(caId){
+				s5g.logic.changeCbs["tddPattern"](caId);
+			},
+			"tddPattern2Period":function(caId){
+				s5g.logic.changeCbs["tddPattern"](caId);
+			},
+			"tddPattern2CustomSlot":function(caId){
+				s5g.logic.changeCbs["tddPattern"](caId);
+			},
+			"tddPattern2CustomSymb":function(caId){
+				s5g.logic.changeCbs["tddPattern"](caId);
+			},
+
+
 			"layers":function(caId){
 				// console.log("Layers changed for " + caId);
 			},
@@ -1336,8 +1385,12 @@ var s5g = {
 				sfactor:null,
 				scs:null,
 
-				tddConfigPattern1:"",
-				tddConfigPattern2:"",
+				tddPattern1Period:null,
+				tddPattern1CustomSlot:null,
+				tddPattern1CustomSymb:null,
+				tddPattern2Period:null,
+				tddPattern2CustomSlot:null,
+				tddPattern2CustomSymb:null,
 				tddFlexData:false,
 
 				uplinkAggregation:false
@@ -1382,7 +1435,7 @@ var s5g = {
 			
 			s5g.logic.doCalculation();
 		},
-		
+
 		resetCarrierData:function(caId,attributes){
 			let clearAttr = ["band","scs","sfactor","dlBandwidth","ulBandwidth","dlLayers","ulLayers","dlModulation","ulModulation"];
 			for (let i = 0; i < 5; i++){
@@ -1416,7 +1469,9 @@ var s5g = {
 				"ulModulation":6,
 				"sfactor":1,
 				"scs":30,
-				"tddSlotFormat":0,
+				"tddPattern1Period":5,
+				"tddPattern1CustomSlot":"7/7",
+				"tddPattern1CustomSymb":"4/4",
 				"tddFlexData":false
 			};
 			
@@ -1453,7 +1508,7 @@ var s5g = {
 		doCalculation:function(){
 			let required = {
 				"FDD":["dlBandwidth","ulBandwidth","dlLayers","ulLayers","dlModulation","ulModulation","sfactor","scs"],
-				"TDD":["dlBandwidth","dlLayers","ulLayers","dlModulation","ulModulation","sfactor","scs"],
+				"TDD":["dlBandwidth","dlLayers","ulLayers","dlModulation","ulModulation","sfactor","scs"/*,"tddPattern1Period","tddPattern1CustomSlot","tddPattern1CustomSymb"*/],
 				"SDL":["dlBandwidth","dlLayers","dlModulation","sfactor","scs"]
 			};
 			
@@ -1530,12 +1585,12 @@ var s5g = {
 				el.push(
 					$("<div/>",{"class":"tdd_header tddopts", "style":"display:none"}).append(
 						$("<h1/>",{"class":"tdd_predefined"}).text("Predefined Format"),
-						$("<h1/>",{"class":"tdd_patterns"}).text("Configuration"),
+						$("<h1/>",{"class":"tdd_patterns"}).text("TDD Custom Patterns"),
 					)
 				);
 
 				el.push(
-					$("<div/>",{"class":"rowsect rowsectlarge tddopts", "style":"display:none"}).append(
+					$("<div/>",{"class":"rowsect rowsectlarge", "style":"display:none"}).append(
 						$("<span/>",{"class":"rowsectheader"}).text(s5g.name.bandconf),
 						$("<label/>",{"class":"tddopts"}).text(_l["header.tddslotformat"]),
 						$("<select/>",{
@@ -1563,18 +1618,18 @@ var s5g = {
 							"type":"number",
 							"placeholder":"Periodicity (ms)",
 							"data-selector":"tddPattern1Period",
-						}).on("keyup", s5g.logic.selectNewValue),
+						}).on("change", s5g.logic.selectNewValue),
 
 						$("<label/>").text('Slots (DL / UL)'),
 						$("<input/>",{
-							"type":"number",
+							"type":"text",
 							"placeholder":"e.g. 7 / 2",
 							"data-selector":"tddPattern1CustomSlot",
 						}).on("keyup", s5g.logic.selectNewValue),
 
 						$("<label/>").text('Symbols (DL / UL)'),
 						$("<input/>",{
-							"type":"number",
+							"type":"text",
 							"placeholder":"e.g. 4 / 4",
 							"data-selector":"tddPattern1CustomSymb",
 						}).on("keyup", s5g.logic.selectNewValue)
@@ -1588,18 +1643,18 @@ var s5g = {
 							"type":"number",
 							"placeholder":"Periodicity (ms)",
 							"data-selector":"tddPattern2Period",
-						}).on("keyup", s5g.logic.selectNewValue),
+						}).on("change", s5g.logic.selectNewValue),
 
 						$("<label/>").text('Slots (DL / UL)'),
 						$("<input/>",{
-							"type":"number",
+							"type":"text",
 							"placeholder":"e.g. 7 / 2",
 							"data-selector":"tddPattern2CustomSlot",
 						}).on("keyup", s5g.logic.selectNewValue),
 
 						$("<label/>").text('Symbols (DL / UL)'),
 						$("<input/>",{
-							"type":"number",
+							"type":"text",
 							"placeholder":"e.g. 4 / 4",
 							"data-selector":"tddPattern2CustomSymb",
 						}).on("keyup", s5g.logic.selectNewValue)
