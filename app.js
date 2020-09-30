@@ -1524,38 +1524,86 @@ var s5g = {
 				
 				return el;
 			},
-			bandconf:function(){
-				let el = $("<div/>",{"class":"rowsect"}).append(
-					$("<span/>",{"class":"rowsectheader"}).text(s5g.name.bandconf)
-				);
-
-				el.append(
-					$("<span/>").text("No options for this band type")
-				);
-
-				return el;
-			},
 			tddbandconf:function(){
-				let el = $("<div/>",{"class":"rowsect"}).append(
-					$("<span/>",{"class":"rowsectheader"}).text(s5g.name.bandconf)
+				let el = [];
+
+				el.push(
+					$("<div/>",{"class":"tdd_header tddopts", "style":"display:none"}).append(
+						$("<h1/>",{"class":"tdd_predefined"}).text("Predefined Format"),
+						$("<h1/>",{"class":"tdd_patterns"}).text("Configuration"),
+					)
 				);
 
-				el.append(
-					$("<label/>",{"class":"tddopts"}).text(_l["header.tddslotformat"]),
-					$("<select/>",{
-						"class":"tddopts",
-						"title":s5g.ux.selectText("tddSlotFormat"),
-						"data-selector":"tddSlotFormat"
-					}).append(
-						$("<option/>",{"value":0}).text(s5g.ux.selectText("tddSlotFormat"))
-					).on("change",s5g.logic.selectNewValue),
+				el.push(
+					$("<div/>",{"class":"rowsect rowsectlarge tddopts", "style":"display:none"}).append(
+						$("<span/>",{"class":"rowsectheader"}).text(s5g.name.bandconf),
+						$("<label/>",{"class":"tddopts"}).text(_l["header.tddslotformat"]),
+						$("<select/>",{
+							"class":"tddopts",
+							"title":s5g.ux.selectText("tddSlotFormat"),
+							"data-selector":"tddSlotFormat"
+						}).append(
+							$("<option/>",{"value":0}).text(s5g.ux.selectText("tddSlotFormat"))
+						).on("change",s5g.logic.selectNewValue),
 
-					$("<label/>").text(_l["header.tddcustomslot"]),
-					$("<input/>",{
-						"type":"text",
-						"placeholder":"Enter 14 symbols (D/U/F)",
-						"data-selector":"tddCustomSlot",
-					}).on("keyup", s5g.logic.selectNewValue)
+						$("<label/>").text(_l["header.tddcustomslot"]),
+						$("<input/>",{
+							"type":"text",
+							"placeholder":"Enter 14 symbols (D/U/F)",
+							"data-selector":"tddCustomSlot",
+						}).on("keyup", s5g.logic.selectNewValue)
+					)
+				);
+
+				el.push(
+					$("<div/>",{"class":"rowsect rowsectlarge tddopts", "style":"display:none"}).append(
+						$("<span/>",{"class":"rowsectheader"}).text('TDD Custom Config'),
+						$("<label/>").text('Pattern 1'),
+						$("<input/>",{
+							"type":"number",
+							"placeholder":"Periodicity (ms)",
+							"data-selector":"tddPattern1Period",
+						}).on("keyup", s5g.logic.selectNewValue),
+
+						$("<label/>").text('Slots (DL / UL)'),
+						$("<input/>",{
+							"type":"number",
+							"placeholder":"e.g. 7 / 2",
+							"data-selector":"tddPattern1CustomSlot",
+						}).on("keyup", s5g.logic.selectNewValue),
+
+						$("<label/>").text('Symbols (DL / UL)'),
+						$("<input/>",{
+							"type":"number",
+							"placeholder":"e.g. 4 / 4",
+							"data-selector":"tddPattern1CustomSymb",
+						}).on("keyup", s5g.logic.selectNewValue)
+					)
+				);
+
+				el.push(
+					$("<div/>",{"class":"rowsect rowsectlarge tddopts", "style":"display:none"}).append(
+						$("<label/>").text('Pattern 2 (Optional)'),
+						$("<input/>",{
+							"type":"number",
+							"placeholder":"Periodicity (ms)",
+							"data-selector":"tddPattern2Period",
+						}).on("keyup", s5g.logic.selectNewValue),
+
+						$("<label/>").text('Slots (DL / UL)'),
+						$("<input/>",{
+							"type":"number",
+							"placeholder":"e.g. 7 / 2",
+							"data-selector":"tddPattern2CustomSlot",
+						}).on("keyup", s5g.logic.selectNewValue),
+
+						$("<label/>").text('Symbols (DL / UL)'),
+						$("<input/>",{
+							"type":"number",
+							"placeholder":"e.g. 4 / 4",
+							"data-selector":"tddPattern2CustomSymb",
+						}).on("keyup", s5g.logic.selectNewValue)
+					)
 				);
 
 				return el;
@@ -1777,12 +1825,12 @@ var s5g = {
 			body.append(
 				s5g.ux.generate.band(),
 				s5g.ux.generate.scs(),
-				s5g.ux.generate.bandconf(),
 				s5g.ux.generate.bandwidth(),
 				s5g.ux.generate.sfactor(),
 				s5g.ux.generate.layers(),
 				s5g.ux.generate.modulation(),
-				s5g.ux.generate.rowOpts((caId === 0))
+				s5g.ux.generate.rowOpts((caId === 0)),
+				s5g.ux.generate.tddbandconf()
 			);
 			
 			el.append(header,body);
@@ -1936,29 +1984,22 @@ var s5g = {
 
 		updateBandconf:function(caId){
 			let bandInfo = s5g.nrBandData[s5g.carriers[caId].band];
-			let el = $(".carrier_row[data-caid='" + caId + "'] div.rowcont div.rowsect:nth-child(3)");
 
-			el.empty();
 			if (bandInfo.type === "TDD"){
-				el.replaceWith(
-					s5g.ux.generate.tddbandconf()
-				);
-
 				$(".carrier_row[data-caid='" + caId + "'] div.rowcont div.rowsect .tddopts").show();
+				$(".carrier_row[data-caid='" + caId + "'] div.rowcont div.tddopts").show();
 				s5g.ux.populateTddSlotFormat(
 					$(".carrier_row[data-caid='" + caId + "'] div.rowcont div.rowsect select[data-selector='tddSlotFormat']"), caId
 				);
 			} else {
 				$(".carrier_row[data-caid='" + caId + "'] div.rowcont div.rowsect .tddopts").hide();
-				el.replaceWith(
-					s5g.ux.generate.bandconf()
-				);
+				$(".carrier_row[data-caid='" + caId + "'] div.rowcont div.tddopts").hide();
 			}
 		},
 
 		updateBandwidth:function(caId){
 			let bandInfo = s5g.nrBandData[s5g.carriers[caId].band];
-			let el = $(".carrier_row[data-caid='" + caId + "'] div.rowcont div.rowsect:nth-child(4)");
+			let el = $(".carrier_row[data-caid='" + caId + "'] div.rowcont div.rowsect:nth-child(3)");
 
 			el.empty();
 			if (bandInfo.type === "FDD"){

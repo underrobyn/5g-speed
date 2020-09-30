@@ -22,7 +22,7 @@ select,button {
 }
 select,input,button{
 	margin:.5% 4%;
-	width:92%;
+	width:calc(92% - 13px);
 	-webkit-appearance:none;
 }
 input{
@@ -34,10 +34,6 @@ input{
 	font-size:1.2em;
 	line-height:1.2em;
 	padding:5px;
-}
-
-.tddconfigbox {
-	width:50%;
 }
 
 /* Can't group these see: https://stackoverflow.com/a/2610741 */
@@ -79,10 +75,29 @@ h3 {
 }
 .ca_header{
 	float:left;
-	width:12.5%;
+	width:calc(100% / 7);
 	height:100%;
 	border-bottom:.1em solid #ed1c24;
 }
+.tdd_header {
+	width:100%;
+	float:left;
+	text-align: center;
+}
+.tdd_title {
+	width:100%;
+	float:left;
+	border-bottom:.05em solid #ed1c24;
+}
+.tdd_predefined {
+	width:calc(100% / 3);
+	float:left;
+}
+.tdd_patterns {
+	width:calc(100% / 3 * 2);
+	float:left;
+}
+
 #title_bar {
 	padding:0 0 0 1.5%;
 	height:4em;
@@ -139,13 +154,13 @@ h3 {
 	border-bottom:.1em solid #fff;
 }
 .rowsect{
-	width:12.5%;
+	width:calc(100% / 7);
 	float:left;
 	text-align:center;
 	display:block;
 }
 .rowsectlarge {
-	width:33.333%;
+	width:calc(100% / 3);
 }
 .rowsect label {
 	font-size:1.1em;
@@ -234,13 +249,37 @@ h3 {
 	.band_title{
 		font-size:1.35em;
 	}
+	.rowsectheader {
+		display: none;
+	}
+	.rowsect label {
+		text-align:left;
+		float:left;
+		font-size:1.5em;
+		font-weight:600;
+		padding:0.25rem 0 0.25rem 0.6rem;
+	}
 	.rowsect{
 		width:50%;
+		margin:0.5rem 0;
+	}
+	#add_carrier {
+		background-color:#ed1c24;
 	}
 }
-@media screen and (max-width:420px){
+@media screen and (max-width:410px){
+	.tdd_predefined, .tdd_patterns {
+		display: none;
+	}
 	.rowsect{
 		width:100%;
+		margin:0;
+	}
+	#add_carrier {
+		height:1.5em;
+		line-height:1.5em;
+		font-size:1.6em;
+		margin:0.25em 0;
 	}
 }
 @media screen and (max-width:400px){
@@ -249,6 +288,6 @@ h3 {
 	}
 	#page_title{
 		line-height:1.25em;
-		font-size:1.3em;
+		font-size:1.25em;
 	}
 }
