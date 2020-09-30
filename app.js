@@ -20,7 +20,7 @@ if (!String.prototype.includes) {
 	};
 }
 
-if (!window.location.host.includes("absolutedouble.co.uk")){
+if (!window.location.host.includes("absolutedouble.co.uk") && !window.location.host.includes("localhost")){
 	console.log("\n5G Theoretical Throughput Calculator");
 	console.log("Developed by AbsoluteDouble");
 	console.log("Website: https://absolutedouble.co.uk");
@@ -988,6 +988,7 @@ var s5g = {
 		base:1e-6,
 		scprb:12,	// Number of subcarriers in PRB
 		symslot:14,	// Number of symbols in a slot (Normal CP)
+		frametime:10,	// Frame time (in ms)
 		rMax:948/1024, // TODO: Add option to change this in future version
 		
 		reduce:function(n){
@@ -1083,10 +1084,16 @@ var s5g = {
 			run:function(caId, info, band){
 				let calc = s5g.calc.common(info, band);
 
+				console.log(calc);
+				console.log(info);
+
 				let tddConf = s5g.calc.tdd.getSlotFormat(caId, info);
 				if (!tddConf) return [0,0];
 
-				let tdd = s5g.logic.calcSlotPercent(tddConf);
+				console.log(tddConf);
+
+				let tdd = s5g.logic.calcSlotPercent(calc, tddConf, info);
+				console.log(tdd);
 
 				// Overhead
 				let final = s5g.calc.calcOverhead(band, calc);
@@ -1107,20 +1114,22 @@ var s5g = {
 			},
 
 			getSlotFormat:function(caId, info){
-				if (info.tddCustomSlot === ""){
-					if (s5g.nrTddConf[info.tddSlotFormat]){
-						return s5g.nrTddConf[info.tddSlotFormat];
+				return [
+					{
+						'periodicity':3,
+						'nrofDownlinkSlots':3,
+						'nrofDownlinkSymbols':4,
+						'nrofUplinkSlots':2,
+						'nrofUplinkSymbols':4,
+					},
+					{
+						'periodicity':2,
+						'nrofDownlinkSlots':4,
+						'nrofDownlinkSymbols':0,
+						'nrofUplinkSlots':0,
+						'nrofUplinkSymbols':0,
 					}
-					s5g.ux.inputError(1,[caId, _l["header.tddslotformat"]]);
-				} else {
-					let result = s5g.logic.validateSlotString(info.tddCustomSlot);
-					if (result[0] !== false){
-						return info.tddCustomSlot;
-					}
-					s5g.ux.inputError(2,[caId, result[1]]);
-				}
-
-				return false;
+				];
 			}
 		},
 
@@ -1276,13 +1285,34 @@ var s5g = {
 			return result;
 		},
 
-		calcSlotPercent:function(str){
-			let res = s5g.logic.decodeSlotString(str);
+		calcSlotPercent:function(res, patterns, info){
+			let period = (1 / (s5g.calc.numerology(parseInt(info.scs))+1));
+			let frameSymbols = s5g.calc.symslot * s5g.calc.frametime / period;
+
+			console.log('Period', period, 'frameSym', frameSymbols);
+
+			let dlSymbols = 0, ulSymbols = 0, periodicity = 0;
+
+			patterns.forEach(function(pattern){
+				dlSymbols += (pattern.nrofDownlinkSlots * s5g.calc.symslot) + pattern.nrofDownlinkSymbols;
+				ulSymbols += (pattern.nrofUplinkSlots * s5g.calc.symslot) + pattern.nrofUplinkSymbols;
+				periodicity += pattern.periodicity;
+			});
+
+			if (periodicity !== s5g.calc.frametime) {
+				let multiplier = s5g.calc.frametime / periodicity;
+				dlSymbols *= multiplier;
+				ulSymbols *= multiplier;
+			}
+
+			let flSymbols = frameSymbols - (dlSymbols + ulSymbols);
+
+			console.log('dlSymbols', dlSymbols, 'ulSymbols', ulSymbols, 'flSymbols', flSymbols);
 
 			return {
-				"D":res["D"]/s5g.calc.symslot,
-				"U":res["U"]/s5g.calc.symslot,
-				"F":res["F"]/s5g.calc.symslot,
+				"D":(dlSymbols / frameSymbols),
+				"U":(ulSymbols / frameSymbols),
+				"F":(flSymbols / frameSymbols),
 			};
 		},
 		
@@ -1306,9 +1336,9 @@ var s5g = {
 				sfactor:null,
 				scs:null,
 
-				tddSlotFormat:0,
+				tddConfigPattern1:"",
+				tddConfigPattern2:"",
 				tddFlexData:false,
-				tddCustomSlot:"",
 
 				uplinkAggregation:false
 			});
@@ -1358,8 +1388,6 @@ var s5g = {
 			for (let i = 0; i < 5; i++){
 				if (attributes.indexOf(clearAttr[i]) !== -1) continue;
 				
-				//console.log("Set",clearAttr[i],"to null");
-				
 				s5g.ux.resetSelector(caId,clearAttr[i]);
 				s5g.carriers[caId][clearAttr[i]] = null;
 			}
@@ -1370,8 +1398,7 @@ var s5g = {
 			
 			s5g.carriers[caId][selector] = $(this).val();
 			s5g.haltCalculation = false;
-			
-			//console.log("Set value for carrier",caId,"->",selector,"to",$(this).val());
+
 
 			s5g.logic.changeCbs[selector](caId);
 			
