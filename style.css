@@ -240,6 +240,12 @@ h3 {
 		margin-top:0.2em;
 	}
 }
+@media screen and (max-width:1024px){
+	.rowsect label {
+		font-size:1.35em;
+		padding:0.25rem 0 0.25rem 0.5rem;
+	}
+}
 @media screen and (max-width:768px){
 	#title_bar{
 		text-align:center;
@@ -256,9 +262,9 @@ h3 {
 	.rowsect label {
 		text-align:left;
 		float:left;
-		font-size:1.5em;
+		font-size:1.3em;
 		font-weight:600;
-		padding:0.25rem 0 0.25rem 0.6rem;
+		padding:0.25rem 0 0.25rem 0.25rem;
 	}
 	.rowsect{
 		width:50%;

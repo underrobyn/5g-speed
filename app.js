@@ -1089,6 +1089,10 @@ var s5g = {
 
 				let tddConf = s5g.calc.tdd.getSlotFormat(caId, info);
 				if (!tddConf) return [0,0];
+				if (!tddConf.length) {
+					s5g.ux.inputError(1,[caId, 'a valid TDD slot pattern']);
+					return [0,0];
+				}
 
 				console.log(tddConf);
 
