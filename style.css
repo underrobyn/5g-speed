@@ -15,7 +15,7 @@ body{
 select,button {
 	background:#1a1a1a;
 	color:#fff;
-	border:1.5px solid #ed1c24;
+	border:1.5px solid #ff0055;
 	font-size:1.2em;
 	line-height:1.2em;
 	padding:5px;
@@ -30,7 +30,7 @@ input{
 	appearance:textfield;
 	background:#1a1a1a;
 	color:#fff;
-	border:1.5px solid #ed1c24;
+	border:1.5px solid #ff0055;
 	font-size:1.2em;
 	line-height:1.2em;
 	padding:5px;
@@ -77,7 +77,7 @@ h3 {
 	float:left;
 	width:calc(100% / 7);
 	height:100%;
-	border-bottom:.1em solid #ed1c24;
+	border-bottom:.1em solid #ff0055;
 }
 .tdd_header {
 	width:100%;
@@ -87,7 +87,7 @@ h3 {
 .tdd_title {
 	width:100%;
 	float:left;
-	border-bottom:.05em solid #ed1c24;
+	border-bottom:.05em solid #ff0055;
 }
 .tdd_predefined {
 	display:none;
@@ -104,7 +104,7 @@ h3 {
 	height:4em;
 	line-height:4em;
 	background-color:#000;
-	border-bottom:#ed1c24 2px solid;
+	border-bottom:#ff0055 2px solid;
 }
 #speeds{
 	text-align:center;
@@ -271,7 +271,7 @@ h3 {
 		margin:0.5rem 0;
 	}
 	#add_carrier {
-		background-color:#ed1c24;
+		background-color:#ff0055;
 	}
 }
 @media screen and (max-width:410px){
