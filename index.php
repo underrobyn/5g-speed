@@ -17,8 +17,8 @@
 		<meta name="apple-mobile-web-app-title" content="5G Speeds">
 		
 		<link rel="manifest" href="manifest.json">
-		<link rel="icon" href="images/5g-128.png" type="image/x-icon" sizes="128x128" />
-		<link rel="apple-touch-icon" href="images/5g-128.png" sizes="128x128" />
+		<link rel="icon" href="images/5g-128.jpg" type="image/x-icon" sizes="128x128" />
+		<link rel="apple-touch-icon" href="images/5g-256.jpg" sizes="256x256" />
 		<link rel="stylesheet" href="style.css" type="text/css" media="all" />
 		
 	</head>
