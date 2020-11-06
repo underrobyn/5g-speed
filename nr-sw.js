@@ -1,18 +1,18 @@
 "use strict";
 
-var version = 'v5:';
-var appName = "5gspeed";
-var appAssets = [
-	'https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js',
+const version = 'v1:';
+const appName = "5gspeed";
+const appAssets = [
 	'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js',
 	'https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js',
 	
 	'/5g-speed/',
-	'/5g-speed/images/5g-512.png',
-	'/5g-speed/images/5g-192.png',
-	'/5g-speed/images/5g-128.png',
+	'/5g-speed/images/5g-512.jpg',
+	'/5g-speed/images/5g-256.jpg',
+	'/5g-speed/images/5g-128.jpg',
 	'/5g-speed/manifest.json',
 	'/5g-speed/app.js',
+	'/5g-speed/strings.js',
 	'/5g-speed/style.css'
 ];
 
@@ -34,24 +34,24 @@ self.addEventListener("fetch",function(event) {
 	event.respondWith(
 		caches.match(event.request).then(function(cached){
 			var networked = fetch(event.request).then(fetchedFromNetwork,unableToResolve).catch(unableToResolve);
-			
-			console.log('sw: fetch event', cached ? '(cached)' : '(network)', event.request.url);
-			return cached || networked;
 
 			function fetchedFromNetwork(response) {
 				var cacheCopy = response.clone();
 				console.log('sw: fetch response from network.', event.request.url);
-				caches.open(version + 'pages').then(function add(cache){
+
+				caches.open(version + appName).then(function add(cache){
 					cache.put(event.request, cacheCopy);
 				}).then(function(){
 					console.log('sw: fetch response stored in cache.', event.request.url);
 				});
+
 				return response;
 			}
 
 			function unableToResolve() {
 				console.log('sw: fetch request failed in both cache and network.');
-				return new Response('<h1 style="font-weight:100;font-family:sans-serif;">Service Unavailable</h1>', {
+
+				return new Response('<h1 style="font-weight:100;font-family:sans-serif;">Cannot load 5G Speed Calculator</h1>', {
 					status:503,
 					statusText:'Service Unavailable',
 					headers:new Headers({
@@ -59,6 +59,9 @@ self.addEventListener("fetch",function(event) {
 					})
 				});
 			}
+
+			console.log('sw: fetch event', cached ? '(cached)' : '(network)', event.request.url);
+			return cached || networked;
 		})
 	);
 });

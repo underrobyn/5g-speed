@@ -1,6 +1,8 @@
 {
 	"short_name":"5G Speeds",
 	"name":"5G Speed Calculator",
+	"description":"A tool to calculate the theoretical maximum for 5G-NR, with FDD, TDD, SDL and SUL band support.",
+	"categories":["utilities", "productivity", "education"],
 	"icons":[
 		{
 			"src": "images/5g-128.jpg",
@@ -19,6 +21,7 @@
 		}
 	],
 	"start_url":"/5g-speed/",
+	"scope":"/5g-speed/",
 	"theme_color":"#ed1c24",
 	"background_color":"#1a1a1a",
 	"display":"standalone",

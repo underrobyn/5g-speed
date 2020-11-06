@@ -982,7 +982,7 @@ var s5g = {
 	
 	init:function(){
 		s5g.ux.init();
-		//s5g.sw.init();
+		s5g.sw.init();
 		s5g.logic.addCarrier();
 	},
 	
@@ -2116,8 +2116,8 @@ var s5g = {
 	
 	sw:{
 		init:function(){
-			if (('serviceWorker' in navigator)) return;
-			return;
+			if (!('serviceWorker' in navigator)) return;
+			
 			navigator.serviceWorker.register("nr-sw.js").then(function(registration){
 				if (s5g.DEBUG > 1) console.log("ServiceWorker registration successful with scope:",registration.scope);
 			},function(err){
@@ -2131,7 +2131,7 @@ var s5g = {
 // Check that library loaded correctly
 if (!window.jQuery){
 	let j = document.createElement("script");
-	j.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js";
+	j.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js";
 	j.type = "text/javascript";
 	j.onload = "s5g.init();";
 
