@@ -27,7 +27,7 @@ if (!window.location.host.includes("absolutedouble.co.uk") && !window.location.h
 	console.log("Github: https://github.com/jake-cryptic/5g-speed");
 }
 
-var s5g = {
+let s5g = {
 	haltCalculation:false,
 	followSpec:false,
 	carriers:[],
@@ -38,6 +38,7 @@ var s5g = {
 	nrBandData:{
 		1:{
 			"type":"FDD",
+			"rel":15.0,
 			"freqrange":1,
 			"frequency":"2100",
 			"range":["1920-1980","2110-2170"],
@@ -52,6 +53,7 @@ var s5g = {
 		},
 		2:{
 			"type":"FDD",
+			"rel":15.0,
 			"freqrange":1,
 			"frequency":"1900",
 			"range":["1850-1910","1930-1990"],
@@ -66,6 +68,7 @@ var s5g = {
 		},
 		3:{
 			"type":"FDD",
+			"rel":15.0,
 			"freqrange":1,
 			"frequency":"1800",
 			"range":["1710-1785","1805-1880"],
@@ -80,6 +83,7 @@ var s5g = {
 		},
 		5:{
 			"type":"FDD",
+			"rel":15.0,
 			"freqrange":1,
 			"frequency":"850",
 			"range":["824-849","869-894"],
@@ -94,6 +98,7 @@ var s5g = {
 		},
 		7:{
 			"type":"FDD",
+			"rel":15.0,
 			"freqrange":1,
 			"frequency":"2600",
 			"range":["2500-2570","2620-2690"],
@@ -108,6 +113,7 @@ var s5g = {
 		},
 		8:{
 			"type":"FDD",
+			"rel":15.0,
 			"freqrange":1,
 			"frequency":"900",
 			"range":["880-915","925-960"],
@@ -122,6 +128,7 @@ var s5g = {
 		},
 		12:{
 			"type":"FDD",
+			"rel":15.2,
 			"freqrange":1,
 			"frequency":"700",
 			"range":["699-716","729-746"],
@@ -134,8 +141,24 @@ var s5g = {
 			},
 			"nrarfcn":[145800,149200]
 		},
+		13:{
+			"type":"FDD",
+			"rel":17.0,
+			"freqrange":1,
+			"frequency":"700",
+			"range":["777-787","746-756"],
+			"scsbw":{
+				"dl":{
+					15:[5,10],
+					30:[10],
+					60:[]
+				}
+			},
+			"nrarfcn":[149200,151200]
+		},
 		14:{
 			"type":"FDD",
+			"rel":16.0,
 			"freqrange":1,
 			"frequency":"700",
 			"range":["788-798","758-768"],
@@ -150,6 +173,7 @@ var s5g = {
 		},
 		18:{
 			"type":"FDD",
+			"rel":16.0,
 			"freqrange":1,
 			"frequency":"800",
 			"range":["815-830","860-875"],
@@ -164,6 +188,7 @@ var s5g = {
 		},
 		20:{
 			"type":"FDD",
+			"rel":15.0,
 			"freqrange":1,
 			"frequency":"800",
 			"range":["832-862","791-821"],
@@ -178,6 +203,7 @@ var s5g = {
 		},
 		25:{
 			"type":"FDD",
+			"rel":15.2,
 			"freqrange":1,
 			"frequency":"1900",
 			"range":["1850-1915","1930-1995"],
@@ -192,6 +218,7 @@ var s5g = {
 		},
 		26:{
 			"type":"FDD",
+			"rel":16.3,
 			"freqrange":1,
 			"frequency":"850",
 			"range":["814-849","859-894"],
@@ -206,6 +233,7 @@ var s5g = {
 		},
 		28:{
 			"type":"FDD",
+			"rel":15.0,
 			"freqrange":1,
 			"frequency":"700",
 			"range":["703-748","758-803"],
@@ -220,6 +248,7 @@ var s5g = {
 		},
 		29:{
 			"type":"SDL",
+			"rel":16.1,
 			"freqrange":1,
 			"frequency":"700",
 			"range":["717-728"],
@@ -234,6 +263,7 @@ var s5g = {
 		},
 		30:{
 			"type":"FDD",
+			"rel":16.0,
 			"freqrange":1,
 			"frequency":"2300",
 			"range":["2305-2315","2350-2360"],
@@ -248,6 +278,7 @@ var s5g = {
 		},
 		34:{
 			"type":"TDD",
+			"rel":15.2,
 			"freqrange":1,
 			"frequency":"2000",
 			"range":["2010-2025"],
@@ -262,6 +293,7 @@ var s5g = {
 		},
 		38:{
 			"type":"TDD",
+			"rel":15.0,
 			"freqrange":1,
 			"frequency":"2600",
 			"range":["2570-2620"],
@@ -276,6 +308,7 @@ var s5g = {
 		},
 		39:{
 			"type":"TDD",
+			"rel":15.2,
 			"freqrange":1,
 			"frequency":"1900",
 			"range":["1880-1920"],
@@ -290,6 +323,7 @@ var s5g = {
 		},
 		40:{
 			"type":"TDD",
+			"rel":15.2,
 			"freqrange":1,
 			"frequency":"2300",
 			"range":["2300-2400"],
@@ -304,6 +338,7 @@ var s5g = {
 		},
 		41:{
 			"type":"TDD",
+			"rel":15.0,
 			"freqrange":1,
 			"frequency":"2500",
 			"range":["2496-2690"],
@@ -316,8 +351,24 @@ var s5g = {
 			},
 			"nrarfcn":[499200,537999]
 		},
+		/*46:{
+			"type":"TDD",
+			"rel":16.5,
+			"freqrange":1,
+			"frequency":"3600",
+			"range":["3550-3700"],
+			"scsbw":{
+				"dl":{
+					15:[5,10,15,20,40,50],
+					30:[10,15,20,40,50,60,80,90,100],
+					60:[10,15,20,40,50,60,80,90,100]
+				}
+			},
+			"nrarfcn":[636667,646666]
+		},*/
 		48:{
 			"type":"TDD",
+			"rel":16.0,
 			"freqrange":1,
 			"frequency":"3600",
 			"range":["3550-3700"],
@@ -332,6 +383,7 @@ var s5g = {
 		},
 		50:{
 			"type":"TDD",
+			"rel":15.3,
 			"freqrange":1,
 			"frequency":"1500",
 			"range":["1432-1517"],
@@ -346,6 +398,7 @@ var s5g = {
 		},
 		51:{
 			"type":"TDD",
+			"rel":15.0,
 			"freqrange":1,
 			"frequency":"1500",
 			"range":["1427-1432"],
@@ -360,6 +413,7 @@ var s5g = {
 		},
 		53:{
 			"type":"TDD",
+			"rel":16.3,
 			"freqrange":1,
 			"frequency":"2500",
 			"range":["2383.5-2495"],
@@ -374,6 +428,7 @@ var s5g = {
 		},
 		65:{
 			"type":"FDD",
+			"rel":16.0,
 			"freqrange":1,
 			"frequency":"2100",
 			"range":["1920-2010","2110-2200"],
@@ -388,6 +443,7 @@ var s5g = {
 		},
 		66:{
 			"type":"FDD",
+			"rel":15.0,
 			"freqrange":1,
 			"frequency":"1700",
 			"range":["1710-1780","2110-2200"],
@@ -402,6 +458,7 @@ var s5g = {
 		},
 		70:{
 			"type":"FDD",
+			"rel":15.0,
 			"freqrange":1,
 			"frequency":"2000",
 			"range":["1695-1710","1995-2020"],
@@ -416,6 +473,7 @@ var s5g = {
 		},
 		71:{
 			"type":"FDD",
+			"rel":15.0,
 			"freqrange":1,
 			"frequency":"600",
 			"range":["663-698","617-652"],
@@ -430,6 +488,7 @@ var s5g = {
 		},
 		74:{
 			"type":"FDD",
+			"rel":15.3,
 			"freqrange":1,
 			"frequency":"1500",
 			"range":["1427-1470","1475-1518"],
@@ -444,6 +503,7 @@ var s5g = {
 		},
 		75:{
 			"type":"SDL",
+			"rel":15.0,
 			"freqrange":1,
 			"frequency":"1500",
 			"range":["1432-1517"],
@@ -458,6 +518,7 @@ var s5g = {
 		},
 		76:{
 			"type":"SDL",
+			"rel":15.0,
 			"freqrange":1,
 			"frequency":"1500",
 			"range":["1427-1432"],
@@ -472,6 +533,7 @@ var s5g = {
 		},
 		77:{
 			"type":"TDD",
+			"rel":15.0,
 			"freqrange":1,
 			"frequency":"3700",
 			"range":["3300-4200"],
@@ -486,6 +548,7 @@ var s5g = {
 		},
 		78:{
 			"type":"TDD",
+			"rel":15.0,
 			"freqrange":1,
 			"frequency":"3500",
 			"range":["3300-3800"],
@@ -500,6 +563,7 @@ var s5g = {
 		},
 		79:{
 			"type":"TDD",
+			"rel":15.0,
 			"freqrange":1,
 			"frequency":"4500",
 			"range":["4400-5000"],
@@ -514,6 +578,7 @@ var s5g = {
 		},
 		80:{
 			"type":"SUL",
+			"rel":15.0,
 			"freqrange":1,
 			"frequency":"1800",
 			"range":["1710-1785"],
@@ -528,6 +593,7 @@ var s5g = {
 		},
 		81:{
 			"type":"SUL",
+			"rel":15.0,
 			"freqrange":1,
 			"frequency":"900",
 			"range":["880-915"],
@@ -542,6 +608,7 @@ var s5g = {
 		},
 		82:{
 			"type":"SUL",
+			"rel":15.0,
 			"freqrange":1,
 			"frequency":"800",
 			"range":["832-862"],
@@ -556,6 +623,7 @@ var s5g = {
 		},
 		83:{
 			"type":"SUL",
+			"rel":15.0,
 			"freqrange":1,
 			"frequency":"700",
 			"range":["703-748"],
@@ -570,6 +638,7 @@ var s5g = {
 		},
 		84:{
 			"type":"SUL",
+			"rel":15.0,
 			"freqrange":1,
 			"frequency":"2100",
 			"range":["1920-1980"],
@@ -584,6 +653,7 @@ var s5g = {
 		},
 		86:{
 			"type":"SUL",
+			"rel":15.2,
 			"freqrange":1,
 			"frequency":"1700",
 			"range":["1710-1780"],
@@ -598,6 +668,7 @@ var s5g = {
 		},
 		89:{
 			"type":"SUL",
+			"rel":16.1,
 			"freqrange":1,
 			"frequency":"850",
 			"range":["824-849"],
@@ -612,6 +683,7 @@ var s5g = {
 		},
 		90:{
 			"type":"TDD",
+			"rel":16.0,
 			"freqrange":1,
 			"frequency":"2600",
 			"range":["2496-2690"],
@@ -626,6 +698,7 @@ var s5g = {
 		},
 		91:{
 			"type":"FDD",
+			"rel":16.2,
 			"freqrange":1,
 			"frequency":"1500",
 			"range":["832-862","1427-1432"],
@@ -645,6 +718,7 @@ var s5g = {
 		},
 		92:{
 			"type":"FDD",
+			"rel":16.2,
 			"freqrange":1,
 			"frequency":"1500",
 			"range":["832-862","1432-1517"],
@@ -659,6 +733,7 @@ var s5g = {
 		},
 		93:{
 			"type":"FDD",
+			"rel":16.2,
 			"freqrange":1,
 			"frequency":"1500",
 			"range":["880-915","1427-1432"],
@@ -678,6 +753,7 @@ var s5g = {
 		},
 		94:{
 			"type":"FDD",
+			"rel":16.2,
 			"freqrange":1,
 			"frequency":"1500",
 			"range":["880-915","1427-1432"],
@@ -692,6 +768,7 @@ var s5g = {
 		},
 		95:{
 			"type":"SUL",
+			"rel":16.2,
 			"freqrange":1,
 			"frequency":"2000",
 			"range":["2010-2050"],
@@ -703,6 +780,51 @@ var s5g = {
 				}
 			},
 			"nrarfcn":[402000,405000]
+		},
+		96:{
+			"type":"TDD",
+			"rel":16.5,
+			"freqrange":1,
+			"frequency":"6500",
+			"range":["5925-7125"],
+			"scsbw":{
+				"dl":{
+					15:[20,40],
+					30:[20,40,60,80],
+					60:[20,40,60,80]
+				}
+			},
+			"nrarfcn":[795000,875000]
+		},
+		97:{
+			"type":"SUL",
+			"rel":17.0,
+			"freqrange":1,
+			"frequency":"2300",
+			"range":["2300-2400"],
+			"scsbw":{
+				"dl":{
+					15:[5,10,15,20,25,30,40,50],
+					30:[10,15,20,25,30,40,50,60,80],
+					60:[10,15,20,25,30,40,50,60,80]
+				}
+			},
+			"nrarfcn":[460000,480000]
+		},
+		98:{
+			"type":"SUL",
+			"rel":17.0,
+			"freqrange":1,
+			"frequency":"1900",
+			"range":["1880-1920"],
+			"scsbw":{
+				"dl":{
+					15:[5,10,15,20,25,30,40],
+					30:[10,15,20,25,30,40],
+					60:[10,15,20,25,30,40]
+				}
+			},
+			"nrarfcn":[376000,384000]
 		},
 		257:{
 			"type":"TDD",
@@ -2131,7 +2253,9 @@ var s5g = {
 // Check that library loaded correctly
 if (!window.jQuery){
 	let j = document.createElement("script");
-	j.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js";
+	j.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js";
+	j.integrity = "sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK";
+	j.crossorigin = 'anonymous';
 	j.type = "text/javascript";
 	j.onload = "s5g.init();";
 

@@ -3,8 +3,7 @@
 const version = 'v2:';
 const appName = "5gspeed";
 const appAssets = [
-	'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js',
-	'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js',
+	'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js',
 	'https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js',
 	
 	'/5g-speed/',
