@@ -32,7 +32,7 @@ let s5g = {
 	followSpec:false,
 	carriers:[],
 	nrFreqOverhead:{
-		1:[0.14,0.18],
+		1:[0.14,0.08],
 		2:[0.18,0.10]
 	},
 	nrBandData:{
