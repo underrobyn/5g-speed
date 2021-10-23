@@ -1263,6 +1263,29 @@ let s5g = {
 					return [0, 0];
 				}
 
+				// Check slots and symbols
+				let userInputError = false;
+				tddConf.forEach(function (pattern) {
+					let values = Object.values(pattern);
+					values.forEach(function (value) {
+						if (value < 0 || value > 99) userInputError = true;
+					});
+				});
+				if (userInputError) {
+					s5g.ux.inputError(1, [caId, 'a valid TDD slot pattern']);
+					return [0, 0];
+				}
+
+				// Check periodicity value
+				let userPeriodicityError = false;
+				tddConf.forEach(function (pattern) {
+					if (pattern['periodicity'] <= 0) userPeriodicityError = true;
+				});
+				if (userPeriodicityError) {
+					s5g.ux.inputError(2, [caId, 'Periodicity cannot be less than or equal to 0']);
+					return [0, 0];
+				}
+
 				console.log(tddConf);
 
 				let tdd = s5g.logic.calcSlotPercent(calc, tddConf, info);
